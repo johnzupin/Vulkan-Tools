@@ -1,0 +1,25 @@
+Source: vulkan-tools
+Section: graphics
+Priority: optional
+Maintainer: John Zupin <johnz@lunarg.com>
+Build-Depends: debhelper (>= 10),
+ cmake,
+ python3,
+ glslang-tools,
+ vulkan-headers,
+ libvulkan1,
+ libwayland-dev,
+ libx11-dev,
+ libxrandr-dev,
+ pkg-config
+Standards-Version: 4.1.2
+Homepage: https://github.com/KhronosGroup/Vulkan-Tools
+Vcs-Git: https://github.com/KhronosGroup/Vulkan-Tools
+Vcs-Browser: https://github.com/KhronosGroup/Vulkan-Tools
+
+Package: vulkan-tools
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: This project provides Vulkan tools and utilities that can
+ assist development by enabling developers to verify their
+ applications correct use of the Vulkan API.
