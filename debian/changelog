@@ -1,3 +1,51 @@
+vulkan-tools (1.2.148.0-1lunarg20.04-1) focal; urgency=medium
+
+  [ Charles Giessen ]
+  * vulkaninfo: fix indent with for present support
+
+  [ Tobin Ehlis ]
+  * icd:Correctly Support Vulkan 1.1
+  * icd: Cleanup supported VK API version
+
+  [ Charles Giessen ]
+  * vulkaninfo: fix output style for memory types
+  * vulkaninfo: add more asserts to catch bad formatting
+  * vulkaninfo: fix ordering issues in generated code
+
+  [ Shannon McPherson ]
+  * scripts: Use named params for generator options
+  * build: Update known-good files for 1.2.145 header
+
+  [ Jeremy Kniager ]
+  * build: Update MoltenVK version in known-good.json
+
+  [ Shannon McPherson ]
+  * build: Update known-good files for 1.2.146 header
+
+  [ Bob Ellison ]
+  * scripts: udpate_deps retry on clone or fetch failure
+
+  [ Shannon McPherson ]
+  * build: Update known-good files for 1.2.147 header
+
+  [ John Zupin ]
+  * control: add version to dependency and add libvulkan1 as depend
+
+  [ Bob Ellison ]
+  * scripts: fix update_deps retry clone
+
+  [ Tony-LunarG ]
+  * cube: Add option to select phys device
+
+  [ Shannon McPherson ]
+  * build: Update known-good files for 1.2.148 header
+
+  [ John Zupin ]
+  * copyright: updated for release
+  * control: update required headers to 1.2.148.0
+
+ -- John Zupin <john@odin>  Mon, 27 Jul 2020 17:18:41 -0600
+
 vulkan-tools (1.2.141-1) bionic; urgency=medium
 
   * Initial release
