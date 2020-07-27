@@ -55,6 +55,7 @@ SOURCE_CPP_PREFIX = '''
 using std::unordered_map;
 
 static constexpr uint32_t icd_physical_device_count = 1;
+static constexpr uint32_t kSupportedVulkanAPIVersion = VK_API_VERSION_1_1;
 static unordered_map<VkInstance, std::array<VkPhysicalDevice, icd_physical_device_count>> physical_device_map;
 
 // Map device memory handle to any mapped allocations that we'll need to free on unmap
@@ -496,6 +497,10 @@ CUSTOM_C_INTERCEPTS = {
 'vkEnumerateInstanceLayerProperties': '''
     return VK_SUCCESS;
 ''',
+'vkEnumerateInstanceVersion': '''
+    *pApiVersion = kSupportedVulkanAPIVersion;
+    return VK_SUCCESS;
+''',
 'vkEnumerateDeviceLayerProperties': '''
     return VK_SUCCESS;
 ''',
@@ -765,7 +770,7 @@ CUSTOM_C_INTERCEPTS = {
 ''',
 'vkGetPhysicalDeviceProperties': '''
     // TODO: Just hard-coding some values for now
-    pProperties->apiVersion = VK_API_VERSION_1_0;
+    pProperties->apiVersion = kSupportedVulkanAPIVersion;
     pProperties->driverVersion = 1;
     pProperties->vendorID = 0xba5eba11;
     pProperties->deviceID = 0xf005ba11;
@@ -1029,6 +1034,7 @@ class MockICDGeneratorOptions(GeneratorOptions):
                  conventions = None,
                  filename = None,
                  directory = '.',
+                 genpath = None,
                  apiname = None,
                  profile = None,
                  versions = '.*',
@@ -1052,9 +1058,20 @@ class MockICDGeneratorOptions(GeneratorOptions):
                  alignFuncParam = 0,
                  expandEnumerants = True,
                  helper_file_type = ''):
-        GeneratorOptions.__init__(self, conventions, filename, directory, apiname, profile,
-                                  versions, emitversions, defaultExtensions,
-                                  addExtensions, removeExtensions, emitExtensions, sortProcedure)
+        GeneratorOptions.__init__(self,
+                 conventions = conventions,
+                 filename = filename,
+                 directory = directory,
+                 genpath = genpath,
+                 apiname = apiname,
+                 profile = profile,
+                 versions = versions,
+                 emitversions = emitversions,
+                 defaultExtensions = defaultExtensions,
+                 addExtensions = addExtensions,
+                 removeExtensions = removeExtensions,
+                 emitExtensions = emitExtensions,
+                 sortProcedure = sortProcedure)
         self.prefixText      = prefixText
         self.genFuncPointers = genFuncPointers
         self.protectFile     = protectFile
@@ -1302,7 +1319,7 @@ class MockICDOutputGenerator(OutputGenerator):
             return
 
         manual_functions = [
-            # Include functions here to be interecpted w/ manually implemented function bodies
+            # Include functions here to be intercepted w/ manually implemented function bodies
             'vkGetDeviceProcAddr',
             'vkGetInstanceProcAddr',
             'vkCreateDevice',
@@ -1312,6 +1329,7 @@ class MockICDOutputGenerator(OutputGenerator):
             #'vkCreateDebugReportCallbackEXT',
             #'vkDestroyDebugReportCallbackEXT',
             'vkEnumerateInstanceLayerProperties',
+            'vkEnumerateInstanceVersion',
             'vkEnumerateInstanceExtensionProperties',
             'vkEnumerateDeviceLayerProperties',
             'vkEnumerateDeviceExtensionProperties',

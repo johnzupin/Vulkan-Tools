@@ -81,6 +81,7 @@ static const std::unordered_map<std::string, uint32_t> instance_extension_map = 
     {"VK_KHR_surface_protected_capabilities", 1},
     {"VK_EXT_validation_features", 3},
     {"VK_EXT_headless_surface", 1},
+    {"VK_EXT_directfb_surface", 1},
 };
 // Map of device extension name to version
 static const std::unordered_map<std::string, uint32_t> device_extension_map = {
@@ -240,9 +241,11 @@ static const std::unordered_map<std::string, uint32_t> device_extension_map = {
     {"VK_EXT_full_screen_exclusive", 4},
     {"VK_KHR_buffer_device_address", 1},
     {"VK_EXT_line_rasterization", 1},
+    {"VK_EXT_shader_atomic_float", 1},
     {"VK_EXT_host_query_reset", 1},
     {"VK_EXT_index_type_uint8", 1},
-    {"VK_KHR_deferred_host_operations", 2},
+    {"VK_EXT_extended_dynamic_state", 1},
+    {"VK_KHR_deferred_host_operations", 3},
     {"VK_KHR_pipeline_executable_properties", 1},
     {"VK_EXT_shader_demote_to_helper_invocation", 1},
     {"VK_NV_device_generated_commands", 3},
@@ -257,6 +260,8 @@ static const std::unordered_map<std::string, uint32_t> device_extension_map = {
     {"VK_EXT_pipeline_creation_cache_control", 3},
     {"VK_NV_device_diagnostics_config", 1},
     {"VK_QCOM_render_pass_store_ops", 2},
+    {"VK_EXT_fragment_density_map2", 1},
+    {"VK_EXT_image_robustness", 1},
 };
 
 
@@ -2687,12 +2692,73 @@ static VKAPI_ATTR void VKAPI_CALL CmdSetLineStippleEXT(
     uint16_t                                    lineStipplePattern);
 
 
+
 static VKAPI_ATTR void VKAPI_CALL ResetQueryPoolEXT(
     VkDevice                                    device,
     VkQueryPool                                 queryPool,
     uint32_t                                    firstQuery,
     uint32_t                                    queryCount);
 
+
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetCullModeEXT(
+    VkCommandBuffer                             commandBuffer,
+    VkCullModeFlags                             cullMode);
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetFrontFaceEXT(
+    VkCommandBuffer                             commandBuffer,
+    VkFrontFace                                 frontFace);
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetPrimitiveTopologyEXT(
+    VkCommandBuffer                             commandBuffer,
+    VkPrimitiveTopology                         primitiveTopology);
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetViewportWithCountEXT(
+    VkCommandBuffer                             commandBuffer,
+    uint32_t                                    viewportCount,
+    const VkViewport*                           pViewports);
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetScissorWithCountEXT(
+    VkCommandBuffer                             commandBuffer,
+    uint32_t                                    scissorCount,
+    const VkRect2D*                             pScissors);
+
+static VKAPI_ATTR void VKAPI_CALL CmdBindVertexBuffers2EXT(
+    VkCommandBuffer                             commandBuffer,
+    uint32_t                                    firstBinding,
+    uint32_t                                    bindingCount,
+    const VkBuffer*                             pBuffers,
+    const VkDeviceSize*                         pOffsets,
+    const VkDeviceSize*                         pSizes,
+    const VkDeviceSize*                         pStrides);
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetDepthTestEnableEXT(
+    VkCommandBuffer                             commandBuffer,
+    VkBool32                                    depthTestEnable);
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetDepthWriteEnableEXT(
+    VkCommandBuffer                             commandBuffer,
+    VkBool32                                    depthWriteEnable);
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetDepthCompareOpEXT(
+    VkCommandBuffer                             commandBuffer,
+    VkCompareOp                                 depthCompareOp);
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetDepthBoundsTestEnableEXT(
+    VkCommandBuffer                             commandBuffer,
+    VkBool32                                    depthBoundsTestEnable);
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetStencilTestEnableEXT(
+    VkCommandBuffer                             commandBuffer,
+    VkBool32                                    stencilTestEnable);
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetStencilOpEXT(
+    VkCommandBuffer                             commandBuffer,
+    VkStencilFaceFlags                          faceMask,
+    VkStencilOp                                 failOp,
+    VkStencilOp                                 passOp,
+    VkStencilOp                                 depthFailOp,
+    VkCompareOp                                 compareOp);
 
 
 
@@ -2760,6 +2826,22 @@ static VKAPI_ATTR void VKAPI_CALL GetPrivateDataEXT(
 
 
 
+
+
+
+#ifdef VK_USE_PLATFORM_DIRECTFB_EXT
+
+static VKAPI_ATTR VkResult VKAPI_CALL CreateDirectFBSurfaceEXT(
+    VkInstance                                  instance,
+    const VkDirectFBSurfaceCreateInfoEXT*       pCreateInfo,
+    const VkAllocationCallbacks*                pAllocator,
+    VkSurfaceKHR*                               pSurface);
+
+static VKAPI_ATTR VkBool32 VKAPI_CALL GetPhysicalDeviceDirectFBPresentationSupportEXT(
+    VkPhysicalDevice                            physicalDevice,
+    uint32_t                                    queueFamilyIndex,
+    IDirectFB*                                  dfb);
+#endif /* VK_USE_PLATFORM_DIRECTFB_EXT */
 
 #ifdef VK_ENABLE_BETA_EXTENSIONS
 
@@ -3334,6 +3416,18 @@ static const std::unordered_map<std::string, void*> name_to_funcptr_map = {
     {"vkCreateHeadlessSurfaceEXT", (void*)CreateHeadlessSurfaceEXT},
     {"vkCmdSetLineStippleEXT", (void*)CmdSetLineStippleEXT},
     {"vkResetQueryPoolEXT", (void*)ResetQueryPoolEXT},
+    {"vkCmdSetCullModeEXT", (void*)CmdSetCullModeEXT},
+    {"vkCmdSetFrontFaceEXT", (void*)CmdSetFrontFaceEXT},
+    {"vkCmdSetPrimitiveTopologyEXT", (void*)CmdSetPrimitiveTopologyEXT},
+    {"vkCmdSetViewportWithCountEXT", (void*)CmdSetViewportWithCountEXT},
+    {"vkCmdSetScissorWithCountEXT", (void*)CmdSetScissorWithCountEXT},
+    {"vkCmdBindVertexBuffers2EXT", (void*)CmdBindVertexBuffers2EXT},
+    {"vkCmdSetDepthTestEnableEXT", (void*)CmdSetDepthTestEnableEXT},
+    {"vkCmdSetDepthWriteEnableEXT", (void*)CmdSetDepthWriteEnableEXT},
+    {"vkCmdSetDepthCompareOpEXT", (void*)CmdSetDepthCompareOpEXT},
+    {"vkCmdSetDepthBoundsTestEnableEXT", (void*)CmdSetDepthBoundsTestEnableEXT},
+    {"vkCmdSetStencilTestEnableEXT", (void*)CmdSetStencilTestEnableEXT},
+    {"vkCmdSetStencilOpEXT", (void*)CmdSetStencilOpEXT},
     {"vkGetGeneratedCommandsMemoryRequirementsNV", (void*)GetGeneratedCommandsMemoryRequirementsNV},
     {"vkCmdPreprocessGeneratedCommandsNV", (void*)CmdPreprocessGeneratedCommandsNV},
     {"vkCmdExecuteGeneratedCommandsNV", (void*)CmdExecuteGeneratedCommandsNV},
@@ -3344,6 +3438,12 @@ static const std::unordered_map<std::string, void*> name_to_funcptr_map = {
     {"vkDestroyPrivateDataSlotEXT", (void*)DestroyPrivateDataSlotEXT},
     {"vkSetPrivateDataEXT", (void*)SetPrivateDataEXT},
     {"vkGetPrivateDataEXT", (void*)GetPrivateDataEXT},
+#ifdef VK_USE_PLATFORM_DIRECTFB_EXT
+    {"vkCreateDirectFBSurfaceEXT", (void*)CreateDirectFBSurfaceEXT},
+#endif
+#ifdef VK_USE_PLATFORM_DIRECTFB_EXT
+    {"vkGetPhysicalDeviceDirectFBPresentationSupportEXT", (void*)GetPhysicalDeviceDirectFBPresentationSupportEXT},
+#endif
 #ifdef VK_ENABLE_BETA_EXTENSIONS
     {"vkCreateAccelerationStructureKHR", (void*)CreateAccelerationStructureKHR},
 #endif
