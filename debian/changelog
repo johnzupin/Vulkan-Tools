@@ -1,3 +1,14 @@
+vulkan-tools (1.2.148.0-1ubuntu20.04-2) focal; urgency=medium
+
+  [ Charles Giessen ]
+  * vulkaninfo: fix device ext list having bad items
+
+  [ John Zupin ]
+  * control: grammer for description
+  * debian: remove README.Debian
+
+ -- John Zupin <john@odin>  Fri, 31 Jul 2020 17:17:46 -0600
+
 vulkan-tools (1.2.148.0-1lunarg20.04-1) focal; urgency=medium
 
   [ Charles Giessen ]
