@@ -21,5 +21,4 @@ Package: vulkan-tools
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libvulkan1 (>= 1.2.148.0)
 Description: This project provides Vulkan tools and utilities that can
- assist development by enabling developers to verify their
- applications' correct use of the Vulkan API.
+ assist Vulkan developers
