@@ -20,5 +20,8 @@ Vcs-Browser: https://github.com/KhronosGroup/Vulkan-Tools
 Package: vulkan-tools
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libvulkan1 (>= 1.2.148.0)
+Breaks: vulkan-utils
+Replaces: vulkan-utils
+Provides: vulkan-utils
 Description: This project provides Vulkan tools and utilities that can
  assist Vulkan developers
