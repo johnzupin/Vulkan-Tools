@@ -1,3 +1,11 @@
+vulkan-tools (1.2.148.0-1ubuntu18.04-3) bionic; urgency=medium
+
+  * control: updated description
+  * control: update to cooperate with vulkan-utils package
+  * control: update to use libvulkan-dev as build dep
+
+ -- John Zupin <john@odin>  Thu, 20 Aug 2020 14:15:50 -0600
+
 vulkan-tools (1.2.148.0-1ubuntu18.04-2) bionic; urgency=medium
 
   [ Charles Giessen ]
