@@ -1,3 +1,11 @@
+vulkan-tools (1.2.148.0-1ubuntu20.04-3) focal; urgency=medium
+
+  * control: updated description
+  * control: update to cooperate with vulkan-utils package
+  * control: update to use libvulkan-dev as build dep
+
+ -- John Zupin <john@odin>  Thu, 20 Aug 2020 14:17:01 -0600
+
 vulkan-tools (1.2.148.0-1ubuntu20.04-2) focal; urgency=medium
 
   [ Charles Giessen ]
