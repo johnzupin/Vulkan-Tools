@@ -1,3 +1,44 @@
+vulkan-tools (1.2.154.0-1lunarg20.04-1) focal; urgency=medium
+
+  [ Charles Giessen ]
+  * vulkaninfo: fix device ext list having bad items
+  * vulkaninfo: add `--summary` option that shows basic system info
+
+  [ Nicolas Caramelli ]
+  * Add support for VK_EXT_directfb_surface extension
+  * Fix formatting errors
+
+  [ Jeremy Kniager ]
+  * build: Update MoltenVK version in known-good.json
+
+  [ Shannon McPherson ]
+  * build: Update known-good files for 1.2.151 header
+
+  [ Jamie Madill ]
+  * Bump mock ICD surface max extents.
+
+  [ Biswapriyo Nath ]
+  * CMake: Check MSVC while deciding MSVC_VERSION
+  * cube: Check _MSC_VER instead of _WIN32 for pragma directive
+  * vulkaninfo: Check if NOMINMAX is already defined
+  * cube: satisfy clang-format
+
+  [ Jamie Madill ]
+  * Update GN to include header dependencies.
+
+  [ Bob Ellison ]
+  * android: NDK 21d
+
+  [ Shannon McPherson ]
+  * build: Update known-good files for 1.2.152 header
+  * build: Update known-good files for 1.2.153 header
+  * build: Update known-good files for 1.2.154 header
+
+  [ Charles Giessen ]
+  * vulkaninfo: Add json output for portability subset
+
+ -- John Zupin <john@odin>  Mon, 28 Sep 2020 17:31:59 -0600
+
 vulkan-tools (1.2.148.0-1ubuntu20.04-3) focal; urgency=medium
 
   * control: updated description
