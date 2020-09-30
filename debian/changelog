@@ -1,3 +1,9 @@
+vulkan-tools (1.2.154.0-1lunarg18.04-2) bionic; urgency=medium
+
+  * package: update deps version
+
+ -- John Zupin <john@odin>  Wed, 30 Sep 2020 16:49:49 -0600
+
 vulkan-tools (1.2.154.0-1lunarg18.04-1) bionic; urgency=medium
 
   [ Charles Giessen ]
