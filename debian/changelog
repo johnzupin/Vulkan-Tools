@@ -1,3 +1,14 @@
+vulkan-tools (1.2.154.0-1lunarg20.04-3) focal; urgency=medium
+
+  [ richard-lunarg ]
+  * Fixed paths for MoltenVK changes
+  * Update known_good.json for MoltenVK
+
+  [ Charles Giessen ]
+  * vulkaninfo: properly macro guard the portability features.
+
+ -- John Zupin <john@odin>  Thu, 01 Oct 2020 15:39:08 -0600
+
 vulkan-tools (1.2.154.0-1lunarg20.04-2) focal; urgency=medium
 
   * package: update deps version
