@@ -1,3 +1,14 @@
+vulkan-tools (1.2.154.0-1lunarg18.04-3) bionic; urgency=medium
+
+  [ richard-lunarg ]
+  * Fixed paths for MoltenVK changes
+  * Update known_good.json for MoltenVK
+
+  [ Charles Giessen ]
+  * vulkaninfo: properly macro guard the portability features.
+
+ -- John Zupin <john@odin>  Thu, 01 Oct 2020 15:38:07 -0600
+
 vulkan-tools (1.2.154.0-1lunarg18.04-2) bionic; urgency=medium
 
   * package: update deps version
