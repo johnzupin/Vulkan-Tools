@@ -1,3 +1,10 @@
+vulkan-tools (1.2.154.0-1lunarg20.04-4) focal; urgency=medium
+
+  [ Charles Giessen ]
+  * vulkaninfo: Add more portability macro guards
+
+ -- John Zupin <john@odin>  Fri, 02 Oct 2020 10:06:45 -0600
+
 vulkan-tools (1.2.154.0-1lunarg20.04-3) focal; urgency=medium
 
   [ richard-lunarg ]
