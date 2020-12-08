@@ -1,3 +1,57 @@
+vulkan-tools (1.2.162.0-1lunarg18.04-1) bionic; urgency=medium
+
+  [ richard-lunarg ]
+  * Fixed paths for MoltenVK changes
+  * Update known_good.json for MoltenVK
+
+  [ Nathaniel Cesario ]
+  * build: Fix linux/windows build in single directory
+
+  [ Charles Giessen ]
+  * vulkaninfo: properly macro guard the portability features.
+  * vulkaninfo: Add more portability macro guards
+
+  [ Shannon McPherson ]
+  * build: Update known-good files for 1.2.156 header
+  * build: Update known-good files for 1.2.157 header
+  * build: Update known-good files for 1.2.158 header
+
+  [ Nathaniel Cesario ]
+  * mockicd: Remove VK_KHR_portability_subset
+
+  [ Shannon McPherson ]
+  * build: Update known-good files for 1.2.159 header
+
+  [ orbea ]
+  * cmake: Silence warnings.
+
+  [ Shannon McPherson ]
+  * build: Update known-good files for 1.2.160 header
+
+  [ Charles Giessen ]
+  * vulkaninfo: Make json output print extensions
+  * vulkaninfo: add option to always open details for HTML
+
+  [ Shannon McPherson ]
+  * build: Update known-good files for 1.2.161 header
+
+  [ Mike Schuchardt ]
+  * scripts: Remove assert for nested array types
+
+  [ Richard S. Wright Jr ]
+  * vulkaninfo: WIP: Modified for use from iOS
+  * vulkaninfo: Fix to pass appveyor tests
+  * vulkaninfo: cleanup and comments
+
+  [ richard-lunarg ]
+  * vulkaninfo: clang-format cleanup
+  * vulkaninfo: clang-format cleanup
+
+  [ Shannon McPherson ]
+  * build: Update known-good files for 1.2.162 header
+
+ -- John Zupin <john@odin>  Tue, 08 Dec 2020 11:10:34 -0700
+
 vulkan-tools (1.2.154.0-1lunarg18.04-4) bionic; urgency=medium
 
   [ Charles Giessen ]
