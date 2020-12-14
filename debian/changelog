@@ -1,3 +1,10 @@
+vulkan-tools (1.2.162.0-1lunarg18.04-2) bionic; urgency=medium
+
+  [ Charles Giessen ]
+  * vulkaninfo: Fix win32 fullscreen pnext chain
+
+ -- John Zupin <john@odin>  Mon, 14 Dec 2020 09:22:04 -0700
+
 vulkan-tools (1.2.162.0-1lunarg18.04-1) bionic; urgency=medium
 
   [ richard-lunarg ]
