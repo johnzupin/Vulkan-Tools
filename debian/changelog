@@ -1,3 +1,15 @@
+vulkan-tools (1.2.162.1~rc1-1lunarg20.04-1) focal; urgency=medium
+
+  [ Richard S. Wright Jr ]
+  * vkcube: Updated to support portability extension properly
+  * Defined VK_ENABLE_BETA_EXTENSIONS so that VK_KHR_PORTABILITY_SUBSET_EXTENSION_NAME would be defined
+  * vkcube: portabilty extension as text so it builds on all platforms
+
+  [ John Zupin ]
+  * packaging: update vulkan deps version
+
+ -- John Zupin <john@odin>  Thu, 07 Jan 2021 11:32:21 -0700
+
 vulkan-tools (1.2.162.0-1lunarg20.04-2) focal; urgency=medium
 
   [ Charles Giessen ]
