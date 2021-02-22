@@ -256,7 +256,7 @@ static const std::unordered_map<std::string, uint32_t> device_extension_map = {
     {"VK_NV_device_generated_commands", 3},
     {"VK_EXT_texel_buffer_alignment", 1},
     {"VK_QCOM_render_pass_transform", 1},
-    {"VK_EXT_device_memory_report", 1},
+    {"VK_EXT_device_memory_report", 2},
     {"VK_EXT_robustness2", 1},
     {"VK_EXT_custom_border_color", 12},
     {"VK_GOOGLE_user_type", 1},
@@ -266,12 +266,17 @@ static const std::unordered_map<std::string, uint32_t> device_extension_map = {
     {"VK_EXT_pipeline_creation_cache_control", 3},
     {"VK_NV_device_diagnostics_config", 1},
     {"VK_QCOM_render_pass_store_ops", 2},
+    {"VK_KHR_synchronization2", 1},
+    {"VK_KHR_zero_initialize_workgroup_memory", 1},
     {"VK_NV_fragment_shading_rate_enums", 1},
     {"VK_EXT_fragment_density_map2", 1},
     {"VK_QCOM_rotated_copy_commands", 0},
     {"VK_EXT_image_robustness", 1},
+    {"VK_KHR_workgroup_memory_explicit_layout", 1},
     {"VK_KHR_copy_commands2", 1},
     {"VK_EXT_4444_formats", 1},
+    {"VK_NV_acquire_winrt_display", 1},
+    {"VK_VALVE_mutable_descriptor_type", 1},
 };
 
 
@@ -1938,6 +1943,53 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetPipelineExecutableInternalRepresentatio
 
 
 
+static VKAPI_ATTR void VKAPI_CALL CmdSetEvent2KHR(
+    VkCommandBuffer                             commandBuffer,
+    VkEvent                                     event,
+    const VkDependencyInfoKHR*                  pDependencyInfo);
+
+static VKAPI_ATTR void VKAPI_CALL CmdResetEvent2KHR(
+    VkCommandBuffer                             commandBuffer,
+    VkEvent                                     event,
+    VkPipelineStageFlags2KHR                    stageMask);
+
+static VKAPI_ATTR void VKAPI_CALL CmdWaitEvents2KHR(
+    VkCommandBuffer                             commandBuffer,
+    uint32_t                                    eventCount,
+    const VkEvent*                              pEvents,
+    const VkDependencyInfoKHR*                  pDependencyInfos);
+
+static VKAPI_ATTR void VKAPI_CALL CmdPipelineBarrier2KHR(
+    VkCommandBuffer                             commandBuffer,
+    const VkDependencyInfoKHR*                  pDependencyInfo);
+
+static VKAPI_ATTR void VKAPI_CALL CmdWriteTimestamp2KHR(
+    VkCommandBuffer                             commandBuffer,
+    VkPipelineStageFlags2KHR                    stage,
+    VkQueryPool                                 queryPool,
+    uint32_t                                    query);
+
+static VKAPI_ATTR VkResult VKAPI_CALL QueueSubmit2KHR(
+    VkQueue                                     queue,
+    uint32_t                                    submitCount,
+    const VkSubmitInfo2KHR*                     pSubmits,
+    VkFence                                     fence);
+
+static VKAPI_ATTR void VKAPI_CALL CmdWriteBufferMarker2AMD(
+    VkCommandBuffer                             commandBuffer,
+    VkPipelineStageFlags2KHR                    stage,
+    VkBuffer                                    dstBuffer,
+    VkDeviceSize                                dstOffset,
+    uint32_t                                    marker);
+
+static VKAPI_ATTR void VKAPI_CALL GetQueueCheckpointData2NV(
+    VkQueue                                     queue,
+    uint32_t*                                   pCheckpointDataCount,
+    VkCheckpointData2NV*                        pCheckpointData);
+
+
+
+
 static VKAPI_ATTR void VKAPI_CALL CmdCopyBuffer2KHR(
     VkCommandBuffer                             commandBuffer,
     const VkCopyBufferInfo2KHR*                 pCopyBufferInfo);
@@ -2867,6 +2919,18 @@ static VKAPI_ATTR void VKAPI_CALL CmdSetFragmentShadingRateEnumNV(
 
 
 
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+
+static VKAPI_ATTR VkResult VKAPI_CALL AcquireWinrtDisplayNV(
+    VkPhysicalDevice                            physicalDevice,
+    VkDisplayKHR                                display);
+
+static VKAPI_ATTR VkResult VKAPI_CALL GetWinrtDisplayNV(
+    VkPhysicalDevice                            physicalDevice,
+    uint32_t                                    deviceRelativeId,
+    VkDisplayKHR*                               pDisplay);
+#endif /* VK_USE_PLATFORM_WIN32_KHR */
+
 #ifdef VK_USE_PLATFORM_DIRECTFB_EXT
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateDirectFBSurfaceEXT(
@@ -2880,6 +2944,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL GetPhysicalDeviceDirectFBPresentationSuppo
     uint32_t                                    queueFamilyIndex,
     IDirectFB*                                  dfb);
 #endif /* VK_USE_PLATFORM_DIRECTFB_EXT */
+
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateAccelerationStructureKHR(
@@ -3335,6 +3400,14 @@ static const std::unordered_map<std::string, void*> name_to_funcptr_map = {
     {"vkGetPipelineExecutablePropertiesKHR", (void*)GetPipelineExecutablePropertiesKHR},
     {"vkGetPipelineExecutableStatisticsKHR", (void*)GetPipelineExecutableStatisticsKHR},
     {"vkGetPipelineExecutableInternalRepresentationsKHR", (void*)GetPipelineExecutableInternalRepresentationsKHR},
+    {"vkCmdSetEvent2KHR", (void*)CmdSetEvent2KHR},
+    {"vkCmdResetEvent2KHR", (void*)CmdResetEvent2KHR},
+    {"vkCmdWaitEvents2KHR", (void*)CmdWaitEvents2KHR},
+    {"vkCmdPipelineBarrier2KHR", (void*)CmdPipelineBarrier2KHR},
+    {"vkCmdWriteTimestamp2KHR", (void*)CmdWriteTimestamp2KHR},
+    {"vkQueueSubmit2KHR", (void*)QueueSubmit2KHR},
+    {"vkCmdWriteBufferMarker2AMD", (void*)CmdWriteBufferMarker2AMD},
+    {"vkGetQueueCheckpointData2NV", (void*)GetQueueCheckpointData2NV},
     {"vkCmdCopyBuffer2KHR", (void*)CmdCopyBuffer2KHR},
     {"vkCmdCopyImage2KHR", (void*)CmdCopyImage2KHR},
     {"vkCmdCopyBufferToImage2KHR", (void*)CmdCopyBufferToImage2KHR},
@@ -3503,6 +3576,12 @@ static const std::unordered_map<std::string, void*> name_to_funcptr_map = {
     {"vkSetPrivateDataEXT", (void*)SetPrivateDataEXT},
     {"vkGetPrivateDataEXT", (void*)GetPrivateDataEXT},
     {"vkCmdSetFragmentShadingRateEnumNV", (void*)CmdSetFragmentShadingRateEnumNV},
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+    {"vkAcquireWinrtDisplayNV", (void*)AcquireWinrtDisplayNV},
+#endif
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+    {"vkGetWinrtDisplayNV", (void*)GetWinrtDisplayNV},
+#endif
 #ifdef VK_USE_PLATFORM_DIRECTFB_EXT
     {"vkCreateDirectFBSurfaceEXT", (void*)CreateDirectFBSurfaceEXT},
 #endif
