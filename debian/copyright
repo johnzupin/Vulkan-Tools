@@ -3,7 +3,7 @@ Upstream-Name: vulkan-tools
 Source: https://github.com/KhronosGroup/Vulkan-Tools
 
 Files: *
-Copyright: Copyright 2020 LunarG Inc.
+Copyright: Copyright 2021 LunarG Inc.
 License: Apache-2.0
 
 Files: debian/*
