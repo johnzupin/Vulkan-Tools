@@ -1,3 +1,34 @@
+vulkan-tools (1.2.176.0~rc1-1lunarg20.04-1) focal; urgency=medium
+
+  [ Shannon McPherson ]
+  * scripts: Update copyright in `common_codegen.py`
+  * build: Update known-good files for 1.2.171 header
+
+  [ Mike Schuchardt ]
+  * build: Update known-good files for 1.2.172 header
+
+  [ Tony-LunarG ]
+  * cube: Select phy device for DISPLAY
+
+  [ John Zupin ]
+  * packaging: update debian/copyright file
+
+  [ Mike Schuchardt ]
+  * build: Update known-good files for 1.2.173 header
+  * build: Update to header 1.2.174
+
+  [ Jeremy Kniager ]
+  * repo: Switch to github actions for CI
+  * docs: Update README to point to GitHub Actions
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.176
+
+  [ John Zupin ]
+  * packaging: updated control version deps
+
+ -- John Zupin <john@odin>  Tue, 27 Apr 2021 14:26:56 -0600
+
 vulkan-tools (1.2.170.0~rc2-1lunarg20.04-1) focal; urgency=medium
 
   * packaging: updated LunarG's copyrights
