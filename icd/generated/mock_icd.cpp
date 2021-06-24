@@ -242,8 +242,22 @@ static VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceFormatProperties(
     if (VK_FORMAT_UNDEFINED == format) {
         *pFormatProperties = { 0x0, 0x0, 0x0 };
     } else {
-        // TODO: Just returning full support for everything initially
-        *pFormatProperties = { 0x00FFFFFF, 0x00FFFFFF, 0x00FFFFFF };
+        // Default to a color format, skip DS bit
+        *pFormatProperties = { 0x00FFFDFF, 0x00FFFDFF, 0x00FFFDFF };
+        switch (format) {
+            case VK_FORMAT_D16_UNORM:
+            case VK_FORMAT_X8_D24_UNORM_PACK32:
+            case VK_FORMAT_D32_SFLOAT:
+            case VK_FORMAT_S8_UINT:
+            case VK_FORMAT_D16_UNORM_S8_UINT:
+            case VK_FORMAT_D24_UNORM_S8_UINT:
+            case VK_FORMAT_D32_SFLOAT_S8_UINT:
+                // Don't set color bits for DS formats
+                *pFormatProperties = { 0x00FFFE7F, 0x00FFFE7F, 0x00FFFE7F };
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -3469,6 +3483,7 @@ static VKAPI_ATTR void VKAPI_CALL GetQueueCheckpointData2NV(
 
 
 
+
 static VKAPI_ATTR void VKAPI_CALL CmdCopyBuffer2KHR(
     VkCommandBuffer                             commandBuffer,
     const VkCopyBufferInfo2KHR*                 pCopyBufferInfo)
@@ -3648,6 +3663,52 @@ static VKAPI_ATTR void VKAPI_CALL CmdDrawIndirectByteCountEXT(
     VkDeviceSize                                counterBufferOffset,
     uint32_t                                    counterOffset,
     uint32_t                                    vertexStride)
+{
+//Not a CREATE or DESTROY function
+}
+
+
+static VKAPI_ATTR VkResult VKAPI_CALL CreateCuModuleNVX(
+    VkDevice                                    device,
+    const VkCuModuleCreateInfoNVX*              pCreateInfo,
+    const VkAllocationCallbacks*                pAllocator,
+    VkCuModuleNVX*                              pModule)
+{
+    unique_lock_t lock(global_lock);
+    *pModule = (VkCuModuleNVX)global_unique_handle++;
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR VkResult VKAPI_CALL CreateCuFunctionNVX(
+    VkDevice                                    device,
+    const VkCuFunctionCreateInfoNVX*            pCreateInfo,
+    const VkAllocationCallbacks*                pAllocator,
+    VkCuFunctionNVX*                            pFunction)
+{
+    unique_lock_t lock(global_lock);
+    *pFunction = (VkCuFunctionNVX)global_unique_handle++;
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR void VKAPI_CALL DestroyCuModuleNVX(
+    VkDevice                                    device,
+    VkCuModuleNVX                               module,
+    const VkAllocationCallbacks*                pAllocator)
+{
+//Destroy object
+}
+
+static VKAPI_ATTR void VKAPI_CALL DestroyCuFunctionNVX(
+    VkDevice                                    device,
+    VkCuFunctionNVX                             function,
+    const VkAllocationCallbacks*                pAllocator)
+{
+//Destroy object
+}
+
+static VKAPI_ATTR void VKAPI_CALL CmdCuLaunchKernelNVX(
+    VkCommandBuffer                             commandBuffer,
+    const VkCuLaunchInfoNVX*                    pLaunchInfo)
 {
 //Not a CREATE or DESTROY function
 }
@@ -4617,6 +4678,7 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceSupportedFramebufferMixed
 
 
 
+
 #ifdef VK_USE_PLATFORM_WIN32_KHR
 
 static VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceSurfacePresentModes2EXT(
@@ -4842,6 +4904,26 @@ static VKAPI_ATTR void VKAPI_CALL DestroyIndirectCommandsLayoutNV(
 
 
 
+static VKAPI_ATTR VkResult VKAPI_CALL AcquireDrmDisplayEXT(
+    VkPhysicalDevice                            physicalDevice,
+    int32_t                                     drmFd,
+    VkDisplayKHR                                display)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR VkResult VKAPI_CALL GetDrmDisplayEXT(
+    VkPhysicalDevice                            physicalDevice,
+    int32_t                                     drmFd,
+    uint32_t                                    connectorId,
+    VkDisplayKHR*                               display)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+
 
 
 
@@ -4902,6 +4984,7 @@ static VKAPI_ATTR void VKAPI_CALL CmdSetFragmentShadingRateEnumNV(
 
 
 
+
 #ifdef VK_USE_PLATFORM_WIN32_KHR
 
 static VKAPI_ATTR VkResult VKAPI_CALL AcquireWinrtDisplayNV(
@@ -4956,6 +5039,7 @@ static VKAPI_ATTR void VKAPI_CALL CmdSetVertexInputEXT(
 {
 //Not a CREATE or DESTROY function
 }
+
 
 #ifdef VK_USE_PLATFORM_FUCHSIA
 
@@ -5063,6 +5147,31 @@ static VKAPI_ATTR void                                    VKAPI_CALL CmdSetColor
     VkCommandBuffer                             commandBuffer,
     uint32_t                                    attachmentCount,
     const VkBool32*                             pColorWriteEnables)
+{
+//Not a CREATE or DESTROY function
+}
+
+
+
+static VKAPI_ATTR void VKAPI_CALL CmdDrawMultiEXT(
+    VkCommandBuffer                             commandBuffer,
+    uint32_t                                    drawCount,
+    const VkMultiDrawInfoEXT*                   pVertexInfo,
+    uint32_t                                    instanceCount,
+    uint32_t                                    firstInstance,
+    uint32_t                                    stride)
+{
+//Not a CREATE or DESTROY function
+}
+
+static VKAPI_ATTR void VKAPI_CALL CmdDrawMultiIndexedEXT(
+    VkCommandBuffer                             commandBuffer,
+    uint32_t                                    drawCount,
+    const VkMultiDrawIndexedInfoEXT*            pIndexInfo,
+    uint32_t                                    instanceCount,
+    uint32_t                                    firstInstance,
+    uint32_t                                    stride,
+    const int32_t*                              pVertexOffset)
 {
 //Not a CREATE or DESTROY function
 }

@@ -572,6 +572,9 @@ VK_KHR_synchronization2 = Extension(name='VK_KHR_synchronization2', version=1, g
     Command(name='vkGetQueueCheckpointData2NV', dispatch='VkQueue'),
 ])
 
+VK_KHR_shader_subgroup_uniform_control_flow = Extension(name='VK_KHR_shader_subgroup_uniform_control_flow', version=1, guard=None, commands=[
+])
+
 VK_KHR_zero_initialize_workgroup_memory = Extension(name='VK_KHR_zero_initialize_workgroup_memory', version=1, guard=None, commands=[
 ])
 
@@ -632,6 +635,14 @@ VK_EXT_transform_feedback = Extension(name='VK_EXT_transform_feedback', version=
     Command(name='vkCmdBeginQueryIndexedEXT', dispatch='VkCommandBuffer'),
     Command(name='vkCmdEndQueryIndexedEXT', dispatch='VkCommandBuffer'),
     Command(name='vkCmdDrawIndirectByteCountEXT', dispatch='VkCommandBuffer'),
+])
+
+VK_NVX_binary_import = Extension(name='VK_NVX_binary_import', version=1, guard=None, commands=[
+    Command(name='vkCreateCuModuleNVX', dispatch='VkDevice'),
+    Command(name='vkCreateCuFunctionNVX', dispatch='VkDevice'),
+    Command(name='vkDestroyCuModuleNVX', dispatch='VkDevice'),
+    Command(name='vkDestroyCuFunctionNVX', dispatch='VkDevice'),
+    Command(name='vkCmdCuLaunchKernelNVX', dispatch='VkCommandBuffer'),
 ])
 
 VK_NVX_image_view_handle = Extension(name='VK_NVX_image_view_handle', version=2, guard=None, commands=[
@@ -985,7 +996,7 @@ VK_EXT_tooling_info = Extension(name='VK_EXT_tooling_info', version=1, guard=Non
 VK_EXT_separate_stencil_usage = Extension(name='VK_EXT_separate_stencil_usage', version=1, guard=None, commands=[
 ])
 
-VK_EXT_validation_features = Extension(name='VK_EXT_validation_features', version=4, guard=None, commands=[
+VK_EXT_validation_features = Extension(name='VK_EXT_validation_features', version=5, guard=None, commands=[
 ])
 
 VK_NV_cooperative_matrix = Extension(name='VK_NV_cooperative_matrix', version=1, guard=None, commands=[
@@ -1000,6 +1011,9 @@ VK_EXT_fragment_shader_interlock = Extension(name='VK_EXT_fragment_shader_interl
 ])
 
 VK_EXT_ycbcr_image_arrays = Extension(name='VK_EXT_ycbcr_image_arrays', version=1, guard=None, commands=[
+])
+
+VK_EXT_provoking_vertex = Extension(name='VK_EXT_provoking_vertex', version=1, guard=None, commands=[
 ])
 
 VK_EXT_headless_surface = Extension(name='VK_EXT_headless_surface', version=1, guard=None, commands=[
@@ -1059,6 +1073,11 @@ VK_QCOM_render_pass_transform = Extension(name='VK_QCOM_render_pass_transform', 
 VK_EXT_device_memory_report = Extension(name='VK_EXT_device_memory_report', version=2, guard=None, commands=[
 ])
 
+VK_EXT_acquire_drm_display = Extension(name='VK_EXT_acquire_drm_display', version=1, guard=None, commands=[
+    Command(name='vkAcquireDrmDisplayEXT', dispatch='VkPhysicalDevice'),
+    Command(name='vkGetDrmDisplayEXT', dispatch='VkPhysicalDevice'),
+])
+
 VK_EXT_robustness2 = Extension(name='VK_EXT_robustness2', version=1, guard=None, commands=[
 ])
 
@@ -1088,6 +1107,9 @@ VK_NV_fragment_shading_rate_enums = Extension(name='VK_NV_fragment_shading_rate_
     Command(name='vkCmdSetFragmentShadingRateEnumNV', dispatch='VkCommandBuffer'),
 ])
 
+VK_NV_ray_tracing_motion_blur = Extension(name='VK_NV_ray_tracing_motion_blur', version=1, guard=None, commands=[
+])
+
 VK_EXT_ycbcr_2plane_444_formats = Extension(name='VK_EXT_ycbcr_2plane_444_formats', version=1, guard=None, commands=[
 ])
 
@@ -1115,6 +1137,14 @@ VK_EXT_vertex_input_dynamic_state = Extension(name='VK_EXT_vertex_input_dynamic_
     Command(name='vkCmdSetVertexInputEXT', dispatch='VkCommandBuffer'),
 ])
 
+VK_EXT_physical_device_drm = Extension(name='VK_EXT_physical_device_drm', version=1, guard=None, commands=[
+])
+
+VK_HUAWEI_subpass_shading = Extension(name='VK_HUAWEI_subpass_shading', version=0, guard=None, commands=[
+    Command(name='vkGetSubpassShadingMaxWorkgroupSizeHUAWEI', dispatch='VkRenderPass'),
+    Command(name='vkCmdSubpassShadingHUAWEI', dispatch='VkCommandBuffer'),
+])
+
 VK_EXT_extended_dynamic_state2 = Extension(name='VK_EXT_extended_dynamic_state2', version=1, guard=None, commands=[
     Command(name='vkCmdSetPatchControlPointsEXT', dispatch='VkCommandBuffer'),
     Command(name='vkCmdSetRasterizerDiscardEnableEXT', dispatch='VkCommandBuffer'),
@@ -1125,6 +1155,14 @@ VK_EXT_extended_dynamic_state2 = Extension(name='VK_EXT_extended_dynamic_state2'
 
 VK_EXT_color_write_enable = Extension(name='VK_EXT_color_write_enable', version=1, guard=None, commands=[
     Command(name='vkCmdSetColorWriteEnableEXT', dispatch='VkCommandBuffer'),
+])
+
+VK_EXT_global_priority_query = Extension(name='VK_EXT_global_priority_query', version=1, guard=None, commands=[
+])
+
+VK_EXT_multi_draw = Extension(name='VK_EXT_multi_draw', version=1, guard=None, commands=[
+    Command(name='vkCmdDrawMultiEXT', dispatch='VkCommandBuffer'),
+    Command(name='vkCmdDrawMultiIndexedEXT', dispatch='VkCommandBuffer'),
 ])
 
 VK_KHR_acceleration_structure = Extension(name='VK_KHR_acceleration_structure', version=11, guard=None, commands=[
@@ -1374,6 +1412,7 @@ extensions = [
     VK_KHR_pipeline_library,
     VK_KHR_shader_non_semantic_info,
     VK_KHR_synchronization2,
+    VK_KHR_shader_subgroup_uniform_control_flow,
     VK_KHR_zero_initialize_workgroup_memory,
     VK_KHR_workgroup_memory_explicit_layout,
     VK_KHR_copy_commands2,
@@ -1388,6 +1427,7 @@ extensions = [
     VK_AMD_gcn_shader,
     VK_NV_dedicated_allocation,
     VK_EXT_transform_feedback,
+    VK_NVX_binary_import,
     VK_NVX_image_view_handle,
     VK_AMD_draw_indirect_count,
     VK_AMD_negative_viewport_height,
@@ -1485,6 +1525,7 @@ extensions = [
     VK_NV_coverage_reduction_mode,
     VK_EXT_fragment_shader_interlock,
     VK_EXT_ycbcr_image_arrays,
+    VK_EXT_provoking_vertex,
     VK_EXT_headless_surface,
     VK_EXT_line_rasterization,
     VK_EXT_shader_atomic_float,
@@ -1497,6 +1538,7 @@ extensions = [
     VK_EXT_texel_buffer_alignment,
     VK_QCOM_render_pass_transform,
     VK_EXT_device_memory_report,
+    VK_EXT_acquire_drm_display,
     VK_EXT_robustness2,
     VK_EXT_custom_border_color,
     VK_GOOGLE_user_type,
@@ -1505,6 +1547,7 @@ extensions = [
     VK_NV_device_diagnostics_config,
     VK_QCOM_render_pass_store_ops,
     VK_NV_fragment_shading_rate_enums,
+    VK_NV_ray_tracing_motion_blur,
     VK_EXT_ycbcr_2plane_444_formats,
     VK_EXT_fragment_density_map2,
     VK_QCOM_rotated_copy_commands,
@@ -1513,8 +1556,12 @@ extensions = [
     VK_NV_acquire_winrt_display,
     VK_VALVE_mutable_descriptor_type,
     VK_EXT_vertex_input_dynamic_state,
+    VK_EXT_physical_device_drm,
+    VK_HUAWEI_subpass_shading,
     VK_EXT_extended_dynamic_state2,
     VK_EXT_color_write_enable,
+    VK_EXT_global_priority_query,
+    VK_EXT_multi_draw,
     VK_KHR_acceleration_structure,
     VK_KHR_ray_tracing_pipeline,
     VK_KHR_ray_query,
