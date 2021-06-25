@@ -1,3 +1,95 @@
+vulkan-tools (1.2.182.0~rc1-1lunarg18.04-1) bionic; urgency=medium
+
+  [ Mike Schuchardt ]
+  * scripts: Switch from mkpath to makedirs
+  * build: Update to header 1.2.177
+
+  [ Charles Giessen ]
+  * vulkaninfo: Fix signed conversion warning in MSVC
+
+  [ Richard S. Wright Jr ]
+  * Update known_good.json
+
+  [ Charles Giessen ]
+  * vulkaninfo: Add pipelineUUID printing to text,html
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.178
+
+  [ Tobin Ehlis ]
+  * icd:Consider DS when setting format bits
+
+  [ Jeremy Kniager ]
+  * vulkaninfo: Add check for printing memory budget
+
+  [ Charles Giessen ]
+  * vulkaninfo: use trivial_optional type instead of pair
+  * vulkaninfo: Tidy up code
+  * vulkaninfo: Remove redundant platform guards
+  * vulkaninfo: Update License and Refactor AppGpu
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.179
+
+  [ Jeremy Kniager ]
+  * tests: Run update on Linux before tests
+
+  [ Jake Turner ]
+  * Trigger demo quit from applicationWillTerminate
+
+  [ Arman Uguray ]
+  * vkcube: Fix disturbed rotation after many iterations
+
+  [ Tony-LunarG ]
+  * vkcube: Resize on SUBOPTIMAL if necessary
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.180
+
+  [ Tony-LunarG ]
+  * vkcube: Fix compilier warnings
+
+  [ Charles Giessen ]
+  * vulkaninfo: Fix compiler warnings
+  * vulkaninfo: Use autogen supportedSurfaceCounters
+  * vulkaninfo: Improve formatting of surface caps
+
+  [ Manuel Stoeckl ]
+  * cube: Port Wayland impl from wl-shell to xdg-shell
+
+  [ Jeremy Kniager ]
+  * build: Add Werror and warning flags to builds
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.181
+
+  [ richard-lunarg ]
+  * vkcube: fix crash on exit from double delete
+
+  [ Tony-LunarG ]
+  * vkcube: Fix alpha enum type
+
+  [ Charles Giessen ]
+  * vulkaninfo: Dont print None in vkconfig output
+
+  [ Tony-LunarG ]
+  * vkcube: Remove unused variable
+
+  [ Joshua Ashton ]
+  * cube: Don't constantly call vkAllocateCommandBuffers and vkBeginCommandBuffer when minimised
+  * cube: Handle occlusion where currentExtent == 0xFFFFFFFF
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.182
+
+  [ Tony-LunarG ]
+  * vkcube: Remove unused variable from Wayland build
+
+  [ John Zupin ]
+  * packaging: update control file for 1.2.182.0 SDK
+
+ -- John Zupin <john@odin>  Fri, 25 Jun 2021 15:15:14 -0600
+
 vulkan-tools (1.2.176.0~rc1-1lunarg18.04-1) bionic; urgency=medium
 
   [ Shannon McPherson ]
