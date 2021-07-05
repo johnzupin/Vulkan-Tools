@@ -1,3 +1,10 @@
+vulkan-tools (1.2.182.0~rc2-1lunarg20.04-1) focal; urgency=medium
+
+  [ Bob Ellison ]
+  * windows: updated copyright notices
+
+ -- John Zupin <john@odin>  Mon, 05 Jul 2021 09:34:50 -0600
+
 vulkan-tools (1.2.182.0~rc1-1lunarg20.04-1) focal; urgency=medium
 
   [ Mike Schuchardt ]
