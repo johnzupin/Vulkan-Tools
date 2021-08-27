@@ -1,3 +1,44 @@
+vulkan-tools (1.2.189.0~rc1-1lunarg20.04-1) focal; urgency=medium
+
+  [ Charles Giessen ]
+  * vulkaninfo: Fix image format query arguments
+
+  [ Xiaolei Yu ]
+  * vulkaninfo: Fix device version check
+
+  [ Bob Ellison ]
+  * windows: updated copyright notices
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.183
+
+  [ richard-lunarg ]
+  * known_good.json updated for latest MoltenVK tag
+
+  [ Tony-LunarG ]
+  * docs: Fix cube wsi selection variable
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.184
+
+  [ Eleni Maria Stea ]
+  * vulkaninfo/cube: added support for FreeBSD
+
+  [ Bob Ellison ]
+  * vulkaninfo: correct copyright date
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.185
+  * mockicd: Commit missing generated files
+  * ci: Add verification step for generated source
+  * build: Update to header 1.2.186
+  * build: Update to header 1.2.187
+  * scripts: Use altlen instead of parsing latexmath
+  * build: Update to header 1.2.188
+  * build: Update to header 1.2.189
+
+ -- John Zupin <john@odin>  Fri, 27 Aug 2021 16:35:10 -0600
+
 vulkan-tools (1.2.182.0~rc2-1lunarg20.04-1) focal; urgency=medium
 
   [ Bob Ellison ]
