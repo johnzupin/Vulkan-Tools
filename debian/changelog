@@ -1,3 +1,10 @@
+vulkan-tools (1.2.189.0~rc2-1lunarg20.04-1) focal; urgency=medium
+
+  [ Jeremy Hayes ]
+  * cubepp: Fix gitlab 828.
+
+ -- John Zupin <john@odin>  Fri, 03 Sep 2021 10:57:35 -0600
+
 vulkan-tools (1.2.189.0~rc1-1lunarg20.04-1) focal; urgency=medium
 
   [ Charles Giessen ]
