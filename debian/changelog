@@ -1,3 +1,57 @@
+vulkan-tools (1.2.198.0~rc1-1lunarg18.04-1) bionic; urgency=medium
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.190
+
+  [ Jeremy Hayes ]
+  * cubepp: Fix gitlab 828.
+
+  [ Richard S. Wright Jr ]
+  * Update known good to the latest MoltenVK tag
+
+  [ Vladimir Panteleev ]
+  * vulkaninfo: Fix error message when gpus.size()==0
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.191
+  * scripts: Ignore compatibility constants in wrapper
+  * build: Update to header 1.2.192
+  * build: Update to header 1.2.193
+
+  [ Charles Giessen ]
+  * vulkaninf: Support 64 bit flags
+  * scripts: Use f-strings in vulkaninfo generator
+
+  [ Mike Schuchardt ]
+  * build: Remove unused components from android build
+  * ci: Add android build to github actions
+
+  [ Charles Giessen ]
+  * build: Update update_deps
+
+  [ Mike Schuchardt ]
+  * scripts: Fix codegen with hard-coded enum indices
+  * build: Update to header 1.2.194
+
+  [ Charles Giessen ]
+  * vulkaninfo: Generate vulkaninfo.rc file
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.195
+
+  [ Eleni Maria Stea ]
+  * vkcube: Reorder setting of pipeline stage flags
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.196
+  * build: Update to header 1.2.197
+  * build: Update to header 1.2.198
+
+  [ Charles Giessen ]
+  * vulkaninfo: Prevent drivers writing out of bounds
+
+ -- John Zupin <john@odin>  Tue, 16 Nov 2021 16:55:08 -0700
+
 vulkan-tools (1.2.189.0~rc2-1lunarg18.04-1) bionic; urgency=medium
 
   [ Jeremy Hayes ]
