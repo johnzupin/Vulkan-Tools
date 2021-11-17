@@ -1,3 +1,11 @@
+vulkan-tools (1.2.198.0~rc2-1lunarg18.04-1) bionic; urgency=medium
+
+  [ Charles Giessen ]
+  * vulkaninfo: Use DebugReport callback
+  * vulkaninfo: Make printing ToolProperties optional
+
+ -- John Zupin <john@odin>  Wed, 17 Nov 2021 10:13:56 -0700
+
 vulkan-tools (1.2.198.0~rc1-1lunarg18.04-1) bionic; urgency=medium
 
   [ Mike Schuchardt ]
