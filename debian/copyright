@@ -4,7 +4,7 @@ Source: https://github.com/KhronosGroup/Vulkan-Tools
 
 Files: *
 Copyright: 2021, CopyrightLunarG Inc
-           2015-2021, LunarG, Inc.
+           2015-2022, LunarG, Inc.
            2015, Valve Corporation
 License: Apache-2.0
 
@@ -86,7 +86,7 @@ Files: .gn
        vulkaninfo/vulkaninfo.rc
 Copyright: 2015-2019, Google Inc
            2016, Google, Inc
-           2014-2021, LunarG, Inc
+           2014-2022, LunarG, Inc
            2016-2019, The ANGLE Project Authors
            2013-2018, The Android Open Source Project
            2014-2018, The Brenwill Workshop Ltd. (http://www.brenwill.com)
@@ -96,7 +96,7 @@ Copyright: 2015-2019, Google Inc
 License: Apache-2.0
 
 Files: debian/*
-Copyright: 2014-2021, LunarG, Inc
+Copyright: 2014-2022, LunarG, Inc
            2016, Timo Aaltonen <tjaalton@debian.org>
 License: BSD-3-clause or GPL-3 or MIT
 
