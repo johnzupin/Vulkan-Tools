@@ -46,7 +46,7 @@ jobs:
                 python-version: '3.7'
             - run: |
                 sudo apt-get -qq update
-                sudo apt install libxkbcommon-dev libwayland-dev libmirclient-dev libxrandr-dev libx11-xcb-dev
+                sudo apt install libxkbcommon-dev libwayland-dev libmirclient-dev libxrandr-dev libx11-xcb-dev wayland-protocols
 
             - name: Fetch and install headers
               run: python scripts/update_deps.py --dir external
@@ -70,7 +70,7 @@ jobs:
             matrix:
                 arch: [ Win32, x64 ]
                 config: [ Debug, Release ]
-                os: [ windows-2016, windows-2019 ]
+                os: [ windows-latest ]
 
         steps:
             - uses: actions/checkout@v2
