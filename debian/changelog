@@ -1,3 +1,84 @@
+vulkan-tools (1.3.204.0~rc1-1lunarg20.04-1) focal; urgency=medium
+
+  [ Charles Giessen ]
+  * vulkaninfo: Prevent drivers writing out of bounds
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.199
+
+  [ Charles Giessen ]
+  * vulkaninfo: Use DebugReport callback
+  * vulkaninfo: Make printing ToolProperties optional
+
+  [ Richard S. Wright Jr ]
+  * Update known_good.json
+
+  [ janharaldfredriksen-arm ]
+  * scripts: initialize properties for VK_EXT_fragment_density_map2
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.200
+
+  [ Charles Giessen ]
+  * vulkaninfo: Refactor Win32 function loading
+  * vulkaninfo: Fix formatting
+  * vulkaninfo: Remove unecessary surface macro guards
+  * vulkaninfo: Refactor main function
+  * vulkaninfo: Allow specifying file output
+  * vulkaninfo: Error check --output
+  * vulkaninfo: Fixup argument parsing for --output
+  * vulkaninfo: Rename trivially_optional to vulkaninfo_optional
+
+  [ Mark Young ]
+  * vkcube/vkcubepp: Add option to force validation errors
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.201
+
+  [ Charles Giessen ]
+  * ci: Use windows-latest in github actions
+
+  [ Lionel Landwerlin ]
+  * scripts: Fix codegen to support VK_KHR_format_feature_flags2
+
+  [ C Stout ]
+  * Fix error messages upon failure to connect to window systems.
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.2.203
+
+  [ Tony-LunarG ]
+  * build: Add dependency on wayland-protocols
+
+  [ SupervisedThinking ]
+  * cmake/FindWaylandProtocols: fix wayland protocol path generation for cross compile
+
+  [ Alexis Hetu ]
+  * Add support for building on ChromeOS
+
+  [ John Zupin ]
+  * packaging: update copyright
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.204
+
+  [ Charles Giessen ]
+  * vulkaninfo: Update to 1.3
+
+  [ nyorain ]
+  * Fix FreeCommandBuffers leak
+  * Fix DestroyCommandPool command buffer leak
+  * mockicd: Fix queue destruction for multiple devices
+
+  [ Charles Giessen ]
+  * vulkaninfo: Fix padding for integer dot product
+  * vulkaninfo: Generate pNext chain properly
+
+  [ John Zupin ]
+  * packaging: add wayland-protocols as build dep
+
+ -- John Zupin <john@odin>  Thu, 03 Feb 2022 15:54:02 -0700
+
 vulkan-tools (1.2.198.0~rc2-1lunarg20.04-1) focal; urgency=medium
 
   [ Charles Giessen ]
