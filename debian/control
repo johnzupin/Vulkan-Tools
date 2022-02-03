@@ -11,7 +11,8 @@ Build-Depends: debhelper (>= 10),
  libwayland-dev,
  libx11-dev,
  libxrandr-dev,
- pkg-config
+ pkg-config,
+ wayland-protocols
 Standards-Version: 4.1.2
 Homepage: https://github.com/KhronosGroup/Vulkan-Tools
 Vcs-Git: https://github.com/KhronosGroup/Vulkan-Tools
