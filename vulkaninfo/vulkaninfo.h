@@ -108,14 +108,6 @@ struct VulkanException : std::runtime_error {
 };
 #define THROW_VK_ERR(func_name, err) throw VulkanException(func_name, __FILE__, __LINE__, err);
 
-// Global configuration (Used by Windows WAIT_FOR_CONSOLE_DESTROY MACRO)
-bool human_readable_output = true;
-bool html_output = false;
-bool json_output = false;
-bool vkconfig_output = false;
-bool portability_json = false;
-bool summary = false;
-
 #ifdef _WIN32
 
 #define strdup _strdup
@@ -127,80 +119,70 @@ static int ConsoleIsExclusive(void) {
     DWORD num_pids = GetConsoleProcessList(pids, ARRAYSIZE(pids));
     return num_pids <= 1;
 }
-
-#define WAIT_FOR_CONSOLE_DESTROY                                            \
-    do {                                                                    \
-        if (ConsoleIsExclusive() && human_readable_output) Sleep(INFINITE); \
-    } while (0)
-#else
-#define WAIT_FOR_CONSOLE_DESTROY
-#endif
-
-#ifdef _WIN32
-
-#define _CALL_PFN(pfn, ...) (pfn)
-#define CALL_PFN(fncName) _CALL_PFN(User32Handles::pfn##fncName)
-
-#define _CHECK_PFN(pfn, fncName)                                              \
-    do {                                                                      \
-        if (pfn == nullptr) {                                                 \
-            fprintf(stderr, "Failed to get %s function address!\n", fncName); \
-            WAIT_FOR_CONSOLE_DESTROY;                                         \
-            exit(1);                                                          \
-        }                                                                     \
-    } while (false)
-
-#define _SET_PFN(dllHandle, pfnType, pfn, fncName)                           \
-    do {                                                                     \
-        pfn = reinterpret_cast<pfnType>(GetProcAddress(dllHandle, fncName)); \
-        _CHECK_PFN(pfn, fncName);                                            \
-    } while (false)
-
-#define SET_PFN(dllHandle, fncName) _SET_PFN(User32Handles::dllHandle, PFN_##fncName, User32Handles::pfn##fncName, #fncName)
+void wait_for_console_destroy() {
+    if (ConsoleIsExclusive()) Sleep(INFINITE);
+}
 
 // User32 function declarations
-typedef WINUSERAPI BOOL(WINAPI *PFN_AdjustWindowRect)(_Inout_ LPRECT, _In_ DWORD, _In_ BOOL);
-typedef WINUSERAPI HWND(WINAPI *PFN_CreateWindowExA)(_In_ DWORD, _In_opt_ LPCSTR, _In_opt_ LPCSTR, _In_ DWORD, _In_ int, _In_ int,
-                                                     _In_ int, _In_ int, _In_opt_ HWND, _In_opt_ HMENU, _In_opt_ HINSTANCE,
-                                                     _In_opt_ LPVOID);
-typedef WINUSERAPI LRESULT(WINAPI *PFN_DefWindowProcA)(_In_ HWND, _In_ UINT, _In_ WPARAM, _In_ LPARAM);
-typedef WINUSERAPI BOOL(WINAPI *PFN_DestroyWindow)(_In_ HWND);
-typedef WINUSERAPI HICON(WINAPI *PFN_LoadIconA)(_In_opt_ HINSTANCE, _In_ LPCSTR);
-typedef WINUSERAPI ATOM(WINAPI *PFN_RegisterClassExA)(_In_ CONST WNDCLASSEXA *);
+using PFN_AdjustWindowRect = WINUSERAPI BOOL(WINAPI *)(_Inout_ LPRECT, _In_ DWORD, _In_ BOOL);
+using PFN_CreateWindowExA = WINUSERAPI HWND(WINAPI *)(_In_ DWORD, _In_opt_ LPCSTR, _In_opt_ LPCSTR, _In_ DWORD, _In_ int, _In_ int,
+                                                      _In_ int, _In_ int, _In_opt_ HWND, _In_opt_ HMENU, _In_opt_ HINSTANCE,
+                                                      _In_opt_ LPVOID);
+using PFN_DefWindowProcA = WINUSERAPI LRESULT(WINAPI *)(_In_ HWND, _In_ UINT, _In_ WPARAM, _In_ LPARAM);
+using PFN_DestroyWindow = WINUSERAPI BOOL(WINAPI *)(_In_ HWND);
+using PFN_LoadIconA = WINUSERAPI HICON(WINAPI *)(_In_opt_ HINSTANCE, _In_ LPCSTR);
+using PFN_RegisterClassExA = WINUSERAPI ATOM(WINAPI *)(_In_ CONST WNDCLASSEXA *);
 
 struct User32Handles {
-    // User32 function pointers
-    static PFN_AdjustWindowRect pfnAdjustWindowRect;
-    static PFN_CreateWindowExA pfnCreateWindowExA;
-    static PFN_DefWindowProcA pfnDefWindowProcA;
-    static PFN_DestroyWindow pfnDestroyWindow;
-    static PFN_LoadIconA pfnLoadIconA;
-    static PFN_RegisterClassExA pfnRegisterClassExA;
-
     // User32 dll handle
-    static HMODULE user32DllHandle;
-};
+    HMODULE user32DllHandle = nullptr;
 
-bool LoadUser32Dll() {
-    User32Handles::user32DllHandle = LoadLibraryExA("user32.dll", nullptr, 0);
-    if (User32Handles::user32DllHandle != NULL) {
-        SET_PFN(user32DllHandle, AdjustWindowRect);
-        SET_PFN(user32DllHandle, CreateWindowExA);
-        SET_PFN(user32DllHandle, DefWindowProcA);
-        SET_PFN(user32DllHandle, DestroyWindow);
-        SET_PFN(user32DllHandle, LoadIconA);
-        SET_PFN(user32DllHandle, RegisterClassExA);
+    // User32 function pointers
+    PFN_AdjustWindowRect pfnAdjustWindowRect = nullptr;
+    PFN_CreateWindowExA pfnCreateWindowExA = nullptr;
+    PFN_DefWindowProcA pfnDefWindowProcA = nullptr;
+    PFN_DestroyWindow pfnDestroyWindow = nullptr;
+    PFN_LoadIconA pfnLoadIconA = nullptr;
+    PFN_RegisterClassExA pfnRegisterClassExA = nullptr;
+
+    User32Handles() noexcept {}
+    ~User32Handles() noexcept {
+        if (user32DllHandle != nullptr) {
+            FreeLibrary(user32DllHandle);
+        }
+    }
+    // Don't allow moving of this class
+    User32Handles(User32Handles const &) = delete;
+    User32Handles &operator=(User32Handles const &) = delete;
+    User32Handles(User32Handles &&) = delete;
+    User32Handles &operator=(User32Handles &&) = delete;
+
+    bool load() {
+        user32DllHandle = LoadLibraryExA("user32.dll", nullptr, 0);
+        if (user32DllHandle == nullptr) return false;
+        if (!load_function(pfnAdjustWindowRect, "AdjustWindowRect")) return false;
+        if (!load_function(pfnCreateWindowExA, "CreateWindowExA")) return false;
+        if (!load_function(pfnDefWindowProcA, "DefWindowProcA")) return false;
+        if (!load_function(pfnDestroyWindow, "DestroyWindow")) return false;
+        if (!load_function(pfnLoadIconA, "LoadIconA")) return false;
+        if (!load_function(pfnRegisterClassExA, "RegisterClassExA")) return false;
         return true;
     }
-    return false;
-}
 
-void FreeUser32Dll() {
-    if (User32Handles::user32DllHandle != nullptr) {
-        FreeLibrary(User32Handles::user32DllHandle);
-        User32Handles::user32DllHandle = nullptr;
+  private:
+    template <typename T>
+    bool load_function(T &function_pointer, const char *function_name) {
+        function_pointer = reinterpret_cast<T>(GetProcAddress(user32DllHandle, function_name));
+        if (function_pointer == nullptr) {
+            fprintf(stderr, "Failed to load function: %s\n", function_name);
+            return false;
+        }
+        return true;
     }
-}
+};
+
+// Global user handles function used in windows callback and code
+User32Handles *user32_handles;
 #endif  // _WIN32
 
 const char *app_short_name = "vulkaninfo";
@@ -239,7 +221,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL DbgCallback(VkDebugReportFlagsEXT msgFlags
 
 // Helper for robustly executing the two-call pattern
 template <typename T, typename F, typename... Ts>
-auto GetVectorInit(const char *func_name, F &&f, T init, Ts &&... ts) -> std::vector<T> {
+auto GetVectorInit(const char *func_name, F &&f, T init, Ts &&...ts) -> std::vector<T> {
     uint32_t count = 0;
     std::vector<T> results;
     VkResult err;
@@ -255,7 +237,7 @@ auto GetVectorInit(const char *func_name, F &&f, T init, Ts &&... ts) -> std::ve
 }
 
 template <typename T, typename F, typename... Ts>
-auto GetVector(const char *func_name, F &&f, Ts &&... ts) -> std::vector<T> {
+auto GetVector(const char *func_name, F &&f, Ts &&...ts) -> std::vector<T> {
     return GetVectorInit(func_name, f, T(), ts...);
 }
 
@@ -492,77 +474,50 @@ struct ExtensionFunctions {
         dest = reinterpret_cast<T>(vkGetInstanceProcAddr(instance, name));
     }
 };
-struct VkStructureHeader {
-    VkStructureType sType;
-    VkStructureHeader *pNext;
-};
 
-struct pNextChainBuildingBlockInfo {
-    VkStructureType sType;
-    uint32_t mem_size;
-};
+// Forward declarations for pNext chains
+struct phys_device_props2_chain;
+struct phys_device_mem_props2_chain;
+struct phys_device_features2_chain;
+struct surface_capabilities2_chain;
+struct format_properties2_chain;
 
-void buildpNextChain(VkStructureHeader *first, const std::vector<pNextChainBuildingBlockInfo> &chain_info) {
-    VkStructureHeader *place = first;
+void setup_phys_device_props2_chain(VkPhysicalDeviceProperties2& start, std::unique_ptr<phys_device_props2_chain>& chain);
+void setup_phys_device_mem_props2_chain(VkPhysicalDeviceMemoryProperties2& start, std::unique_ptr<phys_device_mem_props2_chain>& chain);
+void setup_phys_device_features2_chain(VkPhysicalDeviceFeatures2& start, std::unique_ptr<phys_device_features2_chain>& chain);
+void setup_surface_capabilities2_chain(VkSurfaceCapabilities2KHR& start, std::unique_ptr<surface_capabilities2_chain>& chain);
+void setup_format_properties2_chain(VkFormatProperties2& start, std::unique_ptr<format_properties2_chain>& chain);
 
-    for (uint32_t i = 0; i < chain_info.size(); i++) {
-        place->pNext = static_cast<VkStructureHeader *>(malloc(chain_info[i].mem_size));
-        if (!place->pNext) {
-            THROW_ERR("buildpNextChain's malloc failed to allocate");
-        }
-        std::memset(place->pNext, 0, chain_info[i].mem_size);
-        place = place->pNext;
-        place->sType = chain_info[i].sType;
-    }
 
-    place->pNext = nullptr;
-}
-
-void freepNextChain(VkStructureHeader *first) {
-    VkStructureHeader *place = first;
-    VkStructureHeader *next = nullptr;
-
-    while (place) {
-        next = place->pNext;
-        free(place);
-        place = next;
-    }
-}
-
-/* An ptional contains either a value or nothing. The trivial_optional asserts if a value is trying to be gotten but none exist.
+/* An ptional contains either a value or nothing. The optional asserts if a value is trying to be gotten but none exist.
  * The interface is taken from C++17's <optional> with many aspects removed.
  * This class assumes the template type is 'trivial'
  */
 namespace util {
 template <typename T>
-struct trivial_optional {
+struct vulkaninfo_optional {
     using value_type = T;
 
     bool _contains_value = false;
-    T _value;
+    value_type _value;
 
-    void check_type_properties() {
-        static_assert(std::is_trivially_constructible<T>::value, "Type must be trivially constructable");
-        static_assert(std::is_trivially_copyable<T>::value, "Type must be trivially copyable");
-    }
-
-    trivial_optional() noexcept : _contains_value(false), _value({}) { check_type_properties(); }
-    trivial_optional(T value) noexcept : _contains_value(true), _value(value) { check_type_properties(); }
+    vulkaninfo_optional() noexcept : _contains_value(false), _value({}) {}
+    vulkaninfo_optional(T value) noexcept : _contains_value(true), _value(value) {}
 
     explicit operator bool() const noexcept { return _contains_value; }
     bool has_value() const noexcept { return _contains_value; }
 
-    T value() const noexcept {
+    value_type value() const noexcept {
         assert(_contains_value);
         return _value;
     }
     // clang-format off
-    const T* operator->() const { assert(_contains_value); return _value;}
-    T* operator->() { assert(_contains_value); return &_value;}
-    const T& operator*() const& { assert(_contains_value); return _value;}
-    T& operator*() & { assert(_contains_value); return _value;}
-    const T&& operator*() const&& { assert(_contains_value); return _value;}
-    T&& operator*() && { assert(_contains_value); return _value;}
+    const value_type* operator->() const { assert(_contains_value); return _value;}
+    value_type* operator->() { assert(_contains_value); return &_value;}
+    const value_type& operator*() const& { assert(_contains_value); return _value;}
+    value_type& operator*() & { assert(_contains_value); return _value;}
+    const value_type&& operator*() const&& { assert(_contains_value); return _value;}
+    value_type&& operator*() && { assert(_contains_value); return _value;}
     // clang-format on
 };  // namespace util
 }  // namespace util
@@ -756,7 +711,7 @@ struct AppInstance {
 
 // MS-Windows event handling function:
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-    return (CALL_PFN(DefWindowProcA)(hWnd, uMsg, wParam, lParam));
+    return user32_handles->pfnDefWindowProcA(hWnd, uMsg, wParam, lParam);
 }
 
 static void AppCreateWin32Window(AppInstance &inst) {
@@ -771,33 +726,33 @@ static void AppCreateWin32Window(AppInstance &inst) {
     win_class.cbClsExtra = 0;
     win_class.cbWndExtra = 0;
     win_class.hInstance = inst.h_instance;
-    win_class.hIcon = CALL_PFN(LoadIconA)(nullptr, IDI_APPLICATION);
+    win_class.hIcon = user32_handles->pfnLoadIconA(nullptr, IDI_APPLICATION);
     win_class.hCursor = LoadCursor(nullptr, IDC_ARROW);
     win_class.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
     win_class.lpszMenuName = nullptr;
     win_class.lpszClassName = app_short_name;
     win_class.hInstance = inst.h_instance;
-    win_class.hIconSm = CALL_PFN(LoadIconA)(nullptr, IDI_WINLOGO);
+    win_class.hIconSm = user32_handles->pfnLoadIconA(nullptr, IDI_WINLOGO);
     // Register window class:
-    if (!CALL_PFN(RegisterClassExA)(&win_class)) {
+    if (!user32_handles->pfnRegisterClassExA(&win_class)) {
         // It didn't work, so try to give a useful error:
         THROW_ERR("Failed to register the window class!");
     }
     // Create window with the registered class:
     RECT wr = {0, 0, inst.width, inst.height};
-    CALL_PFN(AdjustWindowRect)(&wr, WS_OVERLAPPEDWINDOW, FALSE);
-    inst.h_wnd = CALL_PFN(CreateWindowExA)(0,
-                                           app_short_name,  // class name
-                                           app_short_name,  // app name
-                                           // WS_VISIBLE | WS_SYSMENU |
-                                           WS_OVERLAPPEDWINDOW,  // window style
-                                           100, 100,             // x/y coords
-                                           wr.right - wr.left,   // width
-                                           wr.bottom - wr.top,   // height
-                                           nullptr,              // handle to parent
-                                           nullptr,              // handle to menu
-                                           inst.h_instance,      // hInstance
-                                           nullptr);             // no extra parameters
+    user32_handles->pfnAdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
+    inst.h_wnd = user32_handles->pfnCreateWindowExA(0,
+                                                    app_short_name,  // class name
+                                                    app_short_name,  // app name
+                                                    // WS_VISIBLE | WS_SYSMENU |
+                                                    WS_OVERLAPPEDWINDOW,  // window style
+                                                    100, 100,             // x/y coords
+                                                    wr.right - wr.left,   // width
+                                                    wr.bottom - wr.top,   // height
+                                                    nullptr,              // handle to parent
+                                                    nullptr,              // handle to menu
+                                                    inst.h_instance,      // hInstance
+                                                    nullptr);             // no extra parameters
     if (!inst.h_wnd) {
         // It didn't work, so try to give a useful error:
         THROW_ERR("Failed to create a window!");
@@ -818,17 +773,13 @@ static VkSurfaceKHR AppCreateWin32Surface(AppInstance &inst) {
     return surface;
 }
 
-static void AppDestroyWin32Window(AppInstance &inst) { CALL_PFN(DestroyWindow)(inst.h_wnd); }
+static void AppDestroyWin32Window(AppInstance &inst) { user32_handles->pfnDestroyWindow(inst.h_wnd); }
 #endif  // VK_USE_PLATFORM_WIN32_KHR
 //-----------------------------------------------------------
 
-#if defined(VK_USE_PLATFORM_XCB_KHR) || defined(VK_USE_PLATFORM_XLIB_KHR) || defined(VK_USE_PLATFORM_WIN32_KHR) ||      \
-    defined(VK_USE_PLATFORM_MACOS_MVK) || defined(VK_USE_PLATFORM_METAL_EXT) || defined(VK_USE_PLATFORM_WAYLAND_KHR) || \
-    defined(VK_USE_PLATFORM_DIRECTFB_EXT) || defined(VK_USE_PLATFORM_ANDROID_KHR)
 static void AppDestroySurface(AppInstance &inst, VkSurfaceKHR surface) {  // same for all platforms
     inst.dll.fp_vkDestroySurfaceKHR(inst.instance, surface, nullptr);
 }
-#endif
 
 //----------------------------XCB----------------------------
 
@@ -1233,8 +1184,9 @@ class AppSurface {
     VkSurfaceCapabilities2KHR surface_capabilities2_khr{};
     VkSurfaceCapabilities2EXT surface_capabilities2_ext{};
 
-    AppSurface(AppInstance &inst, VkPhysicalDevice phys_device, SurfaceExtension surface_extension,
-               std::vector<pNextChainBuildingBlockInfo> &sur_extension_pNextChain)
+    std::unique_ptr<surface_capabilities2_chain> chain_for_surface_capabilities2;
+
+    AppSurface(AppInstance &inst, VkPhysicalDevice phys_device, SurfaceExtension surface_extension)
         : inst(inst),
           phys_device(phys_device),
           surface_extension(surface_extension),
@@ -1264,7 +1216,7 @@ class AppSurface {
 
         if (inst.CheckExtensionEnabled(VK_KHR_GET_SURFACE_CAPABILITIES_2_EXTENSION_NAME)) {
             surface_capabilities2_khr.sType = VK_STRUCTURE_TYPE_SURFACE_CAPABILITIES_2_KHR;
-            buildpNextChain((VkStructureHeader *)&surface_capabilities2_khr, sur_extension_pNextChain);
+            setup_surface_capabilities2_chain(surface_capabilities2_khr, chain_for_surface_capabilities2);
 
             VkPhysicalDeviceSurfaceInfo2KHR surface_info{};
             surface_info.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SURFACE_INFO_2_KHR;
@@ -1287,12 +1239,6 @@ class AppSurface {
             VkResult err = inst.ext_funcs.vkGetPhysicalDeviceSurfaceCapabilities2EXT(phys_device, surface_extension.surface,
                                                                                      &surface_capabilities2_ext);
             if (err) THROW_VK_ERR("vkGetPhysicalDeviceSurfaceCapabilities2EXT", err);
-        }
-    }
-
-    ~AppSurface() {
-        if (inst.CheckExtensionEnabled(VK_KHR_GET_SURFACE_CAPABILITIES_2_EXTENSION_NAME)) {
-            freepNextChain(static_cast<VkStructureHeader *>(surface_capabilities2_khr.pNext));
         }
     }
 
@@ -1320,8 +1266,8 @@ std::vector<VkPhysicalDeviceProperties> GetGroupProps(AppInstance &inst, VkPhysi
     return props;
 }
 
-util::trivial_optional<VkDeviceGroupPresentCapabilitiesKHR> GetGroupCapabilities(AppInstance &inst,
-                                                                                 VkPhysicalDeviceGroupProperties group) {
+util::vulkaninfo_optional<VkDeviceGroupPresentCapabilitiesKHR> GetGroupCapabilities(AppInstance &inst,
+                                                                                    VkPhysicalDeviceGroupProperties group) {
     // Build create info for logical device made from all physical devices in this group.
     std::vector<std::string> extensions_list = {VK_KHR_SWAPCHAIN_EXTENSION_NAME, VK_KHR_DEVICE_GROUP_EXTENSION_NAME};
     VkDeviceGroupDeviceCreateInfoKHR dg_ci = {VK_STRUCTURE_TYPE_DEVICE_GROUP_DEVICE_CREATE_INFO_KHR, nullptr,
@@ -1396,8 +1342,8 @@ VkImageCreateInfo GetImageCreateInfo(VkImageCreateFlags flags, VkFormat format, 
             VK_IMAGE_LAYOUT_UNDEFINED};
 }
 
-util::trivial_optional<ImageTypeSupport> FillImageTypeSupport(AppInstance &inst, VkPhysicalDevice phys_device, VkDevice device,
-                                                              ImageTypeSupport::Type img_type, VkImageCreateInfo image_ci) {
+util::vulkaninfo_optional<ImageTypeSupport> FillImageTypeSupport(AppInstance &inst, VkPhysicalDevice phys_device, VkDevice device,
+                                                                 ImageTypeSupport::Type img_type, VkImageCreateInfo image_ci) {
     VkImageFormatProperties img_props;
     VkResult res = inst.dll.fp_vkGetPhysicalDeviceImageFormatProperties(
         phys_device, image_ci.format, image_ci.imageType, image_ci.tiling, image_ci.usage, image_ci.flags, &img_props);
@@ -1417,19 +1363,19 @@ util::trivial_optional<ImageTypeSupport> FillImageTypeSupport(AppInstance &inst,
         inst.dll.fp_vkDestroyImage(device, dummy_img, nullptr);
         return img_type_support;
     } else if (res == VK_ERROR_FORMAT_NOT_SUPPORTED) {
-        return {};  // return empty optional
+        return {};  // return empty util::vulkaninfo_optional
     }
     THROW_VK_ERR("vkGetPhysicalDeviceImageFormatProperties", res);
     return {};
 }
 
-struct pNextChainInfos {
-    std::vector<pNextChainBuildingBlockInfo> phys_device_props2;
-    std::vector<pNextChainBuildingBlockInfo> phys_device_mem_props2;
-    std::vector<pNextChainBuildingBlockInfo> phys_device_features2;
-    std::vector<pNextChainBuildingBlockInfo> surface_capabilities2;
-    std::vector<pNextChainBuildingBlockInfo> format_properties2;
-};
+// struct pNextChainInfos {
+//     std::vector<pNextChainBuildingBlockInfo> phys_device_props2;
+//     std::vector<pNextChainBuildingBlockInfo> phys_device_mem_props2;
+//     std::vector<pNextChainBuildingBlockInfo> phys_device_features2;
+//     std::vector<pNextChainBuildingBlockInfo> surface_capabilities2;
+//     std::vector<pNextChainBuildingBlockInfo> format_properties2;
+// };
 
 struct FormatRange {
     // the Vulkan standard version that supports this format range, or 0 if non-standard
@@ -1497,7 +1443,11 @@ struct AppGpu {
 
     std::vector<FormatRange> supported_format_ranges;
 
-    AppGpu(AppInstance &inst, uint32_t id, VkPhysicalDevice phys_device, pNextChainInfos chainInfos)
+    std::unique_ptr<phys_device_props2_chain> chain_for_phys_device_props2;
+    std::unique_ptr<phys_device_mem_props2_chain> chain_for_phys_device_mem_props2;
+    std::unique_ptr<phys_device_features2_chain> chain_for_phys_device_features2;
+
+    AppGpu(AppInstance &inst, uint32_t id, VkPhysicalDevice phys_device)
         : inst(inst), id(id), phys_device(phys_device) {
         inst.dll.fp_vkGetPhysicalDeviceProperties(phys_device, &props);
 
@@ -1522,19 +1472,19 @@ struct AppGpu {
         if (inst.CheckExtensionEnabled(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME)) {
             // VkPhysicalDeviceProperties2
             props2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2_KHR;
-            buildpNextChain((VkStructureHeader *)&props2, chainInfos.phys_device_props2);
+            setup_phys_device_props2_chain(props2, chain_for_phys_device_props2);
 
             inst.ext_funcs.vkGetPhysicalDeviceProperties2KHR(phys_device, &props2);
 
             // VkPhysicalDeviceMemoryProperties2
             memory_props2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2_KHR;
-            buildpNextChain((VkStructureHeader *)&memory_props2, chainInfos.phys_device_mem_props2);
+            setup_phys_device_mem_props2_chain(memory_props2, chain_for_phys_device_mem_props2);
 
             inst.ext_funcs.vkGetPhysicalDeviceMemoryProperties2KHR(phys_device, &memory_props2);
 
             // VkPhysicalDeviceFeatures2
             features2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2_KHR;
-            buildpNextChain((VkStructureHeader *)&features2, chainInfos.phys_device_features2);
+            setup_phys_device_features2_chain(features2, chain_for_phys_device_features2);
 
             inst.ext_funcs.vkGetPhysicalDeviceFeatures2KHR(phys_device, &features2);
         }
@@ -1624,22 +1574,22 @@ struct AppGpu {
 
         // Memory //
 
-        struct VkStructureHeader *structure = NULL;
+        struct VkBaseOutStructure *structure = NULL;
         if (inst.CheckExtensionEnabled(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME)) {
-            structure = (struct VkStructureHeader *)memory_props2.pNext;
+            structure = (struct VkBaseOutStructure *)memory_props2.pNext;
 
             while (structure) {
                 if (structure->sType == VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_BUDGET_PROPERTIES_EXT &&
                     CheckPhysicalDeviceExtensionIncluded(VK_EXT_MEMORY_BUDGET_EXTENSION_NAME)) {
                     VkPhysicalDeviceMemoryBudgetPropertiesEXT *mem_budget_props =
-                        (VkPhysicalDeviceMemoryBudgetPropertiesEXT *)structure;
+                        reinterpret_cast<VkPhysicalDeviceMemoryBudgetPropertiesEXT *>(structure);
                     for (uint32_t i = 0; i < VK_MAX_MEMORY_HEAPS; i++) {
                         heapBudget[i] = mem_budget_props->heapBudget[i];
                         heapUsage[i] = mem_budget_props->heapUsage[i];
                     }
                 }
 
-                structure = (struct VkStructureHeader *)structure->pNext;
+                structure = structure->pNext;
             }
         }
         // TODO buffer - memory type compatibility
@@ -1676,12 +1626,6 @@ struct AppGpu {
     }
     ~AppGpu() {
         inst.dll.fp_vkDestroyDevice(dev, nullptr);
-
-        if (inst.CheckExtensionEnabled(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME)) {
-            freepNextChain(static_cast<VkStructureHeader *>(features2.pNext));
-            freepNextChain(static_cast<VkStructureHeader *>(props2.pNext));
-            freepNextChain(static_cast<VkStructureHeader *>(memory_props2.pNext));
-        }
     }
 
     AppGpu(const AppGpu &) = delete;
