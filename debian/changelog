@@ -1,3 +1,43 @@
+vulkan-tools (1.3.204.0~rc2-1lunarg20.04-1) focal; urgency=medium
+
+  [ Tony-LunarG ]
+  * build: Add build target for vkcube-wayland
+
+  [ Charles Giessen ]
+  * vulkaninfo: Fix padding for integer dot product
+  * vulkaninfo: Generate pNext chain properly
+
+  [ ziga-lunarg ]
+  * vulkan tools: Fix image usage error reported by validation layers
+
+  [ Charles Giessen ]
+  * vulkaninfo: Prevent WinCRT debug popups
+  * vulkaninfo: Return non-zero from failure
+  * vulkaninfo: Add Device & driver UUID to summary
+  * vulkaninfo: Support QueueProperties pNext chain
+  * vulkaninfo: Use filename in json output desc
+  * vulkaninfo: Fix spelling mistakes
+  * vulkaninfo: Use better casting where possible
+  * vulkaninfo: Simplify WSI macro defines
+  * vulkaninfo: Refactor printer to use stack for data
+  * vulkaninfo: min_key_width now set in the object stack
+  * vulkaninfo: Use gpu version only for AppGpu
+  * vulkaninfo: Chain printers use correct version
+  * vulkaninfo: Remove redundant parameter in GgpuDumpQueueProps
+  * vulkaninfo: Put value in unknown flag strings
+  * vulkaninfo: Use enum names in switches
+  * vulkaninfo: bitmask printers check for 0 value
+  * vulkaninfo: Remove set width in json functions
+  * vulkaninfo: Make chain iterators optional
+  * vulkaninfo: Support structs from multiple extensions
+  * vulkaninfo: Update generated copyright
+  * vulkaninfo: Use constants in pythong script
+  * vulkaninfo: Use single quote in generation script
+  * vulkaninfo: Use """ where appropriate in script
+  * vulkaninfo: remove redundant str() in script
+
+ -- John Zupin <john@odin>  Mon, 07 Feb 2022 13:47:18 -0700
+
 vulkan-tools (1.3.204.0~rc1-1lunarg20.04-1) focal; urgency=medium
 
   [ Charles Giessen ]
