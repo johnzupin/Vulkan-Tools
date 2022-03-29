@@ -651,6 +651,9 @@ VK_KHR_copy_commands2 = Extension(name='VK_KHR_copy_commands2', version=1, guard
 VK_KHR_format_feature_flags2 = Extension(name='VK_KHR_format_feature_flags2', version=1, guard=None, commands=[
 ])
 
+VK_KHR_portability_enumeration = Extension(name='VK_KHR_portability_enumeration', version=1, guard=None, commands=[
+])
+
 VK_KHR_maintenance4 = Extension(name='VK_KHR_maintenance4', version=2, guard=None, commands=[
     Command(name='vkGetDeviceBufferMemoryRequirementsKHR', dispatch='VkDevice'),
     Command(name='vkGetDeviceImageMemoryRequirementsKHR', dispatch='VkDevice'),
@@ -1268,6 +1271,11 @@ VK_EXT_pageable_device_local_memory = Extension(name='VK_EXT_pageable_device_loc
     Command(name='vkSetDeviceMemoryPriorityEXT', dispatch='VkDevice'),
 ])
 
+VK_VALVE_descriptor_set_host_mapping = Extension(name='VK_VALVE_descriptor_set_host_mapping', version=1, guard=None, commands=[
+    Command(name='vkGetDescriptorSetLayoutHostMappingInfoVALVE', dispatch='VkDevice'),
+    Command(name='vkGetDescriptorSetHostMappingVALVE', dispatch='VkDevice'),
+])
+
 VK_QCOM_fragment_density_map_offset = Extension(name='VK_QCOM_fragment_density_map_offset', version=1, guard=None, commands=[
 ])
 
@@ -1312,7 +1320,7 @@ VK_KHR_android_surface = Extension(name='VK_KHR_android_surface', version=6, gua
     Command(name='vkCreateAndroidSurfaceKHR', dispatch='VkInstance'),
 ])
 
-VK_ANDROID_external_memory_android_hardware_buffer = Extension(name='VK_ANDROID_external_memory_android_hardware_buffer', version=4, guard='VK_USE_PLATFORM_ANDROID_KHR', commands=[
+VK_ANDROID_external_memory_android_hardware_buffer = Extension(name='VK_ANDROID_external_memory_android_hardware_buffer', version=5, guard='VK_USE_PLATFORM_ANDROID_KHR', commands=[
     Command(name='vkGetAndroidHardwareBufferPropertiesANDROID', dispatch='VkDevice'),
     Command(name='vkGetMemoryAndroidHardwareBufferANDROID', dispatch='VkDevice'),
 ])
@@ -1429,7 +1437,7 @@ VK_QNX_screen_surface = Extension(name='VK_QNX_screen_surface', version=1, guard
     Command(name='vkGetPhysicalDeviceScreenPresentationSupportQNX', dispatch='VkPhysicalDevice'),
 ])
 
-VK_KHR_video_queue = Extension(name='VK_KHR_video_queue', version=2, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
+VK_KHR_video_queue = Extension(name='VK_KHR_video_queue', version=3, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
     Command(name='vkGetPhysicalDeviceVideoCapabilitiesKHR', dispatch='VkPhysicalDevice'),
     Command(name='vkGetPhysicalDeviceVideoFormatPropertiesKHR', dispatch='VkPhysicalDevice'),
     Command(name='vkCreateVideoSessionKHR', dispatch='VkDevice'),
@@ -1444,27 +1452,27 @@ VK_KHR_video_queue = Extension(name='VK_KHR_video_queue', version=2, guard='VK_E
     Command(name='vkCmdControlVideoCodingKHR', dispatch='VkCommandBuffer'),
 ])
 
-VK_KHR_video_decode_queue = Extension(name='VK_KHR_video_decode_queue', version=2, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
+VK_KHR_video_decode_queue = Extension(name='VK_KHR_video_decode_queue', version=3, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
     Command(name='vkCmdDecodeVideoKHR', dispatch='VkCommandBuffer'),
 ])
 
 VK_KHR_portability_subset = Extension(name='VK_KHR_portability_subset', version=1, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
 ])
 
-VK_KHR_video_encode_queue = Extension(name='VK_KHR_video_encode_queue', version=3, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
+VK_KHR_video_encode_queue = Extension(name='VK_KHR_video_encode_queue', version=4, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
     Command(name='vkCmdEncodeVideoKHR', dispatch='VkCommandBuffer'),
 ])
 
-VK_EXT_video_encode_h264 = Extension(name='VK_EXT_video_encode_h264', version=3, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
+VK_EXT_video_encode_h264 = Extension(name='VK_EXT_video_encode_h264', version=6, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
 ])
 
-VK_EXT_video_encode_h265 = Extension(name='VK_EXT_video_encode_h265', version=3, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
+VK_EXT_video_encode_h265 = Extension(name='VK_EXT_video_encode_h265', version=6, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
 ])
 
-VK_EXT_video_decode_h264 = Extension(name='VK_EXT_video_decode_h264', version=3, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
+VK_EXT_video_decode_h264 = Extension(name='VK_EXT_video_decode_h264', version=4, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
 ])
 
-VK_EXT_video_decode_h265 = Extension(name='VK_EXT_video_decode_h265', version=1, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
+VK_EXT_video_decode_h265 = Extension(name='VK_EXT_video_decode_h265', version=2, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
 ])
 
 extensions = [
@@ -1546,6 +1554,7 @@ extensions = [
     VK_KHR_workgroup_memory_explicit_layout,
     VK_KHR_copy_commands2,
     VK_KHR_format_feature_flags2,
+    VK_KHR_portability_enumeration,
     VK_KHR_maintenance4,
     VK_EXT_debug_report,
     VK_NV_glsl_shader,
@@ -1704,6 +1713,7 @@ extensions = [
     VK_EXT_load_store_op_none,
     VK_EXT_border_color_swizzle,
     VK_EXT_pageable_device_local_memory,
+    VK_VALVE_descriptor_set_host_mapping,
     VK_QCOM_fragment_density_map_offset,
     VK_NV_linear_color_attachment,
     VK_GOOGLE_surfaceless_query,
