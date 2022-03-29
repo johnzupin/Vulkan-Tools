@@ -3895,6 +3895,7 @@ static VKAPI_ATTR void VKAPI_CALL CmdResolveImage2KHR(
 
 
 
+
 static VKAPI_ATTR void VKAPI_CALL GetDeviceBufferMemoryRequirementsKHR(
     VkDevice                                    device,
     const VkDeviceBufferMemoryRequirements*     pInfo,
@@ -5670,6 +5671,23 @@ static VKAPI_ATTR void VKAPI_CALL SetDeviceMemoryPriorityEXT(
     VkDevice                                    device,
     VkDeviceMemory                              memory,
     float                                       priority)
+{
+//Not a CREATE or DESTROY function
+}
+
+
+static VKAPI_ATTR void VKAPI_CALL GetDescriptorSetLayoutHostMappingInfoVALVE(
+    VkDevice                                    device,
+    const VkDescriptorSetBindingReferenceVALVE* pBindingReference,
+    VkDescriptorSetLayoutHostMappingInfoVALVE*  pHostMapping)
+{
+//Not a CREATE or DESTROY function
+}
+
+static VKAPI_ATTR void VKAPI_CALL GetDescriptorSetHostMappingVALVE(
+    VkDevice                                    device,
+    VkDescriptorSet                             descriptorSet,
+    void**                                      ppData)
 {
 //Not a CREATE or DESTROY function
 }
