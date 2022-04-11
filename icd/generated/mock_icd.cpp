@@ -5370,6 +5370,7 @@ static VKAPI_ATTR void VKAPI_CALL GetPrivateDataEXT(
 
 
 
+
 static VKAPI_ATTR void VKAPI_CALL CmdSetFragmentShadingRateEnumNV(
     VkCommandBuffer                             commandBuffer,
     VkFragmentShadingRateNV                     shadingRate,
@@ -5641,6 +5642,7 @@ static VKAPI_ATTR void                                    VKAPI_CALL CmdSetColor
 
 
 
+
 static VKAPI_ATTR void VKAPI_CALL CmdDrawMultiEXT(
     VkCommandBuffer                             commandBuffer,
     uint32_t                                    drawCount,
@@ -5663,6 +5665,7 @@ static VKAPI_ATTR void VKAPI_CALL CmdDrawMultiIndexedEXT(
 {
 //Not a CREATE or DESTROY function
 }
+
 
 
 
