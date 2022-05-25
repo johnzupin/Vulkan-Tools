@@ -1,3 +1,34 @@
+vulkan-tools (1.3.214.0~rc1-1lunarg20.04-1) focal; urgency=medium
+
+  [ Charles Giessen ]
+  * cube,vulkaninfo: Add portability_enumeration if present
+  * mock_icd: Remove fallthroughs in switches
+
+  [ Brian Osman ]
+  * Guard chromium-specific configs in BUILD.gn
+
+  [ Charles Giessen ]
+  * docs: Replace references to DevSim with Profiles
+
+  [ Richard S. Wright Jr ]
+  * Updated MoltenVK tag
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.212
+  * ci: Remove fbactions/setup-winsdk
+  * build: Update to header 1.3.213
+  * cubepp: Fix VK_KHR_display compile error
+  * ci: Build cube with multiple WSI options
+  * build: Update to header 1.3.214
+
+  [ Michel Zou ]
+  * Avoid _set_abort_behavior on MINGW
+
+  [ shironeko ]
+  * cube: add null check on wl_*_destroy functions
+
+ -- john <john@odin>  Wed, 25 May 2022 15:04:00 -0600
+
 vulkan-tools (1.3.211.0~rc3-1lunarg20.04-1) focal; urgency=medium
 
   [ Charles Giessen ]
