@@ -1,3 +1,45 @@
+vulkan-tools (1.3.224.0~rc1-1lunarg18.04-1) bionic; urgency=medium
+
+  [ Richard S. Wright Jr ]
+  * Updated MoltenVK known good to 1.1.10
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.217
+  * build: Update to header 1.3.218
+
+  [ Michel Zou ]
+  * win32: use _set_abort_behavior from ucrt
+
+  [ Spundun Bhatt ]
+  * Log Surface Extension Error, but don't fail on it.
+
+  [ Chang Chen ]
+  * cmake: Use ${VULKAN_SDK} environment variable paths prior to the system default paths.
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.219
+  * build: Update to header 1.3.220
+  * build: Update to header 1.3.221
+  * build: Update to header 1.3.222
+
+  [ jfthibert ]
+  * Set usage on transient image based on format
+
+  [ Jan Engelhardt ]
+  * vulkaninfo: include wayland-client because its functions are used
+
+  [ Mike Schuchardt ]
+  * ci: Fix github android build
+  * build: Update to header 1.3.223
+
+  [ Charles Giessen ]
+  * vulkaninfo: Prevent infinite loops
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.224
+
+ -- john <john@odin>  Tue, 16 Aug 2022 09:27:16 -0600
+
 vulkan-tools (1.3.216.0~rc1-1lunarg18.04-1) bionic; urgency=medium
 
   [ Mike Schuchardt ]
