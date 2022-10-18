@@ -1,3 +1,40 @@
+vulkan-tools (1.3.231.0~rc1-1lunarg20.04-1) focal; urgency=medium
+
+  [ Richard S. Wright Jr ]
+  * Updated known good version of MoltenVK
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.225
+
+  [ Brad Smith ]
+  * vulkaninfo/cube: added support for OpenBSD
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.226
+
+  [ Brandon Jones ]
+  * Move BUILD.gn values into the scope that uses them
+
+  [ Brad Smith ]
+  * build: Also include XCB header path
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.227
+  * build: Update to header 1.3.228
+  * build: Update to header 1.3.229
+  * build: Update to header 1.3.230
+
+  [ Jan Beich ]
+  * cube: silence -DNDEBUG warning for KHR_display after 27c21248221f
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.231
+
+  [ John Zupin ]
+  * packaging: update deps versions
+
+ -- john <john@odin>  Tue, 18 Oct 2022 11:52:16 -0600
+
 vulkan-tools (1.3.224.0~rc2-1lunarg20.04-1) focal; urgency=medium
 
   [ John Zupin ]
