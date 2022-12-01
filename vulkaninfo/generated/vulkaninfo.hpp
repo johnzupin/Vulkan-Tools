@@ -96,6 +96,7 @@ std::string VkDriverIdString(VkDriverId value) {
         case (VK_DRIVER_ID_SAMSUNG_PROPRIETARY): return "DRIVER_ID_SAMSUNG_PROPRIETARY";
         case (VK_DRIVER_ID_MESA_VENUS): return "DRIVER_ID_MESA_VENUS";
         case (VK_DRIVER_ID_MESA_DOZEN): return "DRIVER_ID_MESA_DOZEN";
+        case (VK_DRIVER_ID_MESA_NVK): return "DRIVER_ID_MESA_NVK";
         default: return std::string("UNKNOWN_VkDriverId_value") + std::to_string(value);
     }
 }
@@ -986,8 +987,6 @@ std::vector<const char *> VkShaderStageFlagBitsGetStrings(VkShaderStageFlagBits 
     if (VK_SHADER_STAGE_GEOMETRY_BIT & value) strings.push_back("SHADER_STAGE_GEOMETRY_BIT");
     if (VK_SHADER_STAGE_FRAGMENT_BIT & value) strings.push_back("SHADER_STAGE_FRAGMENT_BIT");
     if (VK_SHADER_STAGE_COMPUTE_BIT & value) strings.push_back("SHADER_STAGE_COMPUTE_BIT");
-    if (VK_SHADER_STAGE_ALL_GRAPHICS & value) strings.push_back("SHADER_STAGE_ALL_GRAPHICS");
-    if (VK_SHADER_STAGE_ALL & value) strings.push_back("SHADER_STAGE_ALL");
     if (VK_SHADER_STAGE_RAYGEN_BIT_KHR & value) strings.push_back("SHADER_STAGE_RAYGEN_BIT_KHR");
     if (VK_SHADER_STAGE_ANY_HIT_BIT_KHR & value) strings.push_back("SHADER_STAGE_ANY_HIT_BIT_KHR");
     if (VK_SHADER_STAGE_CLOSEST_HIT_BIT_KHR & value) strings.push_back("SHADER_STAGE_CLOSEST_HIT_BIT_KHR");
@@ -1380,6 +1379,56 @@ void DumpVkPhysicalDeviceDepthStencilResolveProperties(Printer &p, std::string n
     p.PrintKeyBool("independentResolveNone", static_cast<bool>(obj.independentResolveNone));
     p.PrintKeyBool("independentResolve", static_cast<bool>(obj.independentResolve));
 }
+void DumpVkPhysicalDeviceDescriptorBufferDensityMapPropertiesEXT(Printer &p, std::string name, const VkPhysicalDeviceDescriptorBufferDensityMapPropertiesEXT &obj) {
+    ObjectWrapper object{p, name};
+    p.SetMinKeyWidth(44);
+    p.PrintKeyValue("combinedImageSamplerDensityMapDescriptorSize", obj.combinedImageSamplerDensityMapDescriptorSize);
+}
+void DumpVkPhysicalDeviceDescriptorBufferFeaturesEXT(Printer &p, std::string name, const VkPhysicalDeviceDescriptorBufferFeaturesEXT &obj) {
+    ObjectWrapper object{p, name};
+    p.SetMinKeyWidth(34);
+    p.PrintKeyBool("descriptorBuffer", static_cast<bool>(obj.descriptorBuffer));
+    p.PrintKeyBool("descriptorBufferCaptureReplay", static_cast<bool>(obj.descriptorBufferCaptureReplay));
+    p.PrintKeyBool("descriptorBufferImageLayoutIgnored", static_cast<bool>(obj.descriptorBufferImageLayoutIgnored));
+    p.PrintKeyBool("descriptorBufferPushDescriptors", static_cast<bool>(obj.descriptorBufferPushDescriptors));
+}
+void DumpVkPhysicalDeviceDescriptorBufferPropertiesEXT(Printer &p, std::string name, const VkPhysicalDeviceDescriptorBufferPropertiesEXT &obj) {
+    ObjectWrapper object{p, name};
+    p.SetMinKeyWidth(52);
+    p.PrintKeyBool("combinedImageSamplerDescriptorSingleArray", static_cast<bool>(obj.combinedImageSamplerDescriptorSingleArray));
+    p.PrintKeyBool("bufferlessPushDescriptors", static_cast<bool>(obj.bufferlessPushDescriptors));
+    p.PrintKeyBool("allowSamplerImageViewPostSubmitCreation", static_cast<bool>(obj.allowSamplerImageViewPostSubmitCreation));
+    p.PrintKeyValue("descriptorBufferOffsetAlignment", to_hex_str(p, obj.descriptorBufferOffsetAlignment));
+    p.PrintKeyValue("maxDescriptorBufferBindings", obj.maxDescriptorBufferBindings);
+    p.PrintKeyValue("maxResourceDescriptorBufferBindings", obj.maxResourceDescriptorBufferBindings);
+    p.PrintKeyValue("maxSamplerDescriptorBufferBindings", obj.maxSamplerDescriptorBufferBindings);
+    p.PrintKeyValue("maxEmbeddedImmutableSamplerBindings", obj.maxEmbeddedImmutableSamplerBindings);
+    p.PrintKeyValue("maxEmbeddedImmutableSamplers", obj.maxEmbeddedImmutableSamplers);
+    p.PrintKeyValue("bufferCaptureReplayDescriptorDataSize", obj.bufferCaptureReplayDescriptorDataSize);
+    p.PrintKeyValue("imageCaptureReplayDescriptorDataSize", obj.imageCaptureReplayDescriptorDataSize);
+    p.PrintKeyValue("imageViewCaptureReplayDescriptorDataSize", obj.imageViewCaptureReplayDescriptorDataSize);
+    p.PrintKeyValue("samplerCaptureReplayDescriptorDataSize", obj.samplerCaptureReplayDescriptorDataSize);
+    p.PrintKeyValue("accelerationStructureCaptureReplayDescriptorDataSize", obj.accelerationStructureCaptureReplayDescriptorDataSize);
+    p.PrintKeyValue("samplerDescriptorSize", obj.samplerDescriptorSize);
+    p.PrintKeyValue("combinedImageSamplerDescriptorSize", obj.combinedImageSamplerDescriptorSize);
+    p.PrintKeyValue("sampledImageDescriptorSize", obj.sampledImageDescriptorSize);
+    p.PrintKeyValue("storageImageDescriptorSize", obj.storageImageDescriptorSize);
+    p.PrintKeyValue("uniformTexelBufferDescriptorSize", obj.uniformTexelBufferDescriptorSize);
+    p.PrintKeyValue("robustUniformTexelBufferDescriptorSize", obj.robustUniformTexelBufferDescriptorSize);
+    p.PrintKeyValue("storageTexelBufferDescriptorSize", obj.storageTexelBufferDescriptorSize);
+    p.PrintKeyValue("robustStorageTexelBufferDescriptorSize", obj.robustStorageTexelBufferDescriptorSize);
+    p.PrintKeyValue("uniformBufferDescriptorSize", obj.uniformBufferDescriptorSize);
+    p.PrintKeyValue("robustUniformBufferDescriptorSize", obj.robustUniformBufferDescriptorSize);
+    p.PrintKeyValue("storageBufferDescriptorSize", obj.storageBufferDescriptorSize);
+    p.PrintKeyValue("robustStorageBufferDescriptorSize", obj.robustStorageBufferDescriptorSize);
+    p.PrintKeyValue("inputAttachmentDescriptorSize", obj.inputAttachmentDescriptorSize);
+    p.PrintKeyValue("accelerationStructureDescriptorSize", obj.accelerationStructureDescriptorSize);
+    p.PrintKeyValue("maxSamplerDescriptorBufferRange", to_hex_str(p, obj.maxSamplerDescriptorBufferRange));
+    p.PrintKeyValue("maxResourceDescriptorBufferRange", to_hex_str(p, obj.maxResourceDescriptorBufferRange));
+    p.PrintKeyValue("samplerDescriptorBufferAddressSpaceSize", to_hex_str(p, obj.samplerDescriptorBufferAddressSpaceSize));
+    p.PrintKeyValue("resourceDescriptorBufferAddressSpaceSize", to_hex_str(p, obj.resourceDescriptorBufferAddressSpaceSize));
+    p.PrintKeyValue("descriptorBufferAddressSpaceSize", to_hex_str(p, obj.descriptorBufferAddressSpaceSize));
+}
 void DumpVkPhysicalDeviceDescriptorIndexingFeatures(Printer &p, std::string name, const VkPhysicalDeviceDescriptorIndexingFeatures &obj) {
     ObjectWrapper object{p, name};
     p.SetMinKeyWidth(50);
@@ -1703,22 +1752,10 @@ void DumpVkPhysicalDeviceHostQueryResetFeatures(Printer &p, std::string name, co
 void DumpVkPhysicalDeviceIDProperties(Printer &p, std::string name, const VkPhysicalDeviceIDProperties &obj) {
     ObjectWrapper object{p, name};
     p.SetMinKeyWidth(15);
-    if (p.Type() == OutputType::json) {
-        ArrayWrapper arr(p, "deviceUUID");
-        for (uint32_t i = 0; i < 16; i++) p.PrintElement(static_cast<uint32_t>(obj.deviceUUID[i]));
-    } else
-        p.PrintKeyString("deviceUUID", to_string_16(obj.deviceUUID));
-    if (p.Type() == OutputType::json) {
-        ArrayWrapper arr(p, "driverUUID");
-        for (uint32_t i = 0; i < 16; i++) p.PrintElement(static_cast<uint32_t>(obj.driverUUID[i]));
-    } else
-        p.PrintKeyString("driverUUID", to_string_16(obj.driverUUID));
+    p.PrintKeyValue("deviceUUID", obj.deviceUUID);
+    p.PrintKeyValue("driverUUID", obj.driverUUID);
     if (obj.deviceLUIDValid) { // special case
-    if (p.Type() == OutputType::json) {
-        ArrayWrapper arr(p, "deviceLUID");
-        for (uint32_t i = 0; i < 8; i++) p.PrintElement(static_cast<uint32_t>(obj.deviceLUID[i]));
-    } else
-        p.PrintKeyString("deviceLUID", to_string_8(obj.deviceLUID));
+    p.PrintKeyValue("deviceLUID", obj.deviceLUID);
     }
     p.PrintKeyValue("deviceNodeMask", obj.deviceNodeMask);
     p.PrintKeyBool("deviceLUIDValid", static_cast<bool>(obj.deviceLUIDValid));
@@ -1837,16 +1874,14 @@ void DumpVkPhysicalDeviceLimits(Printer &p, std::string name, const VkPhysicalDe
     p.PrintKeyValue("maxFragmentDualSrcAttachments", obj.maxFragmentDualSrcAttachments);
     p.PrintKeyValue("maxFragmentCombinedOutputResources", obj.maxFragmentCombinedOutputResources);
     p.PrintKeyValue("maxComputeSharedMemorySize", obj.maxComputeSharedMemorySize);
-    {   ArrayWrapper arr(p,"maxComputeWorkGroupCount", 3);
-        p.PrintElement(obj.maxComputeWorkGroupCount[0]);
-        p.PrintElement(obj.maxComputeWorkGroupCount[1]);
-        p.PrintElement(obj.maxComputeWorkGroupCount[2]);
+    {
+        ArrayWrapper arr(p,"maxComputeWorkGroupCount", 3);
+        for (uint32_t i = 0; i < 3; i++) { p.PrintElement(obj.maxComputeWorkGroupCount[i]); }
     }
     p.PrintKeyValue("maxComputeWorkGroupInvocations", obj.maxComputeWorkGroupInvocations);
-    {   ArrayWrapper arr(p,"maxComputeWorkGroupSize", 3);
-        p.PrintElement(obj.maxComputeWorkGroupSize[0]);
-        p.PrintElement(obj.maxComputeWorkGroupSize[1]);
-        p.PrintElement(obj.maxComputeWorkGroupSize[2]);
+    {
+        ArrayWrapper arr(p,"maxComputeWorkGroupSize", 3);
+        for (uint32_t i = 0; i < 3; i++) { p.PrintElement(obj.maxComputeWorkGroupSize[i]); }
     }
     p.PrintKeyValue("subPixelPrecisionBits", obj.subPixelPrecisionBits);
     p.PrintKeyValue("subTexelPrecisionBits", obj.subTexelPrecisionBits);
@@ -1856,13 +1891,13 @@ void DumpVkPhysicalDeviceLimits(Printer &p, std::string name, const VkPhysicalDe
     p.PrintKeyValue("maxSamplerLodBias", obj.maxSamplerLodBias);
     p.PrintKeyValue("maxSamplerAnisotropy", obj.maxSamplerAnisotropy);
     p.PrintKeyValue("maxViewports", obj.maxViewports);
-    {   ArrayWrapper arr(p,"maxViewportDimensions", 2);
-        p.PrintElement(obj.maxViewportDimensions[0]);
-        p.PrintElement(obj.maxViewportDimensions[1]);
+    {
+        ArrayWrapper arr(p,"maxViewportDimensions", 2);
+        for (uint32_t i = 0; i < 2; i++) { p.PrintElement(obj.maxViewportDimensions[i]); }
     }
-    {   ArrayWrapper arr(p,"viewportBoundsRange", 2);
-        p.PrintElement(obj.viewportBoundsRange[0]);
-        p.PrintElement(obj.viewportBoundsRange[1]);
+    {
+        ArrayWrapper arr(p,"viewportBoundsRange", 2);
+        for (uint32_t i = 0; i < 2; i++) { p.PrintElement(obj.viewportBoundsRange[i]); }
     }
     p.PrintKeyValue("viewportSubPixelBits", obj.viewportSubPixelBits);
     p.PrintKeyValue("minMemoryMapAlignment", obj.minMemoryMapAlignment);
@@ -1896,13 +1931,13 @@ void DumpVkPhysicalDeviceLimits(Printer &p, std::string name, const VkPhysicalDe
     p.PrintKeyValue("maxCullDistances", obj.maxCullDistances);
     p.PrintKeyValue("maxCombinedClipAndCullDistances", obj.maxCombinedClipAndCullDistances);
     p.PrintKeyValue("discreteQueuePriorities", obj.discreteQueuePriorities);
-    {   ArrayWrapper arr(p,"pointSizeRange", 2);
-        p.PrintElement(obj.pointSizeRange[0]);
-        p.PrintElement(obj.pointSizeRange[1]);
+    {
+        ArrayWrapper arr(p,"pointSizeRange", 2);
+        for (uint32_t i = 0; i < 2; i++) { p.PrintElement(obj.pointSizeRange[i]); }
     }
-    {   ArrayWrapper arr(p,"lineWidthRange", 2);
-        p.PrintElement(obj.lineWidthRange[0]);
-        p.PrintElement(obj.lineWidthRange[1]);
+    {
+        ArrayWrapper arr(p,"lineWidthRange", 2);
+        for (uint32_t i = 0; i < 2; i++) { p.PrintElement(obj.lineWidthRange[i]); }
     }
     p.PrintKeyValue("pointSizeGranularity", obj.pointSizeGranularity);
     p.PrintKeyValue("lineWidthGranularity", obj.lineWidthGranularity);
@@ -1947,41 +1982,13 @@ void DumpVkPhysicalDeviceMaintenance4Properties(Printer &p, std::string name, co
 void DumpVkPhysicalDeviceMemoryBudgetPropertiesEXT(Printer &p, std::string name, const VkPhysicalDeviceMemoryBudgetPropertiesEXT &obj) {
     ObjectWrapper object{p, name};
     p.SetMinKeyWidth(14);
-    {   ArrayWrapper arr(p,"heapBudget", 16);
-        p.PrintElement(obj.heapBudget[0]);
-        p.PrintElement(obj.heapBudget[1]);
-        p.PrintElement(obj.heapBudget[2]);
-        p.PrintElement(obj.heapBudget[3]);
-        p.PrintElement(obj.heapBudget[4]);
-        p.PrintElement(obj.heapBudget[5]);
-        p.PrintElement(obj.heapBudget[6]);
-        p.PrintElement(obj.heapBudget[7]);
-        p.PrintElement(obj.heapBudget[8]);
-        p.PrintElement(obj.heapBudget[9]);
-        p.PrintElement(obj.heapBudget[10]);
-        p.PrintElement(obj.heapBudget[11]);
-        p.PrintElement(obj.heapBudget[12]);
-        p.PrintElement(obj.heapBudget[13]);
-        p.PrintElement(obj.heapBudget[14]);
-        p.PrintElement(obj.heapBudget[15]);
+    {
+        ArrayWrapper arr(p,"heapBudget", 16);
+        for (uint32_t i = 0; i < 16; i++) { p.PrintElement(obj.heapBudget[i]); }
     }
-    {   ArrayWrapper arr(p,"heapUsage", 16);
-        p.PrintElement(obj.heapUsage[0]);
-        p.PrintElement(obj.heapUsage[1]);
-        p.PrintElement(obj.heapUsage[2]);
-        p.PrintElement(obj.heapUsage[3]);
-        p.PrintElement(obj.heapUsage[4]);
-        p.PrintElement(obj.heapUsage[5]);
-        p.PrintElement(obj.heapUsage[6]);
-        p.PrintElement(obj.heapUsage[7]);
-        p.PrintElement(obj.heapUsage[8]);
-        p.PrintElement(obj.heapUsage[9]);
-        p.PrintElement(obj.heapUsage[10]);
-        p.PrintElement(obj.heapUsage[11]);
-        p.PrintElement(obj.heapUsage[12]);
-        p.PrintElement(obj.heapUsage[13]);
-        p.PrintElement(obj.heapUsage[14]);
-        p.PrintElement(obj.heapUsage[15]);
+    {
+        ArrayWrapper arr(p,"heapUsage", 16);
+        for (uint32_t i = 0; i < 16; i++) { p.PrintElement(obj.heapUsage[i]); }
     }
 }
 void DumpVkPhysicalDeviceMemoryPriorityFeaturesEXT(Printer &p, std::string name, const VkPhysicalDeviceMemoryPriorityFeaturesEXT &obj) {
@@ -2002,31 +2009,27 @@ void DumpVkPhysicalDeviceMeshShaderPropertiesEXT(Printer &p, std::string name, c
     ObjectWrapper object{p, name};
     p.SetMinKeyWidth(37);
     p.PrintKeyValue("maxTaskWorkGroupTotalCount", obj.maxTaskWorkGroupTotalCount);
-    {   ArrayWrapper arr(p,"maxTaskWorkGroupCount", 3);
-        p.PrintElement(obj.maxTaskWorkGroupCount[0]);
-        p.PrintElement(obj.maxTaskWorkGroupCount[1]);
-        p.PrintElement(obj.maxTaskWorkGroupCount[2]);
+    {
+        ArrayWrapper arr(p,"maxTaskWorkGroupCount", 3);
+        for (uint32_t i = 0; i < 3; i++) { p.PrintElement(obj.maxTaskWorkGroupCount[i]); }
     }
     p.PrintKeyValue("maxTaskWorkGroupInvocations", obj.maxTaskWorkGroupInvocations);
-    {   ArrayWrapper arr(p,"maxTaskWorkGroupSize", 3);
-        p.PrintElement(obj.maxTaskWorkGroupSize[0]);
-        p.PrintElement(obj.maxTaskWorkGroupSize[1]);
-        p.PrintElement(obj.maxTaskWorkGroupSize[2]);
+    {
+        ArrayWrapper arr(p,"maxTaskWorkGroupSize", 3);
+        for (uint32_t i = 0; i < 3; i++) { p.PrintElement(obj.maxTaskWorkGroupSize[i]); }
     }
     p.PrintKeyValue("maxTaskPayloadSize", obj.maxTaskPayloadSize);
     p.PrintKeyValue("maxTaskSharedMemorySize", obj.maxTaskSharedMemorySize);
     p.PrintKeyValue("maxTaskPayloadAndSharedMemorySize", obj.maxTaskPayloadAndSharedMemorySize);
     p.PrintKeyValue("maxMeshWorkGroupTotalCount", obj.maxMeshWorkGroupTotalCount);
-    {   ArrayWrapper arr(p,"maxMeshWorkGroupCount", 3);
-        p.PrintElement(obj.maxMeshWorkGroupCount[0]);
-        p.PrintElement(obj.maxMeshWorkGroupCount[1]);
-        p.PrintElement(obj.maxMeshWorkGroupCount[2]);
+    {
+        ArrayWrapper arr(p,"maxMeshWorkGroupCount", 3);
+        for (uint32_t i = 0; i < 3; i++) { p.PrintElement(obj.maxMeshWorkGroupCount[i]); }
     }
     p.PrintKeyValue("maxMeshWorkGroupInvocations", obj.maxMeshWorkGroupInvocations);
-    {   ArrayWrapper arr(p,"maxMeshWorkGroupSize", 3);
-        p.PrintElement(obj.maxMeshWorkGroupSize[0]);
-        p.PrintElement(obj.maxMeshWorkGroupSize[1]);
-        p.PrintElement(obj.maxMeshWorkGroupSize[2]);
+    {
+        ArrayWrapper arr(p,"maxMeshWorkGroupSize", 3);
+        for (uint32_t i = 0; i < 3; i++) { p.PrintElement(obj.maxMeshWorkGroupSize[i]); }
     }
     p.PrintKeyValue("maxMeshSharedMemorySize", obj.maxMeshSharedMemorySize);
     p.PrintKeyValue("maxMeshPayloadAndSharedMemorySize", obj.maxMeshPayloadAndSharedMemorySize);
@@ -2302,9 +2305,9 @@ void DumpVkPhysicalDeviceSampleLocationsPropertiesEXT(Printer &p, std::string na
     p.SetMinKeyWidth(32);
     DumpVkSampleCountFlags(p, "sampleLocationSampleCounts", obj.sampleLocationSampleCounts);
     DumpVkExtent2D(p, "maxSampleLocationGridSize", obj.maxSampleLocationGridSize);
-    {   ArrayWrapper arr(p,"sampleLocationCoordinateRange", 2);
-        p.PrintElement(obj.sampleLocationCoordinateRange[0]);
-        p.PrintElement(obj.sampleLocationCoordinateRange[1]);
+    {
+        ArrayWrapper arr(p,"sampleLocationCoordinateRange", 2);
+        for (uint32_t i = 0; i < 2; i++) { p.PrintElement(obj.sampleLocationCoordinateRange[i]); }
     }
     p.PrintKeyValue("sampleLocationSubPixelBits", obj.sampleLocationSubPixelBits);
     p.PrintKeyBool("variableSampleLocations", static_cast<bool>(obj.variableSampleLocations));
@@ -2443,11 +2446,7 @@ void DumpVkPhysicalDeviceShaderModuleIdentifierFeaturesEXT(Printer &p, std::stri
 void DumpVkPhysicalDeviceShaderModuleIdentifierPropertiesEXT(Printer &p, std::string name, const VkPhysicalDeviceShaderModuleIdentifierPropertiesEXT &obj) {
     ObjectWrapper object{p, name};
     p.SetMinKeyWidth(39);
-    if (p.Type() == OutputType::json) {
-        ArrayWrapper arr(p, "shaderModuleIdentifierAlgorithmUUID");
-        for (uint32_t i = 0; i < 16; i++) p.PrintElement(static_cast<uint32_t>(obj.shaderModuleIdentifierAlgorithmUUID[i]));
-    } else
-        p.PrintKeyString("shaderModuleIdentifierAlgorithmUUID", to_string_16(obj.shaderModuleIdentifierAlgorithmUUID));
+    p.PrintKeyValue("shaderModuleIdentifierAlgorithmUUID", obj.shaderModuleIdentifierAlgorithmUUID);
 }
 void DumpVkPhysicalDeviceShaderSubgroupExtendedTypesFeatures(Printer &p, std::string name, const VkPhysicalDeviceShaderSubgroupExtendedTypesFeatures &obj) {
     ObjectWrapper object{p, name};
@@ -2612,22 +2611,10 @@ void DumpVkPhysicalDeviceVulkan11Features(Printer &p, std::string name, const Vk
 void DumpVkPhysicalDeviceVulkan11Properties(Printer &p, std::string name, const VkPhysicalDeviceVulkan11Properties &obj) {
     ObjectWrapper object{p, name};
     p.SetMinKeyWidth(33);
-    if (p.Type() == OutputType::json) {
-        ArrayWrapper arr(p, "deviceUUID");
-        for (uint32_t i = 0; i < 16; i++) p.PrintElement(static_cast<uint32_t>(obj.deviceUUID[i]));
-    } else
-        p.PrintKeyString("deviceUUID", to_string_16(obj.deviceUUID));
-    if (p.Type() == OutputType::json) {
-        ArrayWrapper arr(p, "driverUUID");
-        for (uint32_t i = 0; i < 16; i++) p.PrintElement(static_cast<uint32_t>(obj.driverUUID[i]));
-    } else
-        p.PrintKeyString("driverUUID", to_string_16(obj.driverUUID));
+    p.PrintKeyValue("deviceUUID", obj.deviceUUID);
+    p.PrintKeyValue("driverUUID", obj.driverUUID);
     if (obj.deviceLUIDValid) { // special case
-    if (p.Type() == OutputType::json) {
-        ArrayWrapper arr(p, "deviceLUID");
-        for (uint32_t i = 0; i < 8; i++) p.PrintElement(static_cast<uint32_t>(obj.deviceLUID[i]));
-    } else
-        p.PrintKeyString("deviceLUID", to_string_8(obj.deviceLUID));
+    p.PrintKeyValue("deviceLUID", obj.deviceLUID);
     }
     p.PrintKeyValue("deviceNodeMask", obj.deviceNodeMask);
     p.PrintKeyBool("deviceLUIDValid", static_cast<bool>(obj.deviceLUIDValid));
@@ -2924,6 +2911,8 @@ struct phys_device_props2_chain {
     VkPhysicalDeviceConservativeRasterizationPropertiesEXT PhysicalDeviceConservativeRasterizationPropertiesEXT{};
     VkPhysicalDeviceCustomBorderColorPropertiesEXT PhysicalDeviceCustomBorderColorPropertiesEXT{};
     VkPhysicalDeviceDepthStencilResolveProperties PhysicalDeviceDepthStencilResolveProperties{};
+    VkPhysicalDeviceDescriptorBufferDensityMapPropertiesEXT PhysicalDeviceDescriptorBufferDensityMapPropertiesEXT{};
+    VkPhysicalDeviceDescriptorBufferPropertiesEXT PhysicalDeviceDescriptorBufferPropertiesEXT{};
     VkPhysicalDeviceDescriptorIndexingProperties PhysicalDeviceDescriptorIndexingProperties{};
     VkPhysicalDeviceDiscardRectanglePropertiesEXT PhysicalDeviceDiscardRectanglePropertiesEXT{};
     VkPhysicalDeviceDriverProperties PhysicalDeviceDriverProperties{};
@@ -2976,6 +2965,8 @@ struct phys_device_props2_chain {
         PhysicalDeviceConservativeRasterizationPropertiesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CONSERVATIVE_RASTERIZATION_PROPERTIES_EXT;
         PhysicalDeviceCustomBorderColorPropertiesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUSTOM_BORDER_COLOR_PROPERTIES_EXT;
         PhysicalDeviceDepthStencilResolveProperties.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEPTH_STENCIL_RESOLVE_PROPERTIES;
+        PhysicalDeviceDescriptorBufferDensityMapPropertiesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_DENSITY_MAP_PROPERTIES_EXT;
+        PhysicalDeviceDescriptorBufferPropertiesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_PROPERTIES_EXT;
         PhysicalDeviceDescriptorIndexingProperties.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_PROPERTIES;
         PhysicalDeviceDiscardRectanglePropertiesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DISCARD_RECTANGLE_PROPERTIES_EXT;
         PhysicalDeviceDriverProperties.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DRIVER_PROPERTIES;
@@ -3028,6 +3019,8 @@ struct phys_device_props2_chain {
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceConservativeRasterizationPropertiesEXT));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceCustomBorderColorPropertiesEXT));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDepthStencilResolveProperties));
+        chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDescriptorBufferDensityMapPropertiesEXT));
+        chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDescriptorBufferPropertiesEXT));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDescriptorIndexingProperties));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDiscardRectanglePropertiesEXT));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDriverProperties));
@@ -3134,6 +3127,7 @@ struct phys_device_features2_chain {
     VkPhysicalDeviceDepthClampZeroOneFeaturesEXT PhysicalDeviceDepthClampZeroOneFeaturesEXT{};
     VkPhysicalDeviceDepthClipControlFeaturesEXT PhysicalDeviceDepthClipControlFeaturesEXT{};
     VkPhysicalDeviceDepthClipEnableFeaturesEXT PhysicalDeviceDepthClipEnableFeaturesEXT{};
+    VkPhysicalDeviceDescriptorBufferFeaturesEXT PhysicalDeviceDescriptorBufferFeaturesEXT{};
     VkPhysicalDeviceDescriptorIndexingFeatures PhysicalDeviceDescriptorIndexingFeatures{};
     VkPhysicalDeviceDeviceMemoryReportFeaturesEXT PhysicalDeviceDeviceMemoryReportFeaturesEXT{};
     VkPhysicalDeviceDynamicRenderingFeatures PhysicalDeviceDynamicRenderingFeatures{};
@@ -3245,6 +3239,7 @@ struct phys_device_features2_chain {
         PhysicalDeviceDepthClampZeroOneFeaturesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEPTH_CLAMP_ZERO_ONE_FEATURES_EXT;
         PhysicalDeviceDepthClipControlFeaturesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEPTH_CLIP_CONTROL_FEATURES_EXT;
         PhysicalDeviceDepthClipEnableFeaturesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEPTH_CLIP_ENABLE_FEATURES_EXT;
+        PhysicalDeviceDescriptorBufferFeaturesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_FEATURES_EXT;
         PhysicalDeviceDescriptorIndexingFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_FEATURES;
         PhysicalDeviceDeviceMemoryReportFeaturesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEVICE_MEMORY_REPORT_FEATURES_EXT;
         PhysicalDeviceDynamicRenderingFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_FEATURES;
@@ -3355,6 +3350,7 @@ struct phys_device_features2_chain {
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDepthClampZeroOneFeaturesEXT));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDepthClipControlFeaturesEXT));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDepthClipEnableFeaturesEXT));
+        chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDescriptorBufferFeaturesEXT));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDescriptorIndexingFeatures));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDeviceMemoryReportFeaturesEXT));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceDynamicRenderingFeatures));
@@ -3597,6 +3593,18 @@ void chain_iterator_phys_device_props2(Printer &p, AppInstance &inst, AppGpu &gp
             gpu.api_version.minor >= 2)) {
             VkPhysicalDeviceDepthStencilResolveProperties* props = (VkPhysicalDeviceDepthStencilResolveProperties*)structure;
             DumpVkPhysicalDeviceDepthStencilResolveProperties(p, gpu.api_version.minor >= 2 ?"VkPhysicalDeviceDepthStencilResolveProperties":"VkPhysicalDeviceDepthStencilResolvePropertiesKHR", *props);
+            p.AddNewline();
+        }
+        if (structure->sType == VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_DENSITY_MAP_PROPERTIES_EXT &&
+           (gpu.CheckPhysicalDeviceExtensionIncluded(VK_EXT_DESCRIPTOR_BUFFER_EXTENSION_NAME))) {
+            VkPhysicalDeviceDescriptorBufferDensityMapPropertiesEXT* props = (VkPhysicalDeviceDescriptorBufferDensityMapPropertiesEXT*)structure;
+            DumpVkPhysicalDeviceDescriptorBufferDensityMapPropertiesEXT(p, "VkPhysicalDeviceDescriptorBufferDensityMapPropertiesEXT", *props);
+            p.AddNewline();
+        }
+        if (structure->sType == VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_PROPERTIES_EXT &&
+           (gpu.CheckPhysicalDeviceExtensionIncluded(VK_EXT_DESCRIPTOR_BUFFER_EXTENSION_NAME))) {
+            VkPhysicalDeviceDescriptorBufferPropertiesEXT* props = (VkPhysicalDeviceDescriptorBufferPropertiesEXT*)structure;
+            DumpVkPhysicalDeviceDescriptorBufferPropertiesEXT(p, "VkPhysicalDeviceDescriptorBufferPropertiesEXT", *props);
             p.AddNewline();
         }
         if (structure->sType == VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_PROPERTIES &&
@@ -3989,6 +3997,12 @@ void chain_iterator_phys_device_features2(Printer &p, AppGpu &gpu, void * place)
            (gpu.CheckPhysicalDeviceExtensionIncluded(VK_EXT_DEPTH_CLIP_ENABLE_EXTENSION_NAME))) {
             VkPhysicalDeviceDepthClipEnableFeaturesEXT* props = (VkPhysicalDeviceDepthClipEnableFeaturesEXT*)structure;
             DumpVkPhysicalDeviceDepthClipEnableFeaturesEXT(p, "VkPhysicalDeviceDepthClipEnableFeaturesEXT", *props);
+            p.AddNewline();
+        }
+        if (structure->sType == VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_FEATURES_EXT &&
+           (gpu.CheckPhysicalDeviceExtensionIncluded(VK_EXT_DESCRIPTOR_BUFFER_EXTENSION_NAME))) {
+            VkPhysicalDeviceDescriptorBufferFeaturesEXT* props = (VkPhysicalDeviceDescriptorBufferFeaturesEXT*)structure;
+            DumpVkPhysicalDeviceDescriptorBufferFeaturesEXT(p, "VkPhysicalDeviceDescriptorBufferFeaturesEXT", *props);
             p.AddNewline();
         }
         if (structure->sType == VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_FEATURES &&
