@@ -206,17 +206,53 @@ on/off options currently supported by this repository:
 | BUILD_WSI_XLIB_SUPPORT | Linux | `ON` | Build the components with Xlib support. |
 | BUILD_WSI_WAYLAND_SUPPORT | Linux | `ON` | Build the components with Wayland support. |
 | BUILD_WSI_DIRECTFB_SUPPORT | Linux | `OFF` | Build the components with DirectFB support. |
-| USE_CCACHE | Linux | `OFF` | Enable caching with the CCache program. |
 
 The following is a table of all string options currently supported by this repository:
 
 | Option | Platform | Default | Description |
 | ------ | -------- | ------- | ----------- |
-| CMAKE_OSX_DEPLOYMENT_TARGET | MacOS | `10.12` | The minimum version of MacOS for loader deployment. |
 | VULKANINFO_BUILD_DLL_VERSIONINFO | Windows | `""` | Set the Windows specific version information for Vulkaninfo. Format is "major.minor.patch.build". |
 
 These variables should be set using the `-D` option when invoking CMake to
 generate the native platform files.
+
+### CCACHE
+
+There are 2 methods to enable CCACHE:
+
+1.) Set environment variables
+
+```bash
+# Requires CMake 3.17 (https://cmake.org/cmake/help/latest/envvar/CMAKE_LANG_COMPILER_LAUNCHER.html)
+export CMAKE_CXX_COMPILER_LAUNCHER=/usr/bin/ccache
+export CMAKE_C_COMPILER_LAUNCHER=/usr/bin/ccache
+```
+
+2.) Pass in cache variables
+
+```
+cmake ... -D CMAKE_CXX_COMPILER_LAUNCHER=/usr/bin/ccache -D CMAKE_C_COMPILER_LAUNCHER=/usr/bin/ccache
+```
+
+### EXPORT_COMPILE_COMMANDS
+
+There are 2 methods to enable exporting compile commands:
+
+1.) Set environment variables
+
+```bash
+# Requires CMake 3.17 (https://cmake.org/cmake/help/latest/envvar/CMAKE_EXPORT_COMPILE_COMMANDS.html)
+export CMAKE_EXPORT_COMPILE_COMMANDS=ON
+```
+
+2.) Pass in cache variables
+
+```
+cmake ... -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
+```
+
+NOTE: Modern tools will generally enable exporting compile commands for you (e.g. VSCode).
+Also `CMAKE_EXPORT_COMPILE_COMMANDS` is implemented only by Makefile and Ninja generators. For other generators, this option is ignored.
 
 ## Building On Windows
 
@@ -635,9 +671,9 @@ Use the following command to run vkcube for Android:
 
 ### MacOS Build Requirements
 
-Tested on OSX version 10.12.6
+Tested on OSX version 10.12
 
-- [CMake 3.10.2](https://cmake.org/files/v3.10/cmake-3.10.2-Darwin-x86_64.tar.gz) is recommended.
+NOTE: To force the OSX version set the environment variable [MACOSX_DEPLOYMENT_TARGET](https://cmake.org/cmake/help/latest/envvar/MACOSX_DEPLOYMENT_TARGET.html) when building VVL and it's dependencies.
 
 Setup Homebrew and components
 

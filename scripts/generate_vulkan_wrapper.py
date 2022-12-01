@@ -1189,6 +1189,20 @@ VK_NV_device_diagnostics_config = Extension(name='VK_NV_device_diagnostics_confi
 VK_QCOM_render_pass_store_ops = Extension(name='VK_QCOM_render_pass_store_ops', version=2, guard=None, commands=[
 ])
 
+VK_EXT_descriptor_buffer = Extension(name='VK_EXT_descriptor_buffer', version=1, guard=None, commands=[
+    Command(name='vkGetDescriptorSetLayoutSizeEXT', dispatch='VkDevice'),
+    Command(name='vkGetDescriptorSetLayoutBindingOffsetEXT', dispatch='VkDevice'),
+    Command(name='vkGetDescriptorEXT', dispatch='VkDevice'),
+    Command(name='vkCmdBindDescriptorBuffersEXT', dispatch='VkCommandBuffer'),
+    Command(name='vkCmdSetDescriptorBufferOffsetsEXT', dispatch='VkCommandBuffer'),
+    Command(name='vkCmdBindDescriptorBufferEmbeddedSamplersEXT', dispatch='VkCommandBuffer'),
+    Command(name='vkGetBufferOpaqueCaptureDescriptorDataEXT', dispatch='VkDevice'),
+    Command(name='vkGetImageOpaqueCaptureDescriptorDataEXT', dispatch='VkDevice'),
+    Command(name='vkGetImageViewOpaqueCaptureDescriptorDataEXT', dispatch='VkDevice'),
+    Command(name='vkGetSamplerOpaqueCaptureDescriptorDataEXT', dispatch='VkDevice'),
+    Command(name='vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT', dispatch='VkDevice'),
+])
+
 VK_EXT_graphics_pipeline_library = Extension(name='VK_EXT_graphics_pipeline_library', version=1, guard=None, commands=[
 ])
 
@@ -1348,6 +1362,16 @@ VK_EXT_non_seamless_cube_map = Extension(name='VK_EXT_non_seamless_cube_map', ve
 VK_QCOM_fragment_density_map_offset = Extension(name='VK_QCOM_fragment_density_map_offset', version=1, guard=None, commands=[
 ])
 
+VK_NV_copy_memory_indirect = Extension(name='VK_NV_copy_memory_indirect', version=1, guard=None, commands=[
+    Command(name='vkCmdCopyMemoryIndirectNV', dispatch='VkCommandBuffer'),
+    Command(name='vkCmdCopyMemoryToImageIndirectNV', dispatch='VkCommandBuffer'),
+])
+
+VK_NV_memory_decompression = Extension(name='VK_NV_memory_decompression', version=1, guard=None, commands=[
+    Command(name='vkCmdDecompressMemoryNV', dispatch='VkCommandBuffer'),
+    Command(name='vkCmdDecompressMemoryIndirectCountNV', dispatch='VkCommandBuffer'),
+])
+
 VK_NV_linear_color_attachment = Extension(name='VK_NV_linear_color_attachment', version=1, guard=None, commands=[
 ])
 
@@ -1427,10 +1451,13 @@ VK_QCOM_tile_properties = Extension(name='VK_QCOM_tile_properties', version=1, g
 VK_SEC_amigo_profiling = Extension(name='VK_SEC_amigo_profiling', version=1, guard=None, commands=[
 ])
 
+VK_NV_ray_tracing_invocation_reorder = Extension(name='VK_NV_ray_tracing_invocation_reorder', version=1, guard=None, commands=[
+])
+
 VK_EXT_mutable_descriptor_type = Extension(name='VK_EXT_mutable_descriptor_type', version=1, guard=None, commands=[
 ])
 
-VK_ARM_shader_core_builtins = Extension(name='VK_ARM_shader_core_builtins', version=1, guard=None, commands=[
+VK_ARM_shader_core_builtins = Extension(name='VK_ARM_shader_core_builtins', version=2, guard=None, commands=[
 ])
 
 VK_KHR_acceleration_structure = Extension(name='VK_KHR_acceleration_structure', version=13, guard=None, commands=[
@@ -1849,6 +1876,7 @@ extensions = [
     VK_EXT_pipeline_creation_cache_control,
     VK_NV_device_diagnostics_config,
     VK_QCOM_render_pass_store_ops,
+    VK_EXT_descriptor_buffer,
     VK_EXT_graphics_pipeline_library,
     VK_AMD_shader_early_and_late_fragment_tests,
     VK_NV_fragment_shading_rate_enums,
@@ -1890,6 +1918,8 @@ extensions = [
     VK_EXT_depth_clamp_zero_one,
     VK_EXT_non_seamless_cube_map,
     VK_QCOM_fragment_density_map_offset,
+    VK_NV_copy_memory_indirect,
+    VK_NV_memory_decompression,
     VK_NV_linear_color_attachment,
     VK_GOOGLE_surfaceless_query,
     VK_EXT_image_compression_control_swapchain,
@@ -1903,6 +1933,7 @@ extensions = [
     VK_EXT_pipeline_protected_access,
     VK_QCOM_tile_properties,
     VK_SEC_amigo_profiling,
+    VK_NV_ray_tracing_invocation_reorder,
     VK_EXT_mutable_descriptor_type,
     VK_ARM_shader_core_builtins,
     VK_KHR_acceleration_structure,
