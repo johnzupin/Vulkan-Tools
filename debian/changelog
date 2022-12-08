@@ -1,3 +1,17 @@
+vulkan-tools (1.3.236.0~rc1-1lunarg20.04-1) focal; urgency=medium
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.236
+
+  [ Charles Giessen ]
+  * cubepp: Set the apiVersion to 1.0
+  * cube & cubepp: Handle negative gpu selections
+
+  [ Juan Ramos ]
+  * ci: Speed up MacOS builds
+
+ -- john <john@odin>  Thu, 08 Dec 2022 12:54:27 -0700
+
 vulkan-tools (1.3.235.0~rc1-1lunarg20.04-1) focal; urgency=medium
 
   [ Juan Ramos ]
