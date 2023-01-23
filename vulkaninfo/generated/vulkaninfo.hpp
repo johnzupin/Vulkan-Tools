@@ -97,6 +97,7 @@ std::string VkDriverIdString(VkDriverId value) {
         case (VK_DRIVER_ID_MESA_VENUS): return "DRIVER_ID_MESA_VENUS";
         case (VK_DRIVER_ID_MESA_DOZEN): return "DRIVER_ID_MESA_DOZEN";
         case (VK_DRIVER_ID_MESA_NVK): return "DRIVER_ID_MESA_NVK";
+        case (VK_DRIVER_ID_IMAGINATION_OPEN_SOURCE_MESA): return "DRIVER_ID_IMAGINATION_OPEN_SOURCE_MESA";
         default: return std::string("UNKNOWN_VkDriverId_value") + std::to_string(value);
     }
 }
@@ -841,6 +842,66 @@ void DumpVkMemoryPropertyFlagBits(Printer &p, std::string name, VkMemoryProperty
         p.PrintKeyString(name, strings.at(0));
 }
 
+std::vector<const char *> VkPresentGravityFlagBitsEXTGetStrings(VkPresentGravityFlagBitsEXT value) {
+    std::vector<const char *> strings;
+    if (value == 0) { strings.push_back("None"); return strings; }
+    if (VK_PRESENT_GRAVITY_MIN_BIT_EXT & value) strings.push_back("PRESENT_GRAVITY_MIN_BIT_EXT");
+    if (VK_PRESENT_GRAVITY_MAX_BIT_EXT & value) strings.push_back("PRESENT_GRAVITY_MAX_BIT_EXT");
+    if (VK_PRESENT_GRAVITY_CENTERED_BIT_EXT & value) strings.push_back("PRESENT_GRAVITY_CENTERED_BIT_EXT");
+    return strings;
+}
+void DumpVkPresentGravityFlagsEXT(Printer &p, std::string name, VkPresentGravityFlagsEXT value) {
+    if (static_cast<VkPresentGravityFlagBitsEXT>(value) == 0) {
+        ArrayWrapper arr(p, name, 0);
+        if (p.Type() != OutputType::json && p.Type() != OutputType::vkconfig_output)
+            p.SetAsType().PrintString("None");
+        return;
+    }
+    auto strings = VkPresentGravityFlagBitsEXTGetStrings(static_cast<VkPresentGravityFlagBitsEXT>(value));
+    ArrayWrapper arr(p, name, strings.size());
+    for(auto& str : strings){
+        if (p.Type() == OutputType::json)
+            p.SetAsType().PrintString(std::string("VK_") + str);
+        else
+            p.SetAsType().PrintString(str);
+    }
+}
+void DumpVkPresentGravityFlagBitsEXT(Printer &p, std::string name, VkPresentGravityFlagBitsEXT value) {
+    auto strings = VkPresentGravityFlagBitsEXTGetStrings(value);
+    if (strings.size() > 0)
+        p.PrintKeyString(name, strings.at(0));
+}
+
+std::vector<const char *> VkPresentScalingFlagBitsEXTGetStrings(VkPresentScalingFlagBitsEXT value) {
+    std::vector<const char *> strings;
+    if (value == 0) { strings.push_back("None"); return strings; }
+    if (VK_PRESENT_SCALING_ONE_TO_ONE_BIT_EXT & value) strings.push_back("PRESENT_SCALING_ONE_TO_ONE_BIT_EXT");
+    if (VK_PRESENT_SCALING_ASPECT_RATIO_STRETCH_BIT_EXT & value) strings.push_back("PRESENT_SCALING_ASPECT_RATIO_STRETCH_BIT_EXT");
+    if (VK_PRESENT_SCALING_STRETCH_BIT_EXT & value) strings.push_back("PRESENT_SCALING_STRETCH_BIT_EXT");
+    return strings;
+}
+void DumpVkPresentScalingFlagsEXT(Printer &p, std::string name, VkPresentScalingFlagsEXT value) {
+    if (static_cast<VkPresentScalingFlagBitsEXT>(value) == 0) {
+        ArrayWrapper arr(p, name, 0);
+        if (p.Type() != OutputType::json && p.Type() != OutputType::vkconfig_output)
+            p.SetAsType().PrintString("None");
+        return;
+    }
+    auto strings = VkPresentScalingFlagBitsEXTGetStrings(static_cast<VkPresentScalingFlagBitsEXT>(value));
+    ArrayWrapper arr(p, name, strings.size());
+    for(auto& str : strings){
+        if (p.Type() == OutputType::json)
+            p.SetAsType().PrintString(std::string("VK_") + str);
+        else
+            p.SetAsType().PrintString(str);
+    }
+}
+void DumpVkPresentScalingFlagBitsEXT(Printer &p, std::string name, VkPresentScalingFlagBitsEXT value) {
+    auto strings = VkPresentScalingFlagBitsEXTGetStrings(value);
+    if (strings.size() > 0)
+        p.PrintKeyString(name, strings.at(0));
+}
+
 std::vector<const char *> VkQueueFlagBitsGetStrings(VkQueueFlagBits value) {
     std::vector<const char *> strings;
     if (value == 0) { strings.push_back("None"); return strings; }
@@ -996,6 +1057,7 @@ std::vector<const char *> VkShaderStageFlagBitsGetStrings(VkShaderStageFlagBits 
     if (VK_SHADER_STAGE_TASK_BIT_EXT & value) strings.push_back("SHADER_STAGE_TASK_BIT_EXT");
     if (VK_SHADER_STAGE_MESH_BIT_EXT & value) strings.push_back("SHADER_STAGE_MESH_BIT_EXT");
     if (VK_SHADER_STAGE_SUBPASS_SHADING_BIT_HUAWEI & value) strings.push_back("SHADER_STAGE_SUBPASS_SHADING_BIT_HUAWEI");
+    if (VK_SHADER_STAGE_CLUSTER_CULLING_BIT_HUAWEI & value) strings.push_back("SHADER_STAGE_CLUSTER_CULLING_BIT_HUAWEI");
     return strings;
 }
 void DumpVkShaderStageFlags(Printer &p, std::string name, VkShaderStageFlags value) {
@@ -1159,11 +1221,10 @@ std::vector<const char *> VkVideoCodecOperationFlagBitsKHRGetStrings(VkVideoCode
     if (VK_VIDEO_CODEC_OPERATION_NONE_KHR & value) strings.push_back("VIDEO_CODEC_OPERATION_NONE_KHR");
     if (VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_EXT & value) strings.push_back("VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_EXT");
     if (VK_VIDEO_CODEC_OPERATION_ENCODE_H265_BIT_EXT & value) strings.push_back("VIDEO_CODEC_OPERATION_ENCODE_H265_BIT_EXT");
-    if (VK_VIDEO_CODEC_OPERATION_DECODE_H264_BIT_EXT & value) strings.push_back("VIDEO_CODEC_OPERATION_DECODE_H264_BIT_EXT");
-    if (VK_VIDEO_CODEC_OPERATION_DECODE_H265_BIT_EXT & value) strings.push_back("VIDEO_CODEC_OPERATION_DECODE_H265_BIT_EXT");
+    if (VK_VIDEO_CODEC_OPERATION_DECODE_H264_BIT_KHR & value) strings.push_back("VIDEO_CODEC_OPERATION_DECODE_H264_BIT_KHR");
+    if (VK_VIDEO_CODEC_OPERATION_DECODE_H265_BIT_KHR & value) strings.push_back("VIDEO_CODEC_OPERATION_DECODE_H265_BIT_KHR");
     return strings;
 }
-#ifdef VK_ENABLE_BETA_EXTENSIONS
 void DumpVkVideoCodecOperationFlagsKHR(Printer &p, std::string name, VkVideoCodecOperationFlagsKHR value) {
     if (static_cast<VkVideoCodecOperationFlagBitsKHR>(value) == 0) {
         ArrayWrapper arr(p, name, 0);
@@ -1185,7 +1246,6 @@ void DumpVkVideoCodecOperationFlagBitsKHR(Printer &p, std::string name, VkVideoC
     if (strings.size() > 0)
         p.PrintKeyString(name, strings.at(0));
 }
-#endif  // VK_ENABLE_BETA_EXTENSIONS
 
 void DumpVkConformanceVersion(Printer &p, std::string name, const VkConformanceVersion &obj) {
     ObjectWrapper object{p, name};
@@ -2503,6 +2563,11 @@ void DumpVkPhysicalDeviceSubpassMergeFeedbackFeaturesEXT(Printer &p, std::string
     p.SetMinKeyWidth(20);
     p.PrintKeyBool("subpassMergeFeedback", static_cast<bool>(obj.subpassMergeFeedback));
 }
+void DumpVkPhysicalDeviceSwapchainMaintenance1FeaturesEXT(Printer &p, std::string name, const VkPhysicalDeviceSwapchainMaintenance1FeaturesEXT &obj) {
+    ObjectWrapper object{p, name};
+    p.SetMinKeyWidth(21);
+    p.PrintKeyBool("swapchainMaintenance1", static_cast<bool>(obj.swapchainMaintenance1));
+}
 void DumpVkPhysicalDeviceSynchronization2Features(Printer &p, std::string name, const VkPhysicalDeviceSynchronization2Features &obj) {
     ObjectWrapper object{p, name};
     p.SetMinKeyWidth(16);
@@ -2846,19 +2911,15 @@ void DumpVkQueueFamilyGlobalPriorityPropertiesKHR(Printer &p, std::string name, 
            p.PrintString(VkQueueGlobalPriorityKHRString(obj.priorities[i]));
     }
 }
-#ifdef VK_ENABLE_BETA_EXTENSIONS
 void DumpVkQueueFamilyQueryResultStatusPropertiesKHR(Printer &p, std::string name, const VkQueueFamilyQueryResultStatusPropertiesKHR &obj) {
     ObjectWrapper object{p, name};
     p.SetMinKeyWidth(24);
     p.PrintKeyBool("queryResultStatusSupport", static_cast<bool>(obj.queryResultStatusSupport));
 }
-#endif  // VK_ENABLE_BETA_EXTENSIONS
-#ifdef VK_ENABLE_BETA_EXTENSIONS
 void DumpVkQueueFamilyVideoPropertiesKHR(Printer &p, std::string name, const VkQueueFamilyVideoPropertiesKHR &obj) {
     ObjectWrapper object{p, name};
     DumpVkVideoCodecOperationFlagsKHR(p, "videoCodecOperations", obj.videoCodecOperations);
 }
-#endif  // VK_ENABLE_BETA_EXTENSIONS
 void DumpVkSharedPresentSurfaceCapabilitiesKHR(Printer &p, std::string name, const VkSharedPresentSurfaceCapabilitiesKHR &obj) {
     ObjectWrapper object{p, name};
     DumpVkImageUsageFlags(p, "sharedPresentSupportedUsageFlags", obj.sharedPresentSupportedUsageFlags);
@@ -2893,6 +2954,26 @@ void DumpVkSurfaceFormatKHR(Printer &p, std::string name, const VkSurfaceFormatK
     ObjectWrapper object{p, name};
     DumpVkFormat(p, "format", obj.format);
     DumpVkColorSpaceKHR(p, "colorSpace", obj.colorSpace);
+}
+void DumpVkSurfacePresentModeCompatibilityEXT(Printer &p, std::string name, const VkSurfacePresentModeCompatibilityEXT &obj) {
+    ObjectWrapper object{p, name};
+    p.SetMinKeyWidth(31);
+    p.PrintKeyValue("presentModeCount", obj.presentModeCount);
+    ArrayWrapper arr(p,"pPresentModes", obj.presentModeCount);
+    for (uint32_t i = 0; i < obj.presentModeCount; i++) {
+        if (obj.pPresentModes != nullptr) {
+            p.SetElementIndex(i);
+            DumpVkPresentModeKHR(p, "pPresentModes", obj.pPresentModes[i]);
+        }
+    }
+}
+void DumpVkSurfacePresentScalingCapabilitiesEXT(Printer &p, std::string name, const VkSurfacePresentScalingCapabilitiesEXT &obj) {
+    ObjectWrapper object{p, name};
+    DumpVkPresentScalingFlagsEXT(p, "supportedPresentScaling", obj.supportedPresentScaling);
+    DumpVkPresentGravityFlagsEXT(p, "supportedPresentGravityX", obj.supportedPresentGravityX);
+    DumpVkPresentGravityFlagsEXT(p, "supportedPresentGravityY", obj.supportedPresentGravityY);
+    DumpVkExtent2D(p, "minScaledImageExtent", obj.minScaledImageExtent);
+    DumpVkExtent2D(p, "maxScaledImageExtent", obj.maxScaledImageExtent);
 }
 void DumpVkSurfaceProtectedCapabilitiesKHR(Printer &p, std::string name, const VkSurfaceProtectedCapabilitiesKHR &obj) {
     ObjectWrapper object{p, name};
@@ -3204,6 +3285,7 @@ struct phys_device_features2_chain {
     VkPhysicalDeviceShaderTerminateInvocationFeatures PhysicalDeviceShaderTerminateInvocationFeatures{};
     VkPhysicalDeviceSubgroupSizeControlFeatures PhysicalDeviceSubgroupSizeControlFeatures{};
     VkPhysicalDeviceSubpassMergeFeedbackFeaturesEXT PhysicalDeviceSubpassMergeFeedbackFeaturesEXT{};
+    VkPhysicalDeviceSwapchainMaintenance1FeaturesEXT PhysicalDeviceSwapchainMaintenance1FeaturesEXT{};
     VkPhysicalDeviceSynchronization2Features PhysicalDeviceSynchronization2Features{};
     VkPhysicalDeviceTexelBufferAlignmentFeaturesEXT PhysicalDeviceTexelBufferAlignmentFeaturesEXT{};
     VkPhysicalDeviceTextureCompressionASTCHDRFeatures PhysicalDeviceTextureCompressionASTCHDRFeatures{};
@@ -3315,6 +3397,7 @@ struct phys_device_features2_chain {
         PhysicalDeviceShaderTerminateInvocationFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_TERMINATE_INVOCATION_FEATURES;
         PhysicalDeviceSubgroupSizeControlFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_SIZE_CONTROL_FEATURES;
         PhysicalDeviceSubpassMergeFeedbackFeaturesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBPASS_MERGE_FEEDBACK_FEATURES_EXT;
+        PhysicalDeviceSwapchainMaintenance1FeaturesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SWAPCHAIN_MAINTENANCE_1_FEATURES_EXT;
         PhysicalDeviceSynchronization2Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SYNCHRONIZATION_2_FEATURES;
         PhysicalDeviceTexelBufferAlignmentFeaturesEXT.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TEXEL_BUFFER_ALIGNMENT_FEATURES_EXT;
         PhysicalDeviceTextureCompressionASTCHDRFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TEXTURE_COMPRESSION_ASTC_HDR_FEATURES;
@@ -3426,6 +3509,7 @@ struct phys_device_features2_chain {
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceShaderTerminateInvocationFeatures));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceSubgroupSizeControlFeatures));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceSubpassMergeFeedbackFeaturesEXT));
+        chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceSwapchainMaintenance1FeaturesEXT));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceSynchronization2Features));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceTexelBufferAlignmentFeaturesEXT));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&PhysicalDeviceTextureCompressionASTCHDRFeatures));
@@ -3466,18 +3550,24 @@ struct surface_capabilities2_chain {
 #ifdef VK_USE_PLATFORM_WIN32_KHR
     VkSurfaceCapabilitiesFullScreenExclusiveEXT SurfaceCapabilitiesFullScreenExclusiveEXT{};
 #endif  // VK_USE_PLATFORM_WIN32_KHR
+    VkSurfacePresentModeCompatibilityEXT SurfacePresentModeCompatibilityEXT{};
+    VkSurfacePresentScalingCapabilitiesEXT SurfacePresentScalingCapabilitiesEXT{};
     VkSurfaceProtectedCapabilitiesKHR SurfaceProtectedCapabilitiesKHR{};
     void initialize_chain() noexcept {
         SharedPresentSurfaceCapabilitiesKHR.sType = VK_STRUCTURE_TYPE_SHARED_PRESENT_SURFACE_CAPABILITIES_KHR;
 #ifdef VK_USE_PLATFORM_WIN32_KHR
         SurfaceCapabilitiesFullScreenExclusiveEXT.sType = VK_STRUCTURE_TYPE_SURFACE_CAPABILITIES_FULL_SCREEN_EXCLUSIVE_EXT;
 #endif  // VK_USE_PLATFORM_WIN32_KHR
+        SurfacePresentModeCompatibilityEXT.sType = VK_STRUCTURE_TYPE_SURFACE_PRESENT_MODE_COMPATIBILITY_EXT;
+        SurfacePresentScalingCapabilitiesEXT.sType = VK_STRUCTURE_TYPE_SURFACE_PRESENT_SCALING_CAPABILITIES_EXT;
         SurfaceProtectedCapabilitiesKHR.sType = VK_STRUCTURE_TYPE_SURFACE_PROTECTED_CAPABILITIES_KHR;
         std::vector<VkBaseOutStructure*> chain_members;
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&SharedPresentSurfaceCapabilitiesKHR));
 #ifdef VK_USE_PLATFORM_WIN32_KHR
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&SurfaceCapabilitiesFullScreenExclusiveEXT));
 #endif  // VK_USE_PLATFORM_WIN32_KHR
+        chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&SurfacePresentModeCompatibilityEXT));
+        chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&SurfacePresentScalingCapabilitiesEXT));
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&SurfaceProtectedCapabilitiesKHR));
 
         for(size_t i = 0; i < chain_members.size() - 1; i++){
@@ -3526,28 +3616,16 @@ struct queue_properties2_chain {
     queue_properties2_chain& operator=(queue_properties2_chain &&) = delete;
     void* start_of_chain = nullptr;
     VkQueueFamilyGlobalPriorityPropertiesKHR QueueFamilyGlobalPriorityPropertiesKHR{};
-#ifdef VK_ENABLE_BETA_EXTENSIONS
     VkQueueFamilyQueryResultStatusPropertiesKHR QueueFamilyQueryResultStatusPropertiesKHR{};
-#endif  // VK_ENABLE_BETA_EXTENSIONS
-#ifdef VK_ENABLE_BETA_EXTENSIONS
     VkQueueFamilyVideoPropertiesKHR QueueFamilyVideoPropertiesKHR{};
-#endif  // VK_ENABLE_BETA_EXTENSIONS
     void initialize_chain() noexcept {
         QueueFamilyGlobalPriorityPropertiesKHR.sType = VK_STRUCTURE_TYPE_QUEUE_FAMILY_GLOBAL_PRIORITY_PROPERTIES_KHR;
-#ifdef VK_ENABLE_BETA_EXTENSIONS
         QueueFamilyQueryResultStatusPropertiesKHR.sType = VK_STRUCTURE_TYPE_QUEUE_FAMILY_QUERY_RESULT_STATUS_PROPERTIES_KHR;
-#endif  // VK_ENABLE_BETA_EXTENSIONS
-#ifdef VK_ENABLE_BETA_EXTENSIONS
         QueueFamilyVideoPropertiesKHR.sType = VK_STRUCTURE_TYPE_QUEUE_FAMILY_VIDEO_PROPERTIES_KHR;
-#endif  // VK_ENABLE_BETA_EXTENSIONS
         std::vector<VkBaseOutStructure*> chain_members;
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&QueueFamilyGlobalPriorityPropertiesKHR));
-#ifdef VK_ENABLE_BETA_EXTENSIONS
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&QueueFamilyQueryResultStatusPropertiesKHR));
-#endif  // VK_ENABLE_BETA_EXTENSIONS
-#ifdef VK_ENABLE_BETA_EXTENSIONS
         chain_members.push_back(reinterpret_cast<VkBaseOutStructure*>(&QueueFamilyVideoPropertiesKHR));
-#endif  // VK_ENABLE_BETA_EXTENSIONS
 
         for(size_t i = 0; i < chain_members.size() - 1; i++){
             chain_members[i]->pNext = chain_members[i + 1];
@@ -4465,6 +4543,12 @@ void chain_iterator_phys_device_features2(Printer &p, AppGpu &gpu, void * place)
             DumpVkPhysicalDeviceSubpassMergeFeedbackFeaturesEXT(p, "VkPhysicalDeviceSubpassMergeFeedbackFeaturesEXT", *props);
             p.AddNewline();
         }
+        if (structure->sType == VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SWAPCHAIN_MAINTENANCE_1_FEATURES_EXT &&
+           (gpu.CheckPhysicalDeviceExtensionIncluded(VK_EXT_SWAPCHAIN_MAINTENANCE_1_EXTENSION_NAME))) {
+            VkPhysicalDeviceSwapchainMaintenance1FeaturesEXT* props = (VkPhysicalDeviceSwapchainMaintenance1FeaturesEXT*)structure;
+            DumpVkPhysicalDeviceSwapchainMaintenance1FeaturesEXT(p, "VkPhysicalDeviceSwapchainMaintenance1FeaturesEXT", *props);
+            p.AddNewline();
+        }
         if (structure->sType == VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SYNCHRONIZATION_2_FEATURES &&
            (gpu.CheckPhysicalDeviceExtensionIncluded(VK_KHR_SYNCHRONIZATION_2_EXTENSION_NAME) ||
             gpu.api_version.minor >= 3)) {
@@ -4595,6 +4679,18 @@ void chain_iterator_surface_capabilities2(Printer &p, AppInstance &inst, AppGpu 
             p.AddNewline();
         }
 #endif  // VK_USE_PLATFORM_WIN32_KHR
+        if (structure->sType == VK_STRUCTURE_TYPE_SURFACE_PRESENT_MODE_COMPATIBILITY_EXT &&
+           (inst.CheckExtensionEnabled(VK_EXT_SURFACE_MAINTENANCE_1_EXTENSION_NAME))) {
+            VkSurfacePresentModeCompatibilityEXT* props = (VkSurfacePresentModeCompatibilityEXT*)structure;
+            DumpVkSurfacePresentModeCompatibilityEXT(p, "VkSurfacePresentModeCompatibilityEXT", *props);
+            p.AddNewline();
+        }
+        if (structure->sType == VK_STRUCTURE_TYPE_SURFACE_PRESENT_SCALING_CAPABILITIES_EXT &&
+           (inst.CheckExtensionEnabled(VK_EXT_SURFACE_MAINTENANCE_1_EXTENSION_NAME))) {
+            VkSurfacePresentScalingCapabilitiesEXT* props = (VkSurfacePresentScalingCapabilitiesEXT*)structure;
+            DumpVkSurfacePresentScalingCapabilitiesEXT(p, "VkSurfacePresentScalingCapabilitiesEXT", *props);
+            p.AddNewline();
+        }
         if (structure->sType == VK_STRUCTURE_TYPE_SURFACE_PROTECTED_CAPABILITIES_KHR &&
            (inst.CheckExtensionEnabled(VK_KHR_SURFACE_PROTECTED_CAPABILITIES_EXTENSION_NAME))) {
             VkSurfaceProtectedCapabilitiesKHR* props = (VkSurfaceProtectedCapabilitiesKHR*)structure;
@@ -4634,22 +4730,18 @@ void chain_iterator_queue_properties2(Printer &p, AppGpu &gpu, void * place) {
             DumpVkQueueFamilyGlobalPriorityPropertiesKHR(p, "VkQueueFamilyGlobalPriorityPropertiesKHR", *props);
             p.AddNewline();
         }
-#ifdef VK_ENABLE_BETA_EXTENSIONS
         if (structure->sType == VK_STRUCTURE_TYPE_QUEUE_FAMILY_QUERY_RESULT_STATUS_PROPERTIES_KHR &&
            (gpu.CheckPhysicalDeviceExtensionIncluded(VK_KHR_VIDEO_QUEUE_EXTENSION_NAME))) {
             VkQueueFamilyQueryResultStatusPropertiesKHR* props = (VkQueueFamilyQueryResultStatusPropertiesKHR*)structure;
             DumpVkQueueFamilyQueryResultStatusPropertiesKHR(p, "VkQueueFamilyQueryResultStatusPropertiesKHR", *props);
             p.AddNewline();
         }
-#endif  // VK_ENABLE_BETA_EXTENSIONS
-#ifdef VK_ENABLE_BETA_EXTENSIONS
         if (structure->sType == VK_STRUCTURE_TYPE_QUEUE_FAMILY_VIDEO_PROPERTIES_KHR &&
            (gpu.CheckPhysicalDeviceExtensionIncluded(VK_KHR_VIDEO_QUEUE_EXTENSION_NAME))) {
             VkQueueFamilyVideoPropertiesKHR* props = (VkQueueFamilyVideoPropertiesKHR*)structure;
             DumpVkQueueFamilyVideoPropertiesKHR(p, "VkQueueFamilyVideoPropertiesKHR", *props);
             p.AddNewline();
         }
-#endif  // VK_ENABLE_BETA_EXTENSIONS
         place = structure->pNext;
     }
 }

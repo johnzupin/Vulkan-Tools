@@ -93,7 +93,7 @@ from this set of release binaries.
 If you don't wish the CMake code to download these binaries, then you must
 clone the [glslang repository](https://github.com/KhronosGroup/glslang) and
 build its `install` target. Follow the build instructions in the glslang
-[README.md](https://github.com/KhronosGroup/glslang/blob/master/README.md)
+[README.md](https://github.com/KhronosGroup/glslang/blob/main/README.md)
 file. Ensure that the `update_glslang_sources.py` script has been run as part
 of building glslang. You must also take note of the glslang install directory
 and pass it on the CMake command line for building this repository, as
@@ -677,11 +677,6 @@ NOTE: To force the OSX version set the environment variable [MACOSX_DEPLOYMENT_T
 
 Setup Homebrew and components
 
-- Follow instructions on [brew.sh](http://brew.sh) to get Homebrew installed.
-
-      /usr/bin/ruby -e "$(curl -fsSL \
-          https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
 - Ensure Homebrew is at the beginning of your PATH:
 
       export PATH=/usr/local/bin:$PATH
@@ -748,7 +743,6 @@ You can now run the demo applications from the command line:
 
     open cube/vkcube.app
     open cube/vkcubepp.app
-    open vulkaninfo/vulkaninfo.app
 
 Or you can locate them from `Finder` and launch them from there.
 
@@ -788,10 +782,9 @@ run the `otool` command again from the `build/install` directory and note:
 The "bundle fix-up" operation also puts a copy of the Vulkan loader into the
 bundle, making the bundle completely self-contained and self-referencing.
 
-##### The Non-bundled vulkaninfo Application
+##### The vulkaninfo Application
 
-There is also a non-bundled version of the `vulkaninfo` application that you
-can run from the command line:
+There is also a `vulkaninfo` application that you can run from the command line:
 
     vulkaninfo/vulkaninfo
 
