@@ -1,0 +1,122 @@
+name: build-focal-package
+run-name: Build Debian style packages for Ubuntu
+on:
+  push:
+  workflow_call:
+    inputs:
+      vh:
+        required: false
+        type: string
+        default: '{"repo":"","ref":""}'
+      vl:
+        required: false
+        type: string
+        default: '{"repo":"","ref":""}'
+      vt:
+        required: true
+        type: string
+        default: '{"repo":"johnzupin/Vulkan-Tools","ref":"ubuntu/focal"}'
+        description: "A json object that defines repo and ref. Ex) {repo:KhronosGroup/Vulkan-Tools, ref:ubuntu/focal}"
+  workflow_dispatch:
+    inputs:
+      vh:
+        required: false
+        type: string
+        default: '{"repo":"","ref":""}'
+      vl:
+        required: false
+        type: string
+        default: '{"repo":"","ref":""}'
+      vt:
+        required: true
+        type: string
+        default: '{"repo":"johnzupin/Vulkan-Tools","ref":"ubuntu/focal"}'
+        description: "A json object that defines repo and ref. Ex) {repo:KhronosGroup/Vulkan-Tools, ref:ubuntu/focal}"
+
+jobs:
+  get-vt-deps:
+    runs-on: ubuntu-latest
+    outputs:
+      vh-repo: ${{ steps.parse-deps.outputs.VH_REPO }}
+      vh-ref: ${{ steps.parse-deps.outputs.VH_REF }}
+      vl-repo: ${{ steps.parse-deps.outputs.VL_REPO }}
+      vl-ref: ${{ steps.parse-deps.outputs.VL_REF }}
+      vt-repo: ${{ steps.parse-deps.outputs.VT_REPO }}
+      vt-ref: ${{ steps.parse-deps.outputs.VT_REF }}
+    steps:
+      - name: "Inputs have been specified - Set repo/ref variables with specified input"
+        if: ${{ inputs.vt != '' }}
+        run: |
+          echo VH_REPO="${{ fromJSON(inputs.vh).repo }}" >> "$GITHUB_ENV"
+          echo VH_REF="${{ fromJSON(inputs.vh).ref }}" >> "$GITHUB_ENV"
+          echo VL_REPO="${{ fromJSON(inputs.vl).repo }}" >> "$GITHUB_ENV"
+          echo VL_REF="${{ fromJSON(inputs.vl).ref }}" >> "$GITHUB_ENV"
+          echo VT_REPO="${{ fromJSON(inputs.vt).repo }}" >> "$GITHUB_ENV"
+          echo VT_REF="${{ fromJSON(inputs.vt).ref }}" >> "$GITHUB_ENV"
+      - name:  "No inputs specified - Checkout the repository to get dependency versions from the  known_good.json file"
+        if: ${{ inputs.vt == '' }}
+        uses: actions/checkout@v3
+      - name: "No input specified - Parse the known_good.json file to get the dependency refs for building package dependencies"
+        if: ${{ inputs.vt == '' }}
+        run: |
+          # WARNING: the spirv-headers/spirv-tools/etc repo is hardcoded to johnzupin org, this needs to change to Khronos when /debian gets merged
+          echo VH_REPO="johnzupin/Vulkan-Headers" >> "$GITHUB_ENV"
+          echo VH_REF=`jq -r '.repos[0].commit' scripts/known_good.json` >> "$GITHUB_ENV"
+          echo VL_REPO="johnzupin/Vulkan-Loader" >> "$GITHUB_ENV"
+          echo VL_REF=`jq -r '.repos[2].commit' scripts/known_good.json` >> "$GITHUB_ENV"
+          echo VT_REPO="$GITHUB_REPOSITORY" >> "$GITHUB_ENV"
+          echo VT_REF="$GITHUB_REF_NAME" >> "$GITHUB_ENV"
+      - id: parse-deps
+        run: |
+          echo VH_REPO="${{ env.VH_REPO }}" >> "$GITHUB_OUTPUT"
+          echo VH_REF="${{ env.VH_REF }}" >> "$GITHUB_OUTPUT"
+          echo VL_REPO="${{ env.VL_REPO }}" >> "$GITHUB_OUTPUT"
+          echo VL_REF="${{ env.VL_REF }}" >> "$GITHUB_OUTPUT"
+          echo VT_REPO="${{ env.VT_REPO }}" >> "$GITHUB_OUTPUT"
+          echo VT_REF="${{ env.VT_REF }}" >> "$GITHUB_OUTPUT"
+
+  build-vulkan-headers-package:
+    needs: "get-vt-deps"
+    if: ${{ needs.get-vt-deps.outputs.vh-repo != '' && needs.get-vt-deps.outputs.vh-ref != '' }}
+    uses: johnzupin/Vulkan-Headers/.github/workflows/build-ubuntu-packages.yml@zupin_create_workflow_ubuntu_package
+    with:
+      vh: '{"repo":"${{ needs.get-vt-deps.outputs.vh-repo }}","ref":"${{ needs.get-vt-deps.outputs.vh-ref }}"}'
+
+  build-vulkan-loader-package:
+    needs: [ "get-vt-deps", "build-vulkan-headers-package" ]
+    if: ${{ needs.get-vt-deps.outputs.vl-repo != '' && needs.get-vt-deps.outputs.vl-ref != '' }}
+    uses: johnzupin/Vulkan-Loader/.github/workflows/build-focal-package.yml@zupin_create_workflow_ubuntu_package
+    with:
+      vl: '{"repo":"${{ needs.get-vt-deps.outputs.vl-repo }}","ref":"${{ needs.get-vt-deps.outputs.vl-ref }}"}'
+
+  build-vulkan-tools-amd64-focal-package:
+    needs:  [ "get-vt-deps", "build-vulkan-headers-package", "build-vulkan-loader-package" ]
+    if: ${{ needs.build-vulkan-headers-package.result == 'skipped' || needs.build-vulkan-loader-package.result == 'skipped' || success() }}
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:20.04
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: "vulkan-headers-focal-package"
+          path: "/tmp/"
+      - uses: actions/download-artifact@v3
+        with:
+          name: "vulkan-loader-focal-amd64-package"
+          path: "/tmp/"
+      - run: "apt-get install -y /tmp/vulkan-headers*.deb /tmp/libvulkan*.deb"
+      - run: |
+          apt-get update && \
+          DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y \
+          wget pkg-config git cmake build-essential git-buildpackage debhelper \
+          libx11-xcb-dev libxkbcommon-dev libwayland-dev libxrandr-dev wayland-protocols
+      - uses: actions/checkout@v3
+        with:
+          repository: "${{ needs.get-vt-deps.outputs.vt-repo }}"
+          ref: "${{ needs.get-vt-deps.outputs.vt-ref }}"
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - run: gbp buildpackage --git-verbose --git-force-create --git-upstream-tree="branch" --git-ignore-branch --git-upstream-branch="${{ needs.get-vt-deps.outputs.vt-ref }}" --no-sign
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "vulkan-tools-focal-package"
+          path: "${{ runner.workspace }}/vulkan-tools*20.04*amd64.deb"
