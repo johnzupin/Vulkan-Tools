@@ -1,3 +1,46 @@
+vulkan-tools (1.3.241.0~rc1-1lunarg22.04-1) jammy; urgency=medium
+
+  [ Charles Giessen ]
+  * vulkaninfo: Fix rc file copyright and other mistakes
+
+  [ Richard S. Wright Jr ]
+  * Update MoltenVK known good tag
+
+  [ Juan Ramos ]
+  * cmake: Raise min to 3.17
+  * ci: Fix CI warnings
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.240
+  * ci: Update GN toolchain
+  * gn: Add ninja to DEPS
+
+  [ Juan Ramos ]
+  * cmake: Remove custom install code
+
+  [ spencer-lunarg ]
+  * mockicd: Add more PhysicalDevice functions not in profiles
+  * mockicd: Add non-zero timestampValidBits
+  * mockicd: Fix and finish vkGetPhysicalDeviceProperties2KHR
+  * mockicd: Add Protected Queue
+
+  [ berryboy2012 ]
+  * Fixed cube.cpp crashing on Windows when minimized.
+
+  [ spencer-lunarg ]
+  * mockicd: Add more Memory Types
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.241
+
+  [ spencer-lunarg ]
+  * mockicd: Add Support for testing Ray Tracing
+
+  [ Charles Giessen ]
+  * vulkaninfo: Fix wrong stripping in flag strings
+
+ -- john <john@odin>  Mon, 06 Mar 2023 14:05:41 -0700
+
 vulkan-tools (1.3.239.0~rc2-1lunarg22.04-1) jammy; urgency=medium
 
   [ Charles Giessen ]
