@@ -36,9 +36,6 @@ indicated by *install_dir*:
 - *install_dir*`/lib` : The mock ICD library and JSON (Windows) (If INSTALL_ICD=ON)
 - *install_dir*`/share/vulkan/icd.d` : mock ICD JSON (Linux/MacOS) (If INSTALL_ICD=ON)
 
-The `uninstall` target can be used to remove the above files from the install
-directory.
-
 ## Repository Set-Up
 
 ### Display Drivers
@@ -267,7 +264,7 @@ Also `CMAKE_EXPORT_COMPILE_COMMANDS` is implemented only by Makefile and Ninja g
     - [2017](https://www.visualstudio.com/vs/downloads/)
   - The Community Edition of each of the above versions is sufficient, as
     well as any more capable edition.
-- [CMake 3.10.2](https://cmake.org/files/v3.10/cmake-3.10.2-win64-x64.zip) is recommended.
+- [CMake 3.17.2](https://cmake.org/files/v3.17/cmake-3.17.2-win64-x64.zip) is recommended.
   - Use the installer option to add CMake to the system PATH
 - Git Client Support
   - [Git for Windows](http://git-scm.com/download/win) is a popular solution
@@ -355,23 +352,6 @@ build folder. You may select "Debug" or "Release" from the Solution
 Configurations drop-down list. Start a build by selecting the Build->Build
 Solution menu item.
 
-#### Windows Install Target
-
-The CMake project also generates an "install" target that you can use to copy
-the primary build artifacts to a specific location using a "bin, include, lib"
-style directory structure. This may be useful for collecting the artifacts and
-providing them to another project that is dependent on them.
-
-The default location is `$CMAKE_BINARY_DIR\install`, but can be changed with
-the `CMAKE_INSTALL_PREFIX` variable when first generating the project build
-files with CMake.
-
-You can build the install target from the command line with:
-
-    cmake --build . --config Release --target install
-
-or build the `INSTALL` target from the Visual Studio solution explorer.
-
 #### Using a Loader Built from a Repository
 
 If you do need to build and use your own loader, build the Vulkan-Loader
@@ -414,7 +394,7 @@ that the minimum officially supported C++11 compiler version is GCC 5.4.0,
 although earlier versions may work. It should be straightforward to adapt this
 repository to other Linux distributions.
 
-[CMake 3.10.2](https://cmake.org/files/v3.10/cmake-3.10.2-Linux-x86_64.tar.gz) is recommended.
+[CMake 3.17.2](https://cmake.org/files/v3.17/cmake-3.17.2-Linux-x86_64.tar.gz) is recommended.
 
 #### Required Package List
 
@@ -548,12 +528,6 @@ further customize your installation.
 Also see the `LoaderAndLayerInterface` document in the `loader` folder of the
 Vulkan-Loader repository for more information about loader and layer
 operation.
-
-#### Linux Uninstall
-
-To uninstall the files from the system directories, you can execute:
-
-    sudo make uninstall
 
 ### Linux Tests
 
