@@ -1,3 +1,19 @@
+vulkan-tools (1.3.243.0~rc1-1lunarg22.04-1) jammy; urgency=medium
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.242
+
+  [ spencer-lunarg ]
+  * mockicd: Add Support for testing Video decoding
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.243
+
+  [ Charles Giessen ]
+  * mock_icd: Add missing locks
+
+ -- john <john@odin>  Thu, 23 Mar 2023 15:07:18 -0600
+
 vulkan-tools (1.3.241.0~rc1-1lunarg22.04-1) jammy; urgency=medium
 
   [ Charles Giessen ]
