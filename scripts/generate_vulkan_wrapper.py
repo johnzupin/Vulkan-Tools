@@ -632,6 +632,11 @@ VK_KHR_pipeline_executable_properties = Extension(name='VK_KHR_pipeline_executab
     Command(name='vkGetPipelineExecutableInternalRepresentationsKHR', dispatch='VkDevice'),
 ])
 
+VK_KHR_map_memory2 = Extension(name='VK_KHR_map_memory2', version=1, guard=None, commands=[
+    Command(name='vkMapMemory2KHR', dispatch='VkDevice'),
+    Command(name='vkUnmapMemory2KHR', dispatch='VkDevice'),
+])
+
 VK_KHR_shader_integer_dot_product = Extension(name='VK_KHR_shader_integer_dot_product', version=1, guard=None, commands=[
 ])
 
@@ -690,6 +695,9 @@ VK_KHR_maintenance4 = Extension(name='VK_KHR_maintenance4', version=2, guard=Non
     Command(name='vkGetDeviceBufferMemoryRequirementsKHR', dispatch='VkDevice'),
     Command(name='vkGetDeviceImageMemoryRequirementsKHR', dispatch='VkDevice'),
     Command(name='vkGetDeviceImageSparseMemoryRequirementsKHR', dispatch='VkDevice'),
+])
+
+VK_KHR_ray_tracing_position_fetch = Extension(name='VK_KHR_ray_tracing_position_fetch', version=1, guard=None, commands=[
 ])
 
 VK_EXT_debug_report = Extension(name='VK_EXT_debug_report', version=10, guard=None, commands=[
@@ -1276,7 +1284,7 @@ VK_EXT_attachment_feedback_loop_layout = Extension(name='VK_EXT_attachment_feedb
 VK_EXT_4444_formats = Extension(name='VK_EXT_4444_formats', version=1, guard=None, commands=[
 ])
 
-VK_EXT_device_fault = Extension(name='VK_EXT_device_fault', version=1, guard=None, commands=[
+VK_EXT_device_fault = Extension(name='VK_EXT_device_fault', version=2, guard=None, commands=[
     Command(name='vkGetDeviceFaultInfoEXT', dispatch='VkDevice'),
 ])
 
@@ -1354,6 +1362,9 @@ VK_EXT_multi_draw = Extension(name='VK_EXT_multi_draw', version=1, guard=None, c
 VK_EXT_image_2d_view_of_3d = Extension(name='VK_EXT_image_2d_view_of_3d', version=1, guard=None, commands=[
 ])
 
+VK_EXT_shader_tile_image = Extension(name='VK_EXT_shader_tile_image', version=1, guard=None, commands=[
+])
+
 VK_EXT_opacity_micromap = Extension(name='VK_EXT_opacity_micromap', version=2, guard=None, commands=[
     Command(name='vkCreateMicromapEXT', dispatch='VkDevice'),
     Command(name='vkDestroyMicromapEXT', dispatch='VkDevice'),
@@ -1374,7 +1385,7 @@ VK_EXT_opacity_micromap = Extension(name='VK_EXT_opacity_micromap', version=2, g
 VK_EXT_load_store_op_none = Extension(name='VK_EXT_load_store_op_none', version=1, guard=None, commands=[
 ])
 
-VK_HUAWEI_cluster_culling_shader = Extension(name='VK_HUAWEI_cluster_culling_shader', version=1, guard=None, commands=[
+VK_HUAWEI_cluster_culling_shader = Extension(name='VK_HUAWEI_cluster_culling_shader', version=2, guard=None, commands=[
     Command(name='vkCmdDrawClusterHUAWEI', dispatch='VkCommandBuffer'),
     Command(name='vkCmdDrawClusterIndirectHUAWEI', dispatch='VkCommandBuffer'),
 ])
@@ -1490,6 +1501,13 @@ VK_EXT_legacy_dithering = Extension(name='VK_EXT_legacy_dithering', version=1, g
 VK_EXT_pipeline_protected_access = Extension(name='VK_EXT_pipeline_protected_access', version=1, guard=None, commands=[
 ])
 
+VK_EXT_shader_object = Extension(name='VK_EXT_shader_object', version=1, guard=None, commands=[
+    Command(name='vkCreateShadersEXT', dispatch='VkDevice'),
+    Command(name='vkDestroyShaderEXT', dispatch='VkDevice'),
+    Command(name='vkGetShaderBinaryDataEXT', dispatch='VkDevice'),
+    Command(name='vkCmdBindShadersEXT', dispatch='VkCommandBuffer'),
+])
+
 VK_QCOM_tile_properties = Extension(name='VK_QCOM_tile_properties', version=1, guard=None, commands=[
     Command(name='vkGetFramebufferTilePropertiesQCOM', dispatch='VkDevice'),
     Command(name='vkGetDynamicRenderingTilePropertiesQCOM', dispatch='VkDevice'),
@@ -1514,6 +1532,10 @@ VK_EXT_pipeline_library_group_handles = Extension(name='VK_EXT_pipeline_library_
 ])
 
 VK_QCOM_multiview_per_view_render_areas = Extension(name='VK_QCOM_multiview_per_view_render_areas', version=1, guard=None, commands=[
+])
+
+VK_EXT_attachment_feedback_loop_dynamic_state = Extension(name='VK_EXT_attachment_feedback_loop_dynamic_state', version=1, guard=None, commands=[
+    Command(name='vkCmdSetAttachmentFeedbackLoopEnableEXT', dispatch='VkCommandBuffer'),
 ])
 
 VK_KHR_acceleration_structure = Extension(name='VK_KHR_acceleration_structure', version=13, guard=None, commands=[
@@ -1696,6 +1718,9 @@ VK_EXT_video_encode_h264 = Extension(name='VK_EXT_video_encode_h264', version=10
 VK_EXT_video_encode_h265 = Extension(name='VK_EXT_video_encode_h265', version=10, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
 ])
 
+VK_NV_displacement_micromap = Extension(name='VK_NV_displacement_micromap', version=1, guard='VK_ENABLE_BETA_EXTENSIONS', commands=[
+])
+
 extensions = [
     VK_core_0,
     VK_core_1,
@@ -1769,6 +1794,7 @@ extensions = [
     VK_KHR_buffer_device_address,
     VK_KHR_deferred_host_operations,
     VK_KHR_pipeline_executable_properties,
+    VK_KHR_map_memory2,
     VK_KHR_shader_integer_dot_product,
     VK_KHR_pipeline_library,
     VK_KHR_shader_non_semantic_info,
@@ -1783,6 +1809,7 @@ extensions = [
     VK_KHR_ray_tracing_maintenance1,
     VK_KHR_portability_enumeration,
     VK_KHR_maintenance4,
+    VK_KHR_ray_tracing_position_fetch,
     VK_EXT_debug_report,
     VK_NV_glsl_shader,
     VK_EXT_depth_range_unrestricted,
@@ -1952,6 +1979,7 @@ extensions = [
     VK_EXT_image_view_min_lod,
     VK_EXT_multi_draw,
     VK_EXT_image_2d_view_of_3d,
+    VK_EXT_shader_tile_image,
     VK_EXT_opacity_micromap,
     VK_EXT_load_store_op_none,
     VK_HUAWEI_cluster_culling_shader,
@@ -1977,6 +2005,7 @@ extensions = [
     VK_NV_optical_flow,
     VK_EXT_legacy_dithering,
     VK_EXT_pipeline_protected_access,
+    VK_EXT_shader_object,
     VK_QCOM_tile_properties,
     VK_SEC_amigo_profiling,
     VK_QCOM_multiview_per_view_viewports,
@@ -1985,6 +2014,7 @@ extensions = [
     VK_ARM_shader_core_builtins,
     VK_EXT_pipeline_library_group_handles,
     VK_QCOM_multiview_per_view_render_areas,
+    VK_EXT_attachment_feedback_loop_dynamic_state,
     VK_KHR_acceleration_structure,
     VK_KHR_ray_tracing_pipeline,
     VK_KHR_ray_query,
@@ -2021,6 +2051,7 @@ extensions = [
     VK_KHR_video_encode_queue,
     VK_EXT_video_encode_h264,
     VK_EXT_video_encode_h265,
+    VK_NV_displacement_micromap,
 ]
 # end of generated code
 

@@ -272,6 +272,7 @@ static const std::unordered_map<std::string, uint32_t> device_extension_map = {
     {"VK_EXT_extended_dynamic_state", 1},
     {"VK_KHR_deferred_host_operations", 4},
     {"VK_KHR_pipeline_executable_properties", 1},
+    {"VK_KHR_map_memory2", 1},
     {"VK_EXT_shader_atomic_float2", 1},
     {"VK_EXT_swapchain_maintenance1", 1},
     {"VK_EXT_shader_demote_to_helper_invocation", 1},
@@ -315,7 +316,7 @@ static const std::unordered_map<std::string, uint32_t> device_extension_map = {
     {"VK_EXT_image_compression_control", 1},
     {"VK_EXT_attachment_feedback_loop_layout", 2},
     {"VK_EXT_4444_formats", 1},
-    {"VK_EXT_device_fault", 1},
+    {"VK_EXT_device_fault", 2},
     {"VK_ARM_rasterization_order_attachment_access", 1},
     {"VK_EXT_rgba10x6_formats", 1},
     {"VK_NV_acquire_winrt_display", 1},
@@ -344,9 +345,11 @@ static const std::unordered_map<std::string, uint32_t> device_extension_map = {
     {"VK_EXT_image_view_min_lod", 1},
     {"VK_EXT_multi_draw", 1},
     {"VK_EXT_image_2d_view_of_3d", 1},
+    {"VK_EXT_shader_tile_image", 1},
     {"VK_EXT_opacity_micromap", 2},
+    {"VK_NV_displacement_micromap", 1},
     {"VK_EXT_load_store_op_none", 1},
-    {"VK_HUAWEI_cluster_culling_shader", 1},
+    {"VK_HUAWEI_cluster_culling_shader", 2},
     {"VK_EXT_border_color_swizzle", 1},
     {"VK_EXT_pageable_device_local_memory", 1},
     {"VK_KHR_maintenance4", 2},
@@ -368,6 +371,8 @@ static const std::unordered_map<std::string, uint32_t> device_extension_map = {
     {"VK_NV_optical_flow", 1},
     {"VK_EXT_legacy_dithering", 1},
     {"VK_EXT_pipeline_protected_access", 1},
+    {"VK_KHR_ray_tracing_position_fetch", 1},
+    {"VK_EXT_shader_object", 1},
     {"VK_QCOM_tile_properties", 1},
     {"VK_SEC_amigo_profiling", 1},
     {"VK_QCOM_multiview_per_view_viewports", 1},
@@ -377,6 +382,7 @@ static const std::unordered_map<std::string, uint32_t> device_extension_map = {
     {"VK_ARM_shader_core_builtins", 2},
     {"VK_EXT_pipeline_library_group_handles", 1},
     {"VK_QCOM_multiview_per_view_render_areas", 1},
+    {"VK_EXT_attachment_feedback_loop_dynamic_state", 1},
 };
 
 
@@ -2308,6 +2314,16 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetPipelineExecutableInternalRepresentatio
     VkPipelineExecutableInternalRepresentationKHR* pInternalRepresentations);
 
 
+static VKAPI_ATTR VkResult VKAPI_CALL MapMemory2KHR(
+    VkDevice                                    device,
+    const VkMemoryMapInfoKHR*                   pMemoryMapInfo,
+    void**                                      ppData);
+
+static VKAPI_ATTR VkResult VKAPI_CALL UnmapMemory2KHR(
+    VkDevice                                    device,
+    const VkMemoryUnmapInfoKHR*                 pMemoryUnmapInfo);
+
+
 
 
 
@@ -2415,6 +2431,7 @@ static VKAPI_ATTR void VKAPI_CALL GetDeviceImageSparseMemoryRequirementsKHR(
     const VkDeviceImageMemoryRequirements*      pInfo,
     uint32_t*                                   pSparseMemoryRequirementCount,
     VkSparseImageMemoryRequirements2*           pSparseMemoryRequirements);
+
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateDebugReportCallbackEXT(
@@ -3668,6 +3685,7 @@ static VKAPI_ATTR void VKAPI_CALL CmdDrawMultiIndexedEXT(
 
 
 
+
 static VKAPI_ATTR VkResult VKAPI_CALL CreateMicromapEXT(
     VkDevice                                    device,
     const VkMicromapCreateInfoEXT*              pCreateInfo,
@@ -3744,6 +3762,9 @@ static VKAPI_ATTR void VKAPI_CALL GetMicromapBuildSizesEXT(
     VkAccelerationStructureBuildTypeKHR         buildType,
     const VkMicromapBuildInfoEXT*               pBuildInfo,
     VkMicromapBuildSizesInfoEXT*                pSizeInfo);
+
+#ifdef VK_ENABLE_BETA_EXTENSIONS
+#endif /* VK_ENABLE_BETA_EXTENSIONS */
 
 
 
@@ -3997,6 +4018,31 @@ static VKAPI_ATTR void VKAPI_CALL CmdOpticalFlowExecuteNV(
 
 
 
+static VKAPI_ATTR VkResult VKAPI_CALL CreateShadersEXT(
+    VkDevice                                    device,
+    uint32_t                                    createInfoCount,
+    const VkShaderCreateInfoEXT*                pCreateInfos,
+    const VkAllocationCallbacks*                pAllocator,
+    VkShaderEXT*                                pShaders);
+
+static VKAPI_ATTR void VKAPI_CALL DestroyShaderEXT(
+    VkDevice                                    device,
+    VkShaderEXT                                 shader,
+    const VkAllocationCallbacks*                pAllocator);
+
+static VKAPI_ATTR VkResult VKAPI_CALL GetShaderBinaryDataEXT(
+    VkDevice                                    device,
+    VkShaderEXT                                 shader,
+    size_t*                                     pDataSize,
+    void*                                       pData);
+
+static VKAPI_ATTR void VKAPI_CALL CmdBindShadersEXT(
+    VkCommandBuffer                             commandBuffer,
+    uint32_t                                    stageCount,
+    const VkShaderStageFlagBits*                pStages,
+    const VkShaderEXT*                          pShaders);
+
+
 static VKAPI_ATTR VkResult VKAPI_CALL GetFramebufferTilePropertiesQCOM(
     VkDevice                                    device,
     VkFramebuffer                               framebuffer,
@@ -4014,6 +4060,11 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetDynamicRenderingTilePropertiesQCOM(
 
 
 
+
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetAttachmentFeedbackLoopEnableEXT(
+    VkCommandBuffer                             commandBuffer,
+    VkImageAspectFlags                          aspectMask);
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateAccelerationStructureKHR(
@@ -4545,6 +4596,8 @@ static const std::unordered_map<std::string, void*> name_to_funcptr_map = {
     {"vkGetPipelineExecutablePropertiesKHR", (void*)GetPipelineExecutablePropertiesKHR},
     {"vkGetPipelineExecutableStatisticsKHR", (void*)GetPipelineExecutableStatisticsKHR},
     {"vkGetPipelineExecutableInternalRepresentationsKHR", (void*)GetPipelineExecutableInternalRepresentationsKHR},
+    {"vkMapMemory2KHR", (void*)MapMemory2KHR},
+    {"vkUnmapMemory2KHR", (void*)UnmapMemory2KHR},
 #ifdef VK_ENABLE_BETA_EXTENSIONS
     {"vkCmdEncodeVideoKHR", (void*)CmdEncodeVideoKHR},
 #endif
@@ -4875,8 +4928,13 @@ static const std::unordered_map<std::string, void*> name_to_funcptr_map = {
     {"vkDestroyOpticalFlowSessionNV", (void*)DestroyOpticalFlowSessionNV},
     {"vkBindOpticalFlowSessionImageNV", (void*)BindOpticalFlowSessionImageNV},
     {"vkCmdOpticalFlowExecuteNV", (void*)CmdOpticalFlowExecuteNV},
+    {"vkCreateShadersEXT", (void*)CreateShadersEXT},
+    {"vkDestroyShaderEXT", (void*)DestroyShaderEXT},
+    {"vkGetShaderBinaryDataEXT", (void*)GetShaderBinaryDataEXT},
+    {"vkCmdBindShadersEXT", (void*)CmdBindShadersEXT},
     {"vkGetFramebufferTilePropertiesQCOM", (void*)GetFramebufferTilePropertiesQCOM},
     {"vkGetDynamicRenderingTilePropertiesQCOM", (void*)GetDynamicRenderingTilePropertiesQCOM},
+    {"vkCmdSetAttachmentFeedbackLoopEnableEXT", (void*)CmdSetAttachmentFeedbackLoopEnableEXT},
     {"vkCreateAccelerationStructureKHR", (void*)CreateAccelerationStructureKHR},
     {"vkDestroyAccelerationStructureKHR", (void*)DestroyAccelerationStructureKHR},
     {"vkCmdBuildAccelerationStructuresKHR", (void*)CmdBuildAccelerationStructuresKHR},
