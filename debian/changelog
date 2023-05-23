@@ -1,3 +1,72 @@
+vulkan-tools (1.3.250.0~rc1-1lunarg22.04-1) jammy; urgency=medium
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.244
+
+  [ Charles Giessen ]
+  * vulkaninfo: Stopgap fix for old copyrights
+  * vulkaninfo: Dont enable Direct Driver Loading Ext
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.245
+
+  [ Charles Giessen ]
+  * vkcubepp: Fix custom height not working
+
+  [ Richard S. Wright Jr ]
+  * Updated MoltenVK known good version to 1.2.3
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.246
+
+  [ Andrew Poole ]
+  * cube: Add .gitignore for Android builds
+  * vulkaninfo: Add Android build support
+  * vulkaninfo: Add "VK_" prefix for PrintFlagBits
+
+  [ Charles Giessen ]
+  * ci: Use Ubuntu 22 instead of 18
+  * ci: Remove dependency on libmirclient-dev
+  * vulkaninfo: Use VkFormatFeatureFlags2 by default
+  * cmake: Add build option for Address Sanitizer
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.247
+
+  [ Charles Giessen ]
+  * vulkaninfo: Flush before exiting
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.248
+  * build: Update to header 1.3.249
+
+  [ juan-lunarg ]
+  * mock: Add support for DeviceBufferMemoryRequirements
+  * mock: Add support for vkGetDeviceImageMemoryRequirements
+  * docs: Update README.md
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.250
+
+  [ Powei Feng ]
+  * cube: remove unnecessary use-xlib
+
+  [ juan-lunarg ]
+  * git: Ignore external/ directory
+  * cmake: Add UPDATE_DEPS functionality
+  * ci: Use UPDATE_DEPS and ccache
+  * ci: Speed up MacOS CI
+  * cmake: Keep VulkanRT-License.txt copyright up to date
+
+  [ Artem Kharytoniuk ]
+  * mock: Extend external memory functionality
+
+  [ Scott.Marsland ]
+  * mock: Fix sparse image format properties 2 queries
+  * mock: Fix image sparse mem requirements 2 queries
+
+ -- john <john@odin>  Tue, 23 May 2023 14:46:01 -0600
+
 vulkan-tools (1.3.243.0~rc2-1lunarg22.04-1) jammy; urgency=medium
 
   [ Charles Giessen ]
