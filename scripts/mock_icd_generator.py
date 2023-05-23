@@ -202,6 +202,48 @@ void SetBoolArrayTrue(VkBool32* bool_array, uint32_t num_bools)
         bool_array[i] = VK_TRUE;
     }
 }
+
+VkDeviceSize GetImageSizeFromCreateInfo(const VkImageCreateInfo* pCreateInfo)
+{
+    VkDeviceSize size = pCreateInfo->extent.width;
+    size *= pCreateInfo->extent.height;
+    size *= pCreateInfo->extent.depth;
+    // TODO: A pixel size is 32 bytes. This accounts for the largest possible pixel size of any format. It could be changed to more accurate size if need be.
+    size *= 32;
+    size *= pCreateInfo->arrayLayers;
+    size *= (pCreateInfo->mipLevels > 1 ? 2 : 1);
+
+    switch (pCreateInfo->format) {
+        case VK_FORMAT_G8_B8_R8_3PLANE_420_UNORM:
+        case VK_FORMAT_G8_B8_R8_3PLANE_422_UNORM:
+        case VK_FORMAT_G8_B8_R8_3PLANE_444_UNORM:
+        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_420_UNORM_3PACK16:
+        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_422_UNORM_3PACK16:
+        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_444_UNORM_3PACK16:
+        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_420_UNORM_3PACK16:
+        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_422_UNORM_3PACK16:
+        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_444_UNORM_3PACK16:
+        case VK_FORMAT_G16_B16_R16_3PLANE_420_UNORM:
+        case VK_FORMAT_G16_B16_R16_3PLANE_422_UNORM:
+        case VK_FORMAT_G16_B16_R16_3PLANE_444_UNORM:
+            size *= 3;
+            break;
+        case VK_FORMAT_G8_B8R8_2PLANE_420_UNORM:
+        case VK_FORMAT_G8_B8R8_2PLANE_422_UNORM:
+        case VK_FORMAT_G10X6_B10X6R10X6_2PLANE_420_UNORM_3PACK16:
+        case VK_FORMAT_G10X6_B10X6R10X6_2PLANE_422_UNORM_3PACK16:
+        case VK_FORMAT_G12X4_B12X4R12X4_2PLANE_420_UNORM_3PACK16:
+        case VK_FORMAT_G12X4_B12X4R12X4_2PLANE_422_UNORM_3PACK16:
+        case VK_FORMAT_G16_B16R16_2PLANE_420_UNORM:
+        case VK_FORMAT_G16_B16R16_2PLANE_422_UNORM:
+            size *= 2;
+            break;
+        default:
+            break;
+    }
+
+    return size;
+}
 '''
 
 # Manual code at the end of the cpp source file
@@ -850,7 +892,11 @@ CUSTOM_C_INTERCEPTS = {
     }
 ''',
 'vkGetPhysicalDeviceSparseImageFormatProperties2KHR': '''
-    GetPhysicalDeviceSparseImageFormatProperties(physicalDevice, pFormatInfo->format, pFormatInfo->type, pFormatInfo->samples, pFormatInfo->usage, pFormatInfo->tiling, pPropertyCount, &pProperties->properties);
+    if (pPropertyCount && pProperties) {
+        GetPhysicalDeviceSparseImageFormatProperties(physicalDevice, pFormatInfo->format, pFormatInfo->type, pFormatInfo->samples, pFormatInfo->usage, pFormatInfo->tiling, pPropertyCount, &pProperties->properties);
+    } else {
+        GetPhysicalDeviceSparseImageFormatProperties(physicalDevice, pFormatInfo->format, pFormatInfo->type, pFormatInfo->samples, pFormatInfo->usage, pFormatInfo->tiling, pPropertyCount, nullptr);
+    }
 ''',
 'vkGetPhysicalDeviceProperties': '''
     pProperties->apiVersion = VK_HEADER_VERSION_COMPLETE;
@@ -974,10 +1020,19 @@ CUSTOM_C_INTERCEPTS = {
     GetPhysicalDeviceExternalFenceProperties(physicalDevice, pExternalFenceInfo, pExternalFenceProperties);
 ''',
 'vkGetPhysicalDeviceExternalBufferProperties':'''
-    // Hard-code support for all handle types and features
-    pExternalBufferProperties->externalMemoryProperties.externalMemoryFeatures = 0x7;
-    pExternalBufferProperties->externalMemoryProperties.exportFromImportedHandleTypes = 0x1FF;
-    pExternalBufferProperties->externalMemoryProperties.compatibleHandleTypes = 0x1FF;
+    constexpr VkExternalMemoryHandleTypeFlags supported_flags = 0x1FF;
+    if (pExternalBufferInfo->handleType & supported_flags) {
+        pExternalBufferProperties->externalMemoryProperties.externalMemoryFeatures = 0x7;
+        pExternalBufferProperties->externalMemoryProperties.exportFromImportedHandleTypes = supported_flags;
+        pExternalBufferProperties->externalMemoryProperties.compatibleHandleTypes = supported_flags;
+    } else {
+        pExternalBufferProperties->externalMemoryProperties.externalMemoryFeatures = 0;
+        pExternalBufferProperties->externalMemoryProperties.exportFromImportedHandleTypes = 0;
+        // According to spec, handle type is always compatible with itself. Even if export/import
+        // not supported, it's important to properly implement self-compatibility property since
+        // application's control flow can rely on this.
+        pExternalBufferProperties->externalMemoryProperties.compatibleHandleTypes = pExternalBufferInfo->handleType;
+    }
 ''',
 'vkGetPhysicalDeviceExternalBufferPropertiesKHR':'''
     GetPhysicalDeviceExternalBufferProperties(physicalDevice, pExternalBufferInfo, pExternalBufferProperties);
@@ -1000,6 +1055,17 @@ CUSTOM_C_INTERCEPTS = {
 'vkGetBufferMemoryRequirements2KHR': '''
     GetBufferMemoryRequirements(device, pInfo->buffer, &pMemoryRequirements->memoryRequirements);
 ''',
+'vkGetDeviceBufferMemoryRequirements': '''
+    // TODO: Just hard-coding reqs for now
+    pMemoryRequirements->memoryRequirements.alignment = 1;
+    pMemoryRequirements->memoryRequirements.memoryTypeBits = 0xFFFF;
+
+    // Return a size based on the buffer size from the create info.
+    pMemoryRequirements->memoryRequirements.size = ((pInfo->pCreateInfo->size + 4095) / 4096) * 4096;
+''',
+'vkGetDeviceBufferMemoryRequirementsKHR': '''
+    GetDeviceBufferMemoryRequirements(device, pInfo, pMemoryRequirements);
+''',
 'vkGetImageMemoryRequirements': '''
     pMemoryRequirements->size = 0;
     pMemoryRequirements->alignment = 1;
@@ -1018,6 +1084,15 @@ CUSTOM_C_INTERCEPTS = {
 'vkGetImageMemoryRequirements2KHR': '''
     GetImageMemoryRequirements(device, pInfo->image, &pMemoryRequirements->memoryRequirements);
 ''',
+'vkGetDeviceImageMemoryRequirements': '''
+    pMemoryRequirements->memoryRequirements.size = GetImageSizeFromCreateInfo(pInfo->pCreateInfo);
+    pMemoryRequirements->memoryRequirements.alignment = 1;
+    // Here we hard-code that the memory type at index 3 doesn't support this image.
+    pMemoryRequirements->memoryRequirements.memoryTypeBits = 0xFFFF & ~(0x1 << 3);
+''',
+'vkGetDeviceImageMemoryRequirementsKHR': '''
+    GetDeviceImageMemoryRequirements(device, pInfo, pMemoryRequirements);
+''',
 'vkMapMemory': '''
     unique_lock_t lock(global_lock);
     if (VK_WHOLE_SIZE == size) {
@@ -1031,12 +1106,19 @@ CUSTOM_C_INTERCEPTS = {
     *ppData = map_addr;
     return VK_SUCCESS;
 ''',
+'vkMapMemory2KHR': '''
+    return MapMemory(device, pMemoryMapInfo->memory, pMemoryMapInfo->offset, pMemoryMapInfo->size, pMemoryMapInfo->flags, ppData);
+''',
 'vkUnmapMemory': '''
     unique_lock_t lock(global_lock);
     for (auto map_addr : mapped_memory_map[memory]) {
         free(map_addr);
     }
     mapped_memory_map.erase(memory);
+''',
+'vkUnmapMemory2KHR': '''
+    UnmapMemory(device, pMemoryUnmapInfo->memory);
+    return VK_SUCCESS;
 ''',
 'vkGetImageSubresourceLayout': '''
     // Need safe values. Callers are computing memory offsets from pLayout, with no return code to flag failure.
@@ -1098,38 +1180,7 @@ CUSTOM_C_INTERCEPTS = {
 'vkCreateImage': '''
     unique_lock_t lock(global_lock);
     *pImage = (VkImage)global_unique_handle++;
-    // TODO: A pixel size is 32 bytes. This accounts for the largest possible pixel size of any format. It could be changed to more accurate size if need be.
-    image_memory_size_map[device][*pImage] = pCreateInfo->extent.width * pCreateInfo->extent.height * pCreateInfo->extent.depth *
-                                             32 * pCreateInfo->arrayLayers * (pCreateInfo->mipLevels > 1 ? 2 : 1);
-    // plane count
-    switch (pCreateInfo->format) {
-        case VK_FORMAT_G8_B8_R8_3PLANE_420_UNORM:
-        case VK_FORMAT_G8_B8_R8_3PLANE_422_UNORM:
-        case VK_FORMAT_G8_B8_R8_3PLANE_444_UNORM:
-        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_420_UNORM_3PACK16:
-        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_422_UNORM_3PACK16:
-        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_444_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_420_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_422_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_444_UNORM_3PACK16:
-        case VK_FORMAT_G16_B16_R16_3PLANE_420_UNORM:
-        case VK_FORMAT_G16_B16_R16_3PLANE_422_UNORM:
-        case VK_FORMAT_G16_B16_R16_3PLANE_444_UNORM:
-            image_memory_size_map[device][*pImage] *= 3;
-            break;
-        case VK_FORMAT_G8_B8R8_2PLANE_420_UNORM:
-        case VK_FORMAT_G8_B8R8_2PLANE_422_UNORM:
-        case VK_FORMAT_G10X6_B10X6R10X6_2PLANE_420_UNORM_3PACK16:
-        case VK_FORMAT_G10X6_B10X6R10X6_2PLANE_422_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4R12X4_2PLANE_420_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4R12X4_2PLANE_422_UNORM_3PACK16:
-        case VK_FORMAT_G16_B16R16_2PLANE_420_UNORM:
-        case VK_FORMAT_G16_B16R16_2PLANE_422_UNORM:
-            image_memory_size_map[device][*pImage] *= 2;
-            break;
-        default:
-            break;
-    }
+    image_memory_size_map[device][*pImage] = GetImageSizeFromCreateInfo(pCreateInfo);
     return VK_SUCCESS;
 ''',
 'vkDestroyImage': '''
@@ -1170,6 +1221,14 @@ CUSTOM_C_INTERCEPTS = {
         // arbitrary
         *pTimeDomains = VK_TIME_DOMAIN_DEVICE_EXT;
     }
+    return VK_SUCCESS;
+''',
+'vkGetFenceWin32HandleKHR': '''
+    *pHandle = (HANDLE)0x12345678;
+    return VK_SUCCESS;
+''',
+'vkGetFenceFdKHR': '''
+    *pFd = 0x42;
     return VK_SUCCESS;
 ''',
 'vkEnumeratePhysicalDeviceQueueFamilyPerformanceQueryCountersKHR': '''
@@ -1222,7 +1281,11 @@ CUSTOM_C_INTERCEPTS = {
 
 ''',
 'vkGetImageSparseMemoryRequirements2KHR': '''
-    GetImageSparseMemoryRequirements(device, pInfo->image, pSparseMemoryRequirementCount, &pSparseMemoryRequirements->memoryRequirements);
+    if (pSparseMemoryRequirementCount && pSparseMemoryRequirements) {
+        GetImageSparseMemoryRequirements(device, pInfo->image, pSparseMemoryRequirementCount, &pSparseMemoryRequirements->memoryRequirements);
+    } else {
+        GetImageSparseMemoryRequirements(device, pInfo->image, pSparseMemoryRequirementCount, nullptr);
+    }
 ''',
 'vkGetBufferDeviceAddress': '''
     VkDeviceAddress address = 0;

@@ -179,6 +179,48 @@ void SetBoolArrayTrue(VkBool32* bool_array, uint32_t num_bools)
     }
 }
 
+VkDeviceSize GetImageSizeFromCreateInfo(const VkImageCreateInfo* pCreateInfo)
+{
+    VkDeviceSize size = pCreateInfo->extent.width;
+    size *= pCreateInfo->extent.height;
+    size *= pCreateInfo->extent.depth;
+    // TODO: A pixel size is 32 bytes. This accounts for the largest possible pixel size of any format. It could be changed to more accurate size if need be.
+    size *= 32;
+    size *= pCreateInfo->arrayLayers;
+    size *= (pCreateInfo->mipLevels > 1 ? 2 : 1);
+
+    switch (pCreateInfo->format) {
+        case VK_FORMAT_G8_B8_R8_3PLANE_420_UNORM:
+        case VK_FORMAT_G8_B8_R8_3PLANE_422_UNORM:
+        case VK_FORMAT_G8_B8_R8_3PLANE_444_UNORM:
+        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_420_UNORM_3PACK16:
+        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_422_UNORM_3PACK16:
+        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_444_UNORM_3PACK16:
+        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_420_UNORM_3PACK16:
+        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_422_UNORM_3PACK16:
+        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_444_UNORM_3PACK16:
+        case VK_FORMAT_G16_B16_R16_3PLANE_420_UNORM:
+        case VK_FORMAT_G16_B16_R16_3PLANE_422_UNORM:
+        case VK_FORMAT_G16_B16_R16_3PLANE_444_UNORM:
+            size *= 3;
+            break;
+        case VK_FORMAT_G8_B8R8_2PLANE_420_UNORM:
+        case VK_FORMAT_G8_B8R8_2PLANE_422_UNORM:
+        case VK_FORMAT_G10X6_B10X6R10X6_2PLANE_420_UNORM_3PACK16:
+        case VK_FORMAT_G10X6_B10X6R10X6_2PLANE_422_UNORM_3PACK16:
+        case VK_FORMAT_G12X4_B12X4R12X4_2PLANE_420_UNORM_3PACK16:
+        case VK_FORMAT_G12X4_B12X4R12X4_2PLANE_422_UNORM_3PACK16:
+        case VK_FORMAT_G16_B16R16_2PLANE_420_UNORM:
+        case VK_FORMAT_G16_B16R16_2PLANE_422_UNORM:
+            size *= 2;
+            break;
+        default:
+            break;
+    }
+
+    return size;
+}
+
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateInstance(
@@ -939,38 +981,7 @@ static VKAPI_ATTR VkResult VKAPI_CALL CreateImage(
 {
     unique_lock_t lock(global_lock);
     *pImage = (VkImage)global_unique_handle++;
-    // TODO: A pixel size is 32 bytes. This accounts for the largest possible pixel size of any format. It could be changed to more accurate size if need be.
-    image_memory_size_map[device][*pImage] = pCreateInfo->extent.width * pCreateInfo->extent.height * pCreateInfo->extent.depth *
-                                             32 * pCreateInfo->arrayLayers * (pCreateInfo->mipLevels > 1 ? 2 : 1);
-    // plane count
-    switch (pCreateInfo->format) {
-        case VK_FORMAT_G8_B8_R8_3PLANE_420_UNORM:
-        case VK_FORMAT_G8_B8_R8_3PLANE_422_UNORM:
-        case VK_FORMAT_G8_B8_R8_3PLANE_444_UNORM:
-        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_420_UNORM_3PACK16:
-        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_422_UNORM_3PACK16:
-        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_444_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_420_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_422_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_444_UNORM_3PACK16:
-        case VK_FORMAT_G16_B16_R16_3PLANE_420_UNORM:
-        case VK_FORMAT_G16_B16_R16_3PLANE_422_UNORM:
-        case VK_FORMAT_G16_B16_R16_3PLANE_444_UNORM:
-            image_memory_size_map[device][*pImage] *= 3;
-            break;
-        case VK_FORMAT_G8_B8R8_2PLANE_420_UNORM:
-        case VK_FORMAT_G8_B8R8_2PLANE_422_UNORM:
-        case VK_FORMAT_G10X6_B10X6R10X6_2PLANE_420_UNORM_3PACK16:
-        case VK_FORMAT_G10X6_B10X6R10X6_2PLANE_422_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4R12X4_2PLANE_420_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4R12X4_2PLANE_422_UNORM_3PACK16:
-        case VK_FORMAT_G16_B16R16_2PLANE_420_UNORM:
-        case VK_FORMAT_G16_B16R16_2PLANE_422_UNORM:
-            image_memory_size_map[device][*pImage] *= 2;
-            break;
-        default:
-            break;
-    }
+    image_memory_size_map[device][*pImage] = GetImageSizeFromCreateInfo(pCreateInfo);
     return VK_SUCCESS;
 }
 
@@ -2009,10 +2020,19 @@ static VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceExternalBufferProperties(
     const VkPhysicalDeviceExternalBufferInfo*   pExternalBufferInfo,
     VkExternalBufferProperties*                 pExternalBufferProperties)
 {
-    // Hard-code support for all handle types and features
-    pExternalBufferProperties->externalMemoryProperties.externalMemoryFeatures = 0x7;
-    pExternalBufferProperties->externalMemoryProperties.exportFromImportedHandleTypes = 0x1FF;
-    pExternalBufferProperties->externalMemoryProperties.compatibleHandleTypes = 0x1FF;
+    constexpr VkExternalMemoryHandleTypeFlags supported_flags = 0x1FF;
+    if (pExternalBufferInfo->handleType & supported_flags) {
+        pExternalBufferProperties->externalMemoryProperties.externalMemoryFeatures = 0x7;
+        pExternalBufferProperties->externalMemoryProperties.exportFromImportedHandleTypes = supported_flags;
+        pExternalBufferProperties->externalMemoryProperties.compatibleHandleTypes = supported_flags;
+    } else {
+        pExternalBufferProperties->externalMemoryProperties.externalMemoryFeatures = 0;
+        pExternalBufferProperties->externalMemoryProperties.exportFromImportedHandleTypes = 0;
+        // According to spec, handle type is always compatible with itself. Even if export/import
+        // not supported, it's important to properly implement self-compatibility property since
+        // application's control flow can rely on this.
+        pExternalBufferProperties->externalMemoryProperties.compatibleHandleTypes = pExternalBufferInfo->handleType;
+    }
 }
 
 static VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceExternalFenceProperties(
@@ -2447,7 +2467,12 @@ static VKAPI_ATTR void VKAPI_CALL GetDeviceBufferMemoryRequirements(
     const VkDeviceBufferMemoryRequirements*     pInfo,
     VkMemoryRequirements2*                      pMemoryRequirements)
 {
-//Not a CREATE or DESTROY function
+    // TODO: Just hard-coding reqs for now
+    pMemoryRequirements->memoryRequirements.alignment = 1;
+    pMemoryRequirements->memoryRequirements.memoryTypeBits = 0xFFFF;
+
+    // Return a size based on the buffer size from the create info.
+    pMemoryRequirements->memoryRequirements.size = ((pInfo->pCreateInfo->size + 4095) / 4096) * 4096;
 }
 
 static VKAPI_ATTR void VKAPI_CALL GetDeviceImageMemoryRequirements(
@@ -2455,7 +2480,10 @@ static VKAPI_ATTR void VKAPI_CALL GetDeviceImageMemoryRequirements(
     const VkDeviceImageMemoryRequirements*      pInfo,
     VkMemoryRequirements2*                      pMemoryRequirements)
 {
-//Not a CREATE or DESTROY function
+    pMemoryRequirements->memoryRequirements.size = GetImageSizeFromCreateInfo(pInfo->pCreateInfo);
+    pMemoryRequirements->memoryRequirements.alignment = 1;
+    // Here we hard-code that the memory type at index 3 doesn't support this image.
+    pMemoryRequirements->memoryRequirements.memoryTypeBits = 0xFFFF & ~(0x1 << 3);
 }
 
 static VKAPI_ATTR void VKAPI_CALL GetDeviceImageSparseMemoryRequirements(
@@ -3198,7 +3226,11 @@ static VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceSparseImageFormatProperties2K
     uint32_t*                                   pPropertyCount,
     VkSparseImageFormatProperties2*             pProperties)
 {
-    GetPhysicalDeviceSparseImageFormatProperties(physicalDevice, pFormatInfo->format, pFormatInfo->type, pFormatInfo->samples, pFormatInfo->usage, pFormatInfo->tiling, pPropertyCount, &pProperties->properties);
+    if (pPropertyCount && pProperties) {
+        GetPhysicalDeviceSparseImageFormatProperties(physicalDevice, pFormatInfo->format, pFormatInfo->type, pFormatInfo->samples, pFormatInfo->usage, pFormatInfo->tiling, pPropertyCount, &pProperties->properties);
+    } else {
+        GetPhysicalDeviceSparseImageFormatProperties(physicalDevice, pFormatInfo->format, pFormatInfo->type, pFormatInfo->samples, pFormatInfo->usage, pFormatInfo->tiling, pPropertyCount, nullptr);
+    }
 }
 
 
@@ -3485,7 +3517,7 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetFenceWin32HandleKHR(
     const VkFenceGetWin32HandleInfoKHR*         pGetWin32HandleInfo,
     HANDLE*                                     pHandle)
 {
-//Not a CREATE or DESTROY function
+    *pHandle = (HANDLE)0x12345678;
     return VK_SUCCESS;
 }
 #endif /* VK_USE_PLATFORM_WIN32_KHR */
@@ -3504,7 +3536,7 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetFenceFdKHR(
     const VkFenceGetFdInfoKHR*                  pGetFdInfo,
     int*                                        pFd)
 {
-//Not a CREATE or DESTROY function
+    *pFd = 0x42;
     return VK_SUCCESS;
 }
 
@@ -3661,7 +3693,11 @@ static VKAPI_ATTR void VKAPI_CALL GetImageSparseMemoryRequirements2KHR(
     uint32_t*                                   pSparseMemoryRequirementCount,
     VkSparseImageMemoryRequirements2*           pSparseMemoryRequirements)
 {
-    GetImageSparseMemoryRequirements(device, pInfo->image, pSparseMemoryRequirementCount, &pSparseMemoryRequirements->memoryRequirements);
+    if (pSparseMemoryRequirementCount && pSparseMemoryRequirements) {
+        GetImageSparseMemoryRequirements(device, pInfo->image, pSparseMemoryRequirementCount, &pSparseMemoryRequirements->memoryRequirements);
+    } else {
+        GetImageSparseMemoryRequirements(device, pInfo->image, pSparseMemoryRequirementCount, nullptr);
+    }
 }
 
 
@@ -3918,6 +3954,23 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetPipelineExecutableInternalRepresentatio
 }
 
 
+static VKAPI_ATTR VkResult VKAPI_CALL MapMemory2KHR(
+    VkDevice                                    device,
+    const VkMemoryMapInfoKHR*                   pMemoryMapInfo,
+    void**                                      ppData)
+{
+    return MapMemory(device, pMemoryMapInfo->memory, pMemoryMapInfo->offset, pMemoryMapInfo->size, pMemoryMapInfo->flags, ppData);
+}
+
+static VKAPI_ATTR VkResult VKAPI_CALL UnmapMemory2KHR(
+    VkDevice                                    device,
+    const VkMemoryUnmapInfoKHR*                 pMemoryUnmapInfo)
+{
+    UnmapMemory(device, pMemoryUnmapInfo->memory);
+    return VK_SUCCESS;
+}
+
+
 
 
 
@@ -4064,7 +4117,7 @@ static VKAPI_ATTR void VKAPI_CALL GetDeviceBufferMemoryRequirementsKHR(
     const VkDeviceBufferMemoryRequirements*     pInfo,
     VkMemoryRequirements2*                      pMemoryRequirements)
 {
-//Not a CREATE or DESTROY function
+    GetDeviceBufferMemoryRequirements(device, pInfo, pMemoryRequirements);
 }
 
 static VKAPI_ATTR void VKAPI_CALL GetDeviceImageMemoryRequirementsKHR(
@@ -4072,7 +4125,7 @@ static VKAPI_ATTR void VKAPI_CALL GetDeviceImageMemoryRequirementsKHR(
     const VkDeviceImageMemoryRequirements*      pInfo,
     VkMemoryRequirements2*                      pMemoryRequirements)
 {
-//Not a CREATE or DESTROY function
+    GetDeviceImageMemoryRequirements(device, pInfo, pMemoryRequirements);
 }
 
 static VKAPI_ATTR void VKAPI_CALL GetDeviceImageSparseMemoryRequirementsKHR(
@@ -4083,6 +4136,7 @@ static VKAPI_ATTR void VKAPI_CALL GetDeviceImageSparseMemoryRequirementsKHR(
 {
 //Not a CREATE or DESTROY function
 }
+
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateDebugReportCallbackEXT(
@@ -6017,6 +6071,7 @@ static VKAPI_ATTR void VKAPI_CALL CmdDrawMultiIndexedEXT(
 
 
 
+
 static VKAPI_ATTR VkResult VKAPI_CALL CreateMicromapEXT(
     VkDevice                                    device,
     const VkMicromapCreateInfoEXT*              pCreateInfo,
@@ -6142,6 +6197,9 @@ static VKAPI_ATTR void VKAPI_CALL GetMicromapBuildSizesEXT(
 {
 //Not a CREATE or DESTROY function
 }
+
+#ifdef VK_ENABLE_BETA_EXTENSIONS
+#endif /* VK_ENABLE_BETA_EXTENSIONS */
 
 
 
@@ -6544,6 +6602,48 @@ static VKAPI_ATTR void VKAPI_CALL CmdOpticalFlowExecuteNV(
 
 
 
+static VKAPI_ATTR VkResult VKAPI_CALL CreateShadersEXT(
+    VkDevice                                    device,
+    uint32_t                                    createInfoCount,
+    const VkShaderCreateInfoEXT*                pCreateInfos,
+    const VkAllocationCallbacks*                pAllocator,
+    VkShaderEXT*                                pShaders)
+{
+    unique_lock_t lock(global_lock);
+    for (uint32_t i = 0; i < createInfoCount; ++i) {
+        pShaders[i] = (VkShaderEXT)global_unique_handle++;
+    }
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR void VKAPI_CALL DestroyShaderEXT(
+    VkDevice                                    device,
+    VkShaderEXT                                 shader,
+    const VkAllocationCallbacks*                pAllocator)
+{
+//Destroy object
+}
+
+static VKAPI_ATTR VkResult VKAPI_CALL GetShaderBinaryDataEXT(
+    VkDevice                                    device,
+    VkShaderEXT                                 shader,
+    size_t*                                     pDataSize,
+    void*                                       pData)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR void VKAPI_CALL CmdBindShadersEXT(
+    VkCommandBuffer                             commandBuffer,
+    uint32_t                                    stageCount,
+    const VkShaderStageFlagBits*                pStages,
+    const VkShaderEXT*                          pShaders)
+{
+//Not a CREATE or DESTROY function
+}
+
+
 static VKAPI_ATTR VkResult VKAPI_CALL GetFramebufferTilePropertiesQCOM(
     VkDevice                                    device,
     VkFramebuffer                               framebuffer,
@@ -6569,6 +6669,14 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetDynamicRenderingTilePropertiesQCOM(
 
 
 
+
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetAttachmentFeedbackLoopEnableEXT(
+    VkCommandBuffer                             commandBuffer,
+    VkImageAspectFlags                          aspectMask)
+{
+//Not a CREATE or DESTROY function
+}
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateAccelerationStructureKHR(
