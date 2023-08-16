@@ -19,208 +19,12 @@
 **
 */
 
+#pragma once
+
 #include "mock_icd.h"
-#include <stdlib.h>
-#include <algorithm>
-#include <array>
-#include <vector>
-#include "vk_typemap_helper.h"
+#include "function_declarations.h"
+
 namespace vkmock {
-
-
-using std::unordered_map;
-
-static constexpr uint32_t icd_physical_device_count = 1;
-static unordered_map<VkInstance, std::array<VkPhysicalDevice, icd_physical_device_count>> physical_device_map;
-
-// Map device memory handle to any mapped allocations that we'll need to free on unmap
-static unordered_map<VkDeviceMemory, std::vector<void*>> mapped_memory_map;
-
-// Map device memory allocation handle to the size
-static unordered_map<VkDeviceMemory, VkDeviceSize> allocated_memory_size_map;
-
-static unordered_map<VkDevice, unordered_map<uint32_t, unordered_map<uint32_t, VkQueue>>> queue_map;
-static VkDeviceAddress current_available_address = 0x10000000;
-struct BufferState {
-    VkDeviceSize size;
-    VkDeviceAddress address;
-};
-static unordered_map<VkDevice, unordered_map<VkBuffer, BufferState>> buffer_map;
-static unordered_map<VkDevice, unordered_map<VkImage, VkDeviceSize>> image_memory_size_map;
-static unordered_map<VkCommandPool, std::vector<VkCommandBuffer>> command_pool_buffer_map;
-
-static constexpr uint32_t icd_swapchain_image_count = 1;
-static unordered_map<VkSwapchainKHR, VkImage[icd_swapchain_image_count]> swapchain_image_map;
-
-// TODO: Would like to codegen this but limits aren't in XML
-static VkPhysicalDeviceLimits SetLimits(VkPhysicalDeviceLimits *limits) {
-    limits->maxImageDimension1D = 4096;
-    limits->maxImageDimension2D = 4096;
-    limits->maxImageDimension3D = 256;
-    limits->maxImageDimensionCube = 4096;
-    limits->maxImageArrayLayers = 256;
-    limits->maxTexelBufferElements = 65536;
-    limits->maxUniformBufferRange = 16384;
-    limits->maxStorageBufferRange = 134217728;
-    limits->maxPushConstantsSize = 128;
-    limits->maxMemoryAllocationCount = 4096;
-    limits->maxSamplerAllocationCount = 4000;
-    limits->bufferImageGranularity = 1;
-    limits->sparseAddressSpaceSize = 2147483648;
-    limits->maxBoundDescriptorSets = 4;
-    limits->maxPerStageDescriptorSamplers = 16;
-    limits->maxPerStageDescriptorUniformBuffers = 12;
-    limits->maxPerStageDescriptorStorageBuffers = 4;
-    limits->maxPerStageDescriptorSampledImages = 16;
-    limits->maxPerStageDescriptorStorageImages = 4;
-    limits->maxPerStageDescriptorInputAttachments = 4;
-    limits->maxPerStageResources = 128;
-    limits->maxDescriptorSetSamplers = 96;
-    limits->maxDescriptorSetUniformBuffers = 72;
-    limits->maxDescriptorSetUniformBuffersDynamic = 8;
-    limits->maxDescriptorSetStorageBuffers = 24;
-    limits->maxDescriptorSetStorageBuffersDynamic = 4;
-    limits->maxDescriptorSetSampledImages = 96;
-    limits->maxDescriptorSetStorageImages = 24;
-    limits->maxDescriptorSetInputAttachments = 4;
-    limits->maxVertexInputAttributes = 16;
-    limits->maxVertexInputBindings = 16;
-    limits->maxVertexInputAttributeOffset = 2047;
-    limits->maxVertexInputBindingStride = 2048;
-    limits->maxVertexOutputComponents = 64;
-    limits->maxTessellationGenerationLevel = 64;
-    limits->maxTessellationPatchSize = 32;
-    limits->maxTessellationControlPerVertexInputComponents = 64;
-    limits->maxTessellationControlPerVertexOutputComponents = 64;
-    limits->maxTessellationControlPerPatchOutputComponents = 120;
-    limits->maxTessellationControlTotalOutputComponents = 2048;
-    limits->maxTessellationEvaluationInputComponents = 64;
-    limits->maxTessellationEvaluationOutputComponents = 64;
-    limits->maxGeometryShaderInvocations = 32;
-    limits->maxGeometryInputComponents = 64;
-    limits->maxGeometryOutputComponents = 64;
-    limits->maxGeometryOutputVertices = 256;
-    limits->maxGeometryTotalOutputComponents = 1024;
-    limits->maxFragmentInputComponents = 64;
-    limits->maxFragmentOutputAttachments = 4;
-    limits->maxFragmentDualSrcAttachments = 1;
-    limits->maxFragmentCombinedOutputResources = 4;
-    limits->maxComputeSharedMemorySize = 16384;
-    limits->maxComputeWorkGroupCount[0] = 65535;
-    limits->maxComputeWorkGroupCount[1] = 65535;
-    limits->maxComputeWorkGroupCount[2] = 65535;
-    limits->maxComputeWorkGroupInvocations = 128;
-    limits->maxComputeWorkGroupSize[0] = 128;
-    limits->maxComputeWorkGroupSize[1] = 128;
-    limits->maxComputeWorkGroupSize[2] = 64;
-    limits->subPixelPrecisionBits = 4;
-    limits->subTexelPrecisionBits = 4;
-    limits->mipmapPrecisionBits = 4;
-    limits->maxDrawIndexedIndexValue = UINT32_MAX;
-    limits->maxDrawIndirectCount = UINT16_MAX;
-    limits->maxSamplerLodBias = 2.0f;
-    limits->maxSamplerAnisotropy = 16;
-    limits->maxViewports = 16;
-    limits->maxViewportDimensions[0] = 4096;
-    limits->maxViewportDimensions[1] = 4096;
-    limits->viewportBoundsRange[0] = -8192;
-    limits->viewportBoundsRange[1] = 8191;
-    limits->viewportSubPixelBits = 0;
-    limits->minMemoryMapAlignment = 64;
-    limits->minTexelBufferOffsetAlignment = 16;
-    limits->minUniformBufferOffsetAlignment = 16;
-    limits->minStorageBufferOffsetAlignment = 16;
-    limits->minTexelOffset = -8;
-    limits->maxTexelOffset = 7;
-    limits->minTexelGatherOffset = -8;
-    limits->maxTexelGatherOffset = 7;
-    limits->minInterpolationOffset = 0.0f;
-    limits->maxInterpolationOffset = 0.5f;
-    limits->subPixelInterpolationOffsetBits = 4;
-    limits->maxFramebufferWidth = 4096;
-    limits->maxFramebufferHeight = 4096;
-    limits->maxFramebufferLayers = 256;
-    limits->framebufferColorSampleCounts = 0x7F;
-    limits->framebufferDepthSampleCounts = 0x7F;
-    limits->framebufferStencilSampleCounts = 0x7F;
-    limits->framebufferNoAttachmentsSampleCounts = 0x7F;
-    limits->maxColorAttachments = 4;
-    limits->sampledImageColorSampleCounts = 0x7F;
-    limits->sampledImageIntegerSampleCounts = 0x7F;
-    limits->sampledImageDepthSampleCounts = 0x7F;
-    limits->sampledImageStencilSampleCounts = 0x7F;
-    limits->storageImageSampleCounts = 0x7F;
-    limits->maxSampleMaskWords = 1;
-    limits->timestampComputeAndGraphics = VK_TRUE;
-    limits->timestampPeriod = 1;
-    limits->maxClipDistances = 8;
-    limits->maxCullDistances = 8;
-    limits->maxCombinedClipAndCullDistances = 8;
-    limits->discreteQueuePriorities = 2;
-    limits->pointSizeRange[0] = 1.0f;
-    limits->pointSizeRange[1] = 64.0f;
-    limits->lineWidthRange[0] = 1.0f;
-    limits->lineWidthRange[1] = 8.0f;
-    limits->pointSizeGranularity = 1.0f;
-    limits->lineWidthGranularity = 1.0f;
-    limits->strictLines = VK_TRUE;
-    limits->standardSampleLocations = VK_TRUE;
-    limits->optimalBufferCopyOffsetAlignment = 1;
-    limits->optimalBufferCopyRowPitchAlignment = 1;
-    limits->nonCoherentAtomSize = 256;
-
-    return *limits;
-}
-
-void SetBoolArrayTrue(VkBool32* bool_array, uint32_t num_bools)
-{
-    for (uint32_t i = 0; i < num_bools; ++i) {
-        bool_array[i] = VK_TRUE;
-    }
-}
-
-VkDeviceSize GetImageSizeFromCreateInfo(const VkImageCreateInfo* pCreateInfo)
-{
-    VkDeviceSize size = pCreateInfo->extent.width;
-    size *= pCreateInfo->extent.height;
-    size *= pCreateInfo->extent.depth;
-    // TODO: A pixel size is 32 bytes. This accounts for the largest possible pixel size of any format. It could be changed to more accurate size if need be.
-    size *= 32;
-    size *= pCreateInfo->arrayLayers;
-    size *= (pCreateInfo->mipLevels > 1 ? 2 : 1);
-
-    switch (pCreateInfo->format) {
-        case VK_FORMAT_G8_B8_R8_3PLANE_420_UNORM:
-        case VK_FORMAT_G8_B8_R8_3PLANE_422_UNORM:
-        case VK_FORMAT_G8_B8_R8_3PLANE_444_UNORM:
-        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_420_UNORM_3PACK16:
-        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_422_UNORM_3PACK16:
-        case VK_FORMAT_G10X6_B10X6_R10X6_3PLANE_444_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_420_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_422_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4_R12X4_3PLANE_444_UNORM_3PACK16:
-        case VK_FORMAT_G16_B16_R16_3PLANE_420_UNORM:
-        case VK_FORMAT_G16_B16_R16_3PLANE_422_UNORM:
-        case VK_FORMAT_G16_B16_R16_3PLANE_444_UNORM:
-            size *= 3;
-            break;
-        case VK_FORMAT_G8_B8R8_2PLANE_420_UNORM:
-        case VK_FORMAT_G8_B8R8_2PLANE_422_UNORM:
-        case VK_FORMAT_G10X6_B10X6R10X6_2PLANE_420_UNORM_3PACK16:
-        case VK_FORMAT_G10X6_B10X6R10X6_2PLANE_422_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4R12X4_2PLANE_420_UNORM_3PACK16:
-        case VK_FORMAT_G12X4_B12X4R12X4_2PLANE_422_UNORM_3PACK16:
-        case VK_FORMAT_G16_B16R16_2PLANE_420_UNORM:
-        case VK_FORMAT_G16_B16R16_2PLANE_422_UNORM:
-            size *= 2;
-            break;
-        default:
-            break;
-    }
-
-    return size;
-}
-
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateInstance(
@@ -445,6 +249,14 @@ static VKAPI_ATTR void VKAPI_CALL DestroyDevice(
             DestroyDispObjHandle((void*)index_queue_pair.second);
         }
     }
+
+    for (auto& cp : command_pool_map[device]) {
+        for (auto& cb : command_pool_buffer_map[cp]) {
+            DestroyDispObjHandle((void*) cb);
+        }
+        command_pool_buffer_map.erase(cp);
+    }
+    command_pool_map[device].clear();
 
     queue_map.erase(device);
     buffer_map.erase(device);
@@ -1279,7 +1091,8 @@ static VKAPI_ATTR void VKAPI_CALL GetRenderAreaGranularity(
     VkRenderPass                                renderPass,
     VkExtent2D*                                 pGranularity)
 {
-//Not a CREATE or DESTROY function
+    pGranularity->width = 1;
+    pGranularity->height = 1;
 }
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateCommandPool(
@@ -1290,6 +1103,7 @@ static VKAPI_ATTR VkResult VKAPI_CALL CreateCommandPool(
 {
     unique_lock_t lock(global_lock);
     *pCommandPool = (VkCommandPool)global_unique_handle++;
+    command_pool_map[device].insert(*pCommandPool);
     return VK_SUCCESS;
 }
 
@@ -1308,6 +1122,7 @@ static VKAPI_ATTR void VKAPI_CALL DestroyCommandPool(
         }
         command_pool_buffer_map.erase(it);
     }
+    command_pool_map[device].erase(commandPool);
 }
 
 static VKAPI_ATTR VkResult VKAPI_CALL ResetCommandPool(
@@ -2062,7 +1877,9 @@ static VKAPI_ATTR void VKAPI_CALL GetDescriptorSetLayoutSupport(
     const VkDescriptorSetLayoutCreateInfo*      pCreateInfo,
     VkDescriptorSetLayoutSupport*               pSupport)
 {
-//Not a CREATE or DESTROY function
+    if (pSupport) {
+        pSupport->supported = VK_TRUE;
+    }
 }
 
 
@@ -3081,6 +2898,11 @@ static VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceFeatures2KHR(
         feat_bools = (VkBool32*)&blendop_features->advancedBlendCoherentOperations;
         SetBoolArrayTrue(feat_bools, num_bools);
     }
+    const auto *host_image_copy_features = lvl_find_in_chain<VkPhysicalDeviceHostImageCopyFeaturesEXT>(pFeatures->pNext);
+    if (host_image_copy_features) {
+       feat_bools = (VkBool32*)&host_image_copy_features->hostImageCopy;
+       SetBoolArrayTrue(feat_bools, 1);
+    }
 }
 
 static VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceProperties2KHR(
@@ -3176,6 +2998,33 @@ static VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceProperties2KHR(
         fragment_density_map2_props->maxSubsampledArrayLayers = 2;
         fragment_density_map2_props->maxDescriptorSetSubsampledSamplers = 1;
     }
+
+    const uint32_t num_copy_layouts = 5;
+    const VkImageLayout HostCopyLayouts[]{
+       VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+       VK_IMAGE_LAYOUT_GENERAL,
+       VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL,
+       VK_IMAGE_LAYOUT_STENCIL_ATTACHMENT_OPTIMAL,
+       VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_OPTIMAL,
+    };
+
+    auto *host_image_copy_props = lvl_find_mod_in_chain< VkPhysicalDeviceHostImageCopyPropertiesEXT>(pProperties->pNext);
+    if (host_image_copy_props){
+        if (host_image_copy_props->pCopyDstLayouts == nullptr) host_image_copy_props->copyDstLayoutCount = num_copy_layouts;
+        else {
+            uint32_t num_layouts = (std::min)(host_image_copy_props->copyDstLayoutCount, num_copy_layouts);
+            for (uint32_t i = 0; i < num_layouts; i++) {
+                host_image_copy_props->pCopyDstLayouts[i] = HostCopyLayouts[i];
+            }
+        }
+        if (host_image_copy_props->pCopySrcLayouts == nullptr) host_image_copy_props->copySrcLayoutCount = num_copy_layouts;
+        else {
+            uint32_t num_layouts = (std::min)(host_image_copy_props->copySrcLayoutCount, num_copy_layouts);
+             for (uint32_t i = 0; i < num_layouts; i++) {
+                host_image_copy_props->pCopySrcLayouts[i] = HostCopyLayouts[i];
+            }
+        }
+    }
 }
 
 static VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceFormatProperties2KHR(
@@ -3189,6 +3038,7 @@ static VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceFormatProperties2KHR(
         props_3->linearTilingFeatures = pFormatProperties->formatProperties.linearTilingFeatures;
         props_3->optimalTilingFeatures = pFormatProperties->formatProperties.optimalTilingFeatures;
         props_3->bufferFeatures = pFormatProperties->formatProperties.bufferFeatures;
+        props_3->optimalTilingFeatures |= VK_FORMAT_FEATURE_2_HOST_IMAGE_TRANSFER_BIT_EXT;
     }
 }
 
@@ -3551,19 +3401,29 @@ static VKAPI_ATTR VkResult VKAPI_CALL EnumeratePhysicalDeviceQueueFamilyPerforma
     if (!pCounters) {
         *pCounterCount = 3;
     } else {
+        if (*pCounterCount == 0){
+            return VK_INCOMPLETE;
+        }
         // arbitrary
         pCounters[0].unit = VK_PERFORMANCE_COUNTER_UNIT_GENERIC_KHR;
         pCounters[0].scope = VK_QUERY_SCOPE_COMMAND_BUFFER_KHR;
         pCounters[0].storage = VK_PERFORMANCE_COUNTER_STORAGE_INT32_KHR;
         pCounters[0].uuid[0] = 0x01;
+        if (*pCounterCount == 1){
+            return VK_INCOMPLETE;
+        }
         pCounters[1].unit = VK_PERFORMANCE_COUNTER_UNIT_GENERIC_KHR;
         pCounters[1].scope = VK_QUERY_SCOPE_RENDER_PASS_KHR;
         pCounters[1].storage = VK_PERFORMANCE_COUNTER_STORAGE_INT32_KHR;
         pCounters[1].uuid[0] = 0x02;
+        if (*pCounterCount == 2){
+            return VK_INCOMPLETE;
+        }
         pCounters[2].unit = VK_PERFORMANCE_COUNTER_UNIT_GENERIC_KHR;
         pCounters[2].scope = VK_QUERY_SCOPE_COMMAND_KHR;
         pCounters[2].storage = VK_PERFORMANCE_COUNTER_STORAGE_INT32_KHR;
         pCounters[2].uuid[0] = 0x03;
+        *pCounterCount = 3;
     }
     return VK_SUCCESS;
 }
@@ -3749,7 +3609,7 @@ static VKAPI_ATTR void VKAPI_CALL GetDescriptorSetLayoutSupportKHR(
     const VkDescriptorSetLayoutCreateInfo*      pCreateInfo,
     VkDescriptorSetLayoutSupport*               pSupport)
 {
-//Not a CREATE or DESTROY function
+    GetDescriptorSetLayoutSupport(device, pCreateInfo, pSupport);
 }
 
 
@@ -3976,6 +3836,26 @@ static VKAPI_ATTR VkResult VKAPI_CALL UnmapMemory2KHR(
 
 #ifdef VK_ENABLE_BETA_EXTENSIONS
 
+static VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceVideoEncodeQualityLevelPropertiesKHR(
+    VkPhysicalDevice                            physicalDevice,
+    const VkPhysicalDeviceVideoEncodeQualityLevelInfoKHR* pQualityLevelInfo,
+    VkVideoEncodeQualityLevelPropertiesKHR*     pQualityLevelProperties)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR VkResult VKAPI_CALL GetEncodedVideoSessionParametersKHR(
+    VkDevice                                    device,
+    const VkVideoEncodeSessionParametersGetInfoKHR* pVideoSessionParametersInfo,
+    VkVideoEncodeSessionParametersFeedbackInfoKHR* pFeedbackInfo,
+    size_t*                                     pDataSize,
+    void*                                       pData)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
 static VKAPI_ATTR void VKAPI_CALL CmdEncodeVideoKHR(
     VkCommandBuffer                             commandBuffer,
     const VkVideoEncodeInfoKHR*                 pEncodeInfo)
@@ -4137,6 +4017,65 @@ static VKAPI_ATTR void VKAPI_CALL GetDeviceImageSparseMemoryRequirementsKHR(
 //Not a CREATE or DESTROY function
 }
 
+
+static VKAPI_ATTR void VKAPI_CALL CmdBindIndexBuffer2KHR(
+    VkCommandBuffer                             commandBuffer,
+    VkBuffer                                    buffer,
+    VkDeviceSize                                offset,
+    VkDeviceSize                                size,
+    VkIndexType                                 indexType)
+{
+//Not a CREATE or DESTROY function
+}
+
+static VKAPI_ATTR void VKAPI_CALL GetRenderingAreaGranularityKHR(
+    VkDevice                                    device,
+    const VkRenderingAreaInfoKHR*               pRenderingAreaInfo,
+    VkExtent2D*                                 pGranularity)
+{
+//Not a CREATE or DESTROY function
+}
+
+static VKAPI_ATTR void VKAPI_CALL GetDeviceImageSubresourceLayoutKHR(
+    VkDevice                                    device,
+    const VkDeviceImageSubresourceInfoKHR*      pInfo,
+    VkSubresourceLayout2KHR*                    pLayout)
+{
+//Not a CREATE or DESTROY function
+}
+
+static VKAPI_ATTR void VKAPI_CALL GetImageSubresourceLayout2KHR(
+    VkDevice                                    device,
+    VkImage                                     image,
+    const VkImageSubresource2KHR*               pSubresource,
+    VkSubresourceLayout2KHR*                    pLayout)
+{
+//Not a CREATE or DESTROY function
+}
+
+
+
+static VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceCooperativeMatrixPropertiesKHR(
+    VkPhysicalDevice                            physicalDevice,
+    uint32_t*                                   pPropertyCount,
+    VkCooperativeMatrixPropertiesKHR*           pProperties)
+{
+    if (!pProperties) {
+        *pPropertyCount = 1;
+    } else {
+        // arbitrary
+        pProperties[0].MSize = 16;
+        pProperties[0].NSize = 16;
+        pProperties[0].KSize = 16;
+        pProperties[0].AType = VK_COMPONENT_TYPE_UINT32_KHR;
+        pProperties[0].BType = VK_COMPONENT_TYPE_UINT32_KHR;
+        pProperties[0].CType = VK_COMPONENT_TYPE_UINT32_KHR;
+        pProperties[0].ResultType = VK_COMPONENT_TYPE_UINT32_KHR;
+        pProperties[0].saturatingAccumulation = VK_FALSE;
+        pProperties[0].scope = VK_SCOPE_DEVICE_KHR;
+    }
+    return VK_SUCCESS;
+}
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateDebugReportCallbackEXT(
@@ -4765,6 +4704,74 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetMemoryAndroidHardwareBufferANDROID(
 #endif /* VK_USE_PLATFORM_ANDROID_KHR */
 
 
+
+#ifdef VK_ENABLE_BETA_EXTENSIONS
+
+static VKAPI_ATTR VkResult VKAPI_CALL CreateExecutionGraphPipelinesAMDX(
+    VkDevice                                    device,
+    VkPipelineCache                             pipelineCache,
+    uint32_t                                    createInfoCount,
+    const VkExecutionGraphPipelineCreateInfoAMDX* pCreateInfos,
+    const VkAllocationCallbacks*                pAllocator,
+    VkPipeline*                                 pPipelines)
+{
+    unique_lock_t lock(global_lock);
+    for (uint32_t i = 0; i < createInfoCount; ++i) {
+        pPipelines[i] = (VkPipeline)global_unique_handle++;
+    }
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR VkResult VKAPI_CALL GetExecutionGraphPipelineScratchSizeAMDX(
+    VkDevice                                    device,
+    VkPipeline                                  executionGraph,
+    VkExecutionGraphPipelineScratchSizeAMDX*    pSizeInfo)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR VkResult VKAPI_CALL GetExecutionGraphPipelineNodeIndexAMDX(
+    VkDevice                                    device,
+    VkPipeline                                  executionGraph,
+    const VkPipelineShaderStageNodeCreateInfoAMDX* pNodeInfo,
+    uint32_t*                                   pNodeIndex)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR void VKAPI_CALL CmdInitializeGraphScratchMemoryAMDX(
+    VkCommandBuffer                             commandBuffer,
+    VkDeviceAddress                             scratch)
+{
+//Not a CREATE or DESTROY function
+}
+
+static VKAPI_ATTR void VKAPI_CALL CmdDispatchGraphAMDX(
+    VkCommandBuffer                             commandBuffer,
+    VkDeviceAddress                             scratch,
+    const VkDispatchGraphCountInfoAMDX*         pCountInfo)
+{
+//Not a CREATE or DESTROY function
+}
+
+static VKAPI_ATTR void VKAPI_CALL CmdDispatchGraphIndirectAMDX(
+    VkCommandBuffer                             commandBuffer,
+    VkDeviceAddress                             scratch,
+    const VkDispatchGraphCountInfoAMDX*         pCountInfo)
+{
+//Not a CREATE or DESTROY function
+}
+
+static VKAPI_ATTR void VKAPI_CALL CmdDispatchGraphIndirectCountAMDX(
+    VkCommandBuffer                             commandBuffer,
+    VkDeviceAddress                             scratch,
+    VkDeviceAddress                             countInfo)
+{
+//Not a CREATE or DESTROY function
+}
+#endif /* VK_ENABLE_BETA_EXTENSIONS */
 
 
 
@@ -5490,6 +5497,49 @@ static VKAPI_ATTR void VKAPI_CALL CmdSetStencilOpEXT(
 }
 
 
+static VKAPI_ATTR VkResult VKAPI_CALL CopyMemoryToImageEXT(
+    VkDevice                                    device,
+    const VkCopyMemoryToImageInfoEXT*           pCopyMemoryToImageInfo)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR VkResult VKAPI_CALL CopyImageToMemoryEXT(
+    VkDevice                                    device,
+    const VkCopyImageToMemoryInfoEXT*           pCopyImageToMemoryInfo)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR VkResult VKAPI_CALL CopyImageToImageEXT(
+    VkDevice                                    device,
+    const VkCopyImageToImageInfoEXT*            pCopyImageToImageInfo)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR VkResult VKAPI_CALL TransitionImageLayoutEXT(
+    VkDevice                                    device,
+    uint32_t                                    transitionCount,
+    const VkHostImageLayoutTransitionInfoEXT*   pTransitions)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR void VKAPI_CALL GetImageSubresourceLayout2EXT(
+    VkDevice                                    device,
+    VkImage                                     image,
+    const VkImageSubresource2KHR*               pSubresource,
+    VkSubresourceLayout2KHR*                    pLayout)
+{
+//Not a CREATE or DESTROY function
+}
+
+
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL ReleaseSwapchainImagesEXT(
@@ -5555,6 +5605,14 @@ static VKAPI_ATTR void VKAPI_CALL DestroyIndirectCommandsLayoutNV(
 
 
 
+
+
+static VKAPI_ATTR void VKAPI_CALL CmdSetDepthBias2EXT(
+    VkCommandBuffer                             commandBuffer,
+    const VkDepthBiasInfoEXT*                   pDepthBiasInfo)
+{
+//Not a CREATE or DESTROY function
+}
 
 
 
@@ -5754,15 +5812,6 @@ static VKAPI_ATTR void VKAPI_CALL CmdSetFragmentShadingRateEnumNV(
 
 
 
-
-static VKAPI_ATTR void VKAPI_CALL GetImageSubresourceLayout2EXT(
-    VkDevice                                    device,
-    VkImage                                     image,
-    const VkImageSubresource2EXT*               pSubresource,
-    VkSubresourceLayout2EXT*                    pLayout)
-{
-//Not a CREATE or DESTROY function
-}
 
 
 
@@ -6293,6 +6342,32 @@ static VKAPI_ATTR void VKAPI_CALL CmdDecompressMemoryIndirectCountNV(
 }
 
 
+static VKAPI_ATTR void VKAPI_CALL GetPipelineIndirectMemoryRequirementsNV(
+    VkDevice                                    device,
+    const VkComputePipelineCreateInfo*          pCreateInfo,
+    VkMemoryRequirements2*                      pMemoryRequirements)
+{
+//Not a CREATE or DESTROY function
+}
+
+static VKAPI_ATTR void VKAPI_CALL CmdUpdatePipelineIndirectBufferNV(
+    VkCommandBuffer                             commandBuffer,
+    VkPipelineBindPoint                         pipelineBindPoint,
+    VkPipeline                                  pipeline)
+{
+//Not a CREATE or DESTROY function
+}
+
+static VKAPI_ATTR VkDeviceAddress VKAPI_CALL GetPipelineIndirectDeviceAddressNV(
+    VkDevice                                    device,
+    const VkPipelineIndirectDeviceAddressInfoNV* pInfo)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+
+
 
 
 
@@ -6671,12 +6746,25 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetDynamicRenderingTilePropertiesQCOM(
 
 
 
+
 static VKAPI_ATTR void VKAPI_CALL CmdSetAttachmentFeedbackLoopEnableEXT(
     VkCommandBuffer                             commandBuffer,
     VkImageAspectFlags                          aspectMask)
 {
 //Not a CREATE or DESTROY function
 }
+
+#ifdef VK_USE_PLATFORM_SCREEN_QNX
+
+static VKAPI_ATTR VkResult VKAPI_CALL GetScreenBufferPropertiesQNX(
+    VkDevice                                    device,
+    const struct _screen_buffer*                buffer,
+    VkScreenBufferPropertiesQNX*                pProperties)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+#endif /* VK_USE_PLATFORM_SCREEN_QNX */
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateAccelerationStructureKHR(
@@ -6933,224 +7021,5 @@ static VKAPI_ATTR void VKAPI_CALL CmdDrawMeshTasksIndirectCountEXT(
 //Not a CREATE or DESTROY function
 }
 
-
-
-static VKAPI_ATTR PFN_vkVoidFunction VKAPI_CALL GetPhysicalDeviceProcAddr(VkInstance instance, const char *funcName) {
-    // TODO: This function should only care about physical device functions and return nullptr for other functions
-    const auto &item = name_to_funcptr_map.find(funcName);
-    if (item != name_to_funcptr_map.end()) {
-        return reinterpret_cast<PFN_vkVoidFunction>(item->second);
-    }
-    // Mock should intercept all functions so if we get here just return null
-    return nullptr;
-}
-
 } // namespace vkmock
-
-#if defined(__GNUC__) && __GNUC__ >= 4
-#define EXPORT __attribute__((visibility("default")))
-#elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x590)
-#define EXPORT __attribute__((visibility("default")))
-#else
-#define EXPORT
-#endif
-
-extern "C" {
-
-EXPORT VKAPI_ATTR PFN_vkVoidFunction VKAPI_CALL vk_icdGetInstanceProcAddr(VkInstance instance, const char* pName) {
-    if (!vkmock::negotiate_loader_icd_interface_called) {
-        vkmock::loader_interface_version = 1;
-    }
-    return vkmock::GetInstanceProcAddr(instance, pName);
-}
-
-EXPORT VKAPI_ATTR PFN_vkVoidFunction VKAPI_CALL vk_icdGetPhysicalDeviceProcAddr(VkInstance instance, const char* pName) {
-    return vkmock::GetPhysicalDeviceProcAddr(instance, pName);
-}
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vk_icdNegotiateLoaderICDInterfaceVersion(uint32_t* pSupportedVersion) {
-    vkmock::negotiate_loader_icd_interface_called = true;
-    vkmock::loader_interface_version = *pSupportedVersion;
-    if (*pSupportedVersion > vkmock::SUPPORTED_LOADER_ICD_INTERFACE_VERSION) {
-        *pSupportedVersion = vkmock::SUPPORTED_LOADER_ICD_INTERFACE_VERSION;
-    }
-    return VK_SUCCESS;
-}
-
-
-EXPORT VKAPI_ATTR void VKAPI_CALL vkDestroySurfaceKHR(
-    VkInstance                                  instance,
-    VkSurfaceKHR                                surface,
-    const VkAllocationCallbacks*                pAllocator)
-{
-    vkmock::DestroySurfaceKHR(instance, surface, pAllocator);
-}
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceSupportKHR(
-    VkPhysicalDevice                            physicalDevice,
-    uint32_t                                    queueFamilyIndex,
-    VkSurfaceKHR                                surface,
-    VkBool32*                                   pSupported)
-{
-    return vkmock::GetPhysicalDeviceSurfaceSupportKHR(physicalDevice, queueFamilyIndex, surface, pSupported);
-}
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceCapabilitiesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkSurfaceKHR                                surface,
-    VkSurfaceCapabilitiesKHR*                   pSurfaceCapabilities)
-{
-    return vkmock::GetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, pSurfaceCapabilities);
-}
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceFormatsKHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkSurfaceKHR                                surface,
-    uint32_t*                                   pSurfaceFormatCount,
-    VkSurfaceFormatKHR*                         pSurfaceFormats)
-{
-    return vkmock::GetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, surface, pSurfaceFormatCount, pSurfaceFormats);
-}
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfacePresentModesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkSurfaceKHR                                surface,
-    uint32_t*                                   pPresentModeCount,
-    VkPresentModeKHR*                           pPresentModes)
-{
-    return vkmock::GetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, pPresentModeCount, pPresentModes);
-}
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkCreateDisplayPlaneSurfaceKHR(
-    VkInstance                                  instance,
-    const VkDisplaySurfaceCreateInfoKHR*        pCreateInfo,
-    const VkAllocationCallbacks*                pAllocator,
-    VkSurfaceKHR*                               pSurface)
-{
-    return vkmock::CreateDisplayPlaneSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
-}
-
-#ifdef VK_USE_PLATFORM_XLIB_KHR
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkCreateXlibSurfaceKHR(
-    VkInstance                                  instance,
-    const VkXlibSurfaceCreateInfoKHR*           pCreateInfo,
-    const VkAllocationCallbacks*                pAllocator,
-    VkSurfaceKHR*                               pSurface)
-{
-    return vkmock::CreateXlibSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
-}
-#endif /* VK_USE_PLATFORM_XLIB_KHR */
-
-#ifdef VK_USE_PLATFORM_XCB_KHR
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkCreateXcbSurfaceKHR(
-    VkInstance                                  instance,
-    const VkXcbSurfaceCreateInfoKHR*            pCreateInfo,
-    const VkAllocationCallbacks*                pAllocator,
-    VkSurfaceKHR*                               pSurface)
-{
-    return vkmock::CreateXcbSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
-}
-#endif /* VK_USE_PLATFORM_XCB_KHR */
-
-#ifdef VK_USE_PLATFORM_WAYLAND_KHR
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkCreateWaylandSurfaceKHR(
-    VkInstance                                  instance,
-    const VkWaylandSurfaceCreateInfoKHR*        pCreateInfo,
-    const VkAllocationCallbacks*                pAllocator,
-    VkSurfaceKHR*                               pSurface)
-{
-    return vkmock::CreateWaylandSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
-}
-#endif /* VK_USE_PLATFORM_WAYLAND_KHR */
-
-#ifdef VK_USE_PLATFORM_ANDROID_KHR
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkCreateAndroidSurfaceKHR(
-    VkInstance                                  instance,
-    const VkAndroidSurfaceCreateInfoKHR*        pCreateInfo,
-    const VkAllocationCallbacks*                pAllocator,
-    VkSurfaceKHR*                               pSurface)
-{
-    return vkmock::CreateAndroidSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
-}
-#endif /* VK_USE_PLATFORM_ANDROID_KHR */
-
-#ifdef VK_USE_PLATFORM_WIN32_KHR
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkCreateWin32SurfaceKHR(
-    VkInstance                                  instance,
-    const VkWin32SurfaceCreateInfoKHR*          pCreateInfo,
-    const VkAllocationCallbacks*                pAllocator,
-    VkSurfaceKHR*                               pSurface)
-{
-    return vkmock::CreateWin32SurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
-}
-#endif /* VK_USE_PLATFORM_WIN32_KHR */
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkGetDeviceGroupSurfacePresentModesKHR(
-    VkDevice                                    device,
-    VkSurfaceKHR                                surface,
-    VkDeviceGroupPresentModeFlagsKHR*           pModes)
-{
-    return vkmock::GetDeviceGroupSurfacePresentModesKHR(device, surface, pModes);
-}
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDevicePresentRectanglesKHR(
-    VkPhysicalDevice                            physicalDevice,
-    VkSurfaceKHR                                surface,
-    uint32_t*                                   pRectCount,
-    VkRect2D*                                   pRects)
-{
-    return vkmock::GetPhysicalDevicePresentRectanglesKHR(physicalDevice, surface, pRectCount, pRects);
-}
-
-#ifdef VK_USE_PLATFORM_VI_NN
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkCreateViSurfaceNN(
-    VkInstance                                  instance,
-    const VkViSurfaceCreateInfoNN*              pCreateInfo,
-    const VkAllocationCallbacks*                pAllocator,
-    VkSurfaceKHR*                               pSurface)
-{
-    return vkmock::CreateViSurfaceNN(instance, pCreateInfo, pAllocator, pSurface);
-}
-#endif /* VK_USE_PLATFORM_VI_NN */
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceCapabilities2EXT(
-    VkPhysicalDevice                            physicalDevice,
-    VkSurfaceKHR                                surface,
-    VkSurfaceCapabilities2EXT*                  pSurfaceCapabilities)
-{
-    return vkmock::GetPhysicalDeviceSurfaceCapabilities2EXT(physicalDevice, surface, pSurfaceCapabilities);
-}
-
-#ifdef VK_USE_PLATFORM_IOS_MVK
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkCreateIOSSurfaceMVK(
-    VkInstance                                  instance,
-    const VkIOSSurfaceCreateInfoMVK*            pCreateInfo,
-    const VkAllocationCallbacks*                pAllocator,
-    VkSurfaceKHR*                               pSurface)
-{
-    return vkmock::CreateIOSSurfaceMVK(instance, pCreateInfo, pAllocator, pSurface);
-}
-#endif /* VK_USE_PLATFORM_IOS_MVK */
-
-#ifdef VK_USE_PLATFORM_MACOS_MVK
-
-EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkCreateMacOSSurfaceMVK(
-    VkInstance                                  instance,
-    const VkMacOSSurfaceCreateInfoMVK*          pCreateInfo,
-    const VkAllocationCallbacks*                pAllocator,
-    VkSurfaceKHR*                               pSurface)
-{
-    return vkmock::CreateMacOSSurfaceMVK(instance, pCreateInfo, pAllocator, pSurface);
-}
-#endif /* VK_USE_PLATFORM_MACOS_MVK */
-
-} // end extern "C"
-
 

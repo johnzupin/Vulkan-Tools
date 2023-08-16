@@ -1,6 +1,7 @@
 # ~~~
 # Copyright (c) 2014-2023 Valve Corporation
 # Copyright (c) 2014-2023 LunarG, Inc.
+# Copyright (c) 2023-2023 RasterGrid Kft.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,14 +19,15 @@ cmake_minimum_required(VERSION 3.17.2)
 
 project(Vulkan-Tools)
 
+# This variable enables downstream users to customize the target API
+# variant (e.g. Vulkan SC)
+set(API_TYPE "vulkan")
+
 add_subdirectory(scripts)
 
 # User-interface declarations ----------------------------------------------------------------------------------------------------
 # This section contains variables that affect development GUIs (e.g. CMake GUI and IDEs), such as option(), folders, and variables
 # with the CACHE property.
-
-# Enable beta Vulkan extensions
-add_definitions(-DVK_ENABLE_BETA_EXTENSIONS)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
@@ -122,7 +124,7 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_C_COMPILER_ID MATCHES "Clang")
     else()
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 ${COMMON_COMPILE_FLAGS}")
     endif()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMMON_COMPILE_FLAGS} -std=c++11 -fno-rtti")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMMON_COMPILE_FLAGS} -std=c++14 -fno-rtti")
     if(UNIX)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
@@ -149,9 +151,14 @@ option(TOOLS_CODEGEN "Enable helper codegen target")
 if (TOOLS_CODEGEN)
     find_package(Python3 REQUIRED QUIET)
     add_custom_target(tools_codegen
-        COMMAND Python3::Interpreter ${PROJECT_SOURCE_DIR}/scripts/generate_source.py ${VULKAN_HEADERS_REGISTRY_DIRECTORY} --incremental
+        COMMAND Python3::Interpreter ${PROJECT_SOURCE_DIR}/scripts/generate_source.py
+            "${VULKAN_HEADERS_INSTALL_DIR}/${CMAKE_INSTALL_DATADIR}/vulkan/registry"
+            --incremental --api ${API_TYPE}
     )
 endif()
+
+# Default to using the static CRT
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 if(APPLE)
     include(mac_common.cmake)
@@ -170,3 +177,9 @@ if(BUILD_ICD)
 endif()
 
 add_subdirectory(windows-runtime-installer)
+
+option(BUILD_TESTS "Build the tests")
+if(BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
