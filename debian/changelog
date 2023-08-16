@@ -1,3 +1,110 @@
+vulkan-tools (1.3.261.0~rc1-1lunarg20.04-1) focal; urgency=medium
+
+  [ Marijn Suijten ]
+  * vulkaninfo: Reduce NVIDIA quaternary version field to 6 bits
+
+  [ juan-lunarg ]
+  * icd: Fix WIN32 Mock ICD installation
+
+  [ Richard S. Wright Jr ]
+  * Update known_good.json for MoltenVK 1.2.4
+
+  [ Daniel Rakos ]
+  * mock: Parameterization changes for Vulkan SC
+
+  [ Tony-LunarG ]
+  * vkcubepp: Fix cmd buffer/pool leak
+
+  [ Charles Giessen ]
+  * vulkaninfo: Only enable necessary instance extensions
+  * icd: Fix OOB writes in QueuePerfCounters
+
+  [ spencer-lunarg ]
+  * icd: Add vkGetDescriptorSetLayoutSupport
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.251
+
+  [ Alexander Kanavin ]
+  * scripts/CMakeLists.txt: append to CMAKE_FIND_ROOT_PATH instead of replacing it
+
+  [ Charles Giessen ]
+  * icd: Use #pragma once in header
+
+  [ scottmarsland ]
+  * icd: Add vkGetRenderAreaGranularity
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.254
+
+  [ Charles Giessen ]
+  * build: Update to C++14 as minimum version
+  * build: Add googletest dependency for testing
+  * test: Add test infrastructure
+  * test: Use build artifacts in tests
+  * test: Add basic MockICD test
+  * icd: Move handwritten code into .cpp file
+  * build: Only inlcude wayland if enabled for MockICD
+
+  [ Juan Ramos ]
+  * docs: Remove unneccessary info about ccache and compile commands
+
+  [ Charles Giessen ]
+  * ci: Add tests to linux & mac action runs
+  * icd: Add AllocateCommandBuffer test
+  * ci: Reduce linux actions combinations
+
+  [ Daniel Rakos ]
+  * mock: Redo parameterization changes for Vulkan SC
+  * mock: Fix memory leak issue
+
+  [ Charles Giessen ]
+  * icd: Document parametization for VulkanSC
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.255
+
+  [ Charles Giessen ]
+  * test: Expand MockICD test coverage
+  * ci: Enable Address Sanitizer in tests
+
+  [ Juan Ramos ]
+  * cmake: Update update_deps
+
+  [ Charles Giessen ]
+  * build: Default to using the static CRT for MSVC
+
+  [ spencer-lunarg ]
+  * icd: Add VK_KHR_cooperative_matrix support
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.257
+
+  [ Daniel Rakos ]
+  * build: Fix generator directory references
+  * build: Add API_TYPE variable
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.258
+  * build: Update to header 1.3.259
+
+  [ Charles Giessen ]
+  * vulkaninfo: Enable Swapchain Colorspace ext
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.260
+
+  [ Water Chika ]
+  * pMessageIdName maybe NULL.
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.261
+
+  [ Tony Barbour ]
+  * icd: Add support for VK_EXT_host_image_copy
+
+ -- john <john@odin>  Wed, 16 Aug 2023 09:33:59 -0600
+
 vulkan-tools (1.3.250.0~rc1-1lunarg20.04-1) focal; urgency=medium
 
   [ Mike Schuchardt ]
