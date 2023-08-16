@@ -1051,7 +1051,8 @@ VKAPI_ATTR VkBool32 VKAPI_CALL Demo::debug_messenger_callback(VkDebugUtilsMessag
     }
 
     message << " - Message Id Number: " << std::to_string(pCallbackData->messageIdNumber);
-    message << " | Message Id Name: " << pCallbackData->pMessageIdName << "\n\t" << pCallbackData->pMessage << "\n";
+    message << " | Message Id Name: " << (pCallbackData->pMessageIdName == nullptr ? "" : pCallbackData->pMessageIdName) << "\n\t"
+            << pCallbackData->pMessage << "\n";
 
     if (pCallbackData->objectCount > 0) {
         message << "\n\tObjects - " << pCallbackData->objectCount << "\n";
@@ -1553,13 +1554,12 @@ void Demo::init_vk_swapchain() {
 }
 
 void Demo::prepare() {
-    prepare_init_cmd();
-
     prepare_buffers();
     if (is_minimized) {
         prepared = false;
         return;
     }
+    prepare_init_cmd();
     prepare_depth();
     prepare_textures();
     prepare_cube_data_buffers();
