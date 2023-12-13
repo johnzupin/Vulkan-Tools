@@ -1,3 +1,193 @@
+vulkan-tools (1.3.273.0~rc1-1lunarg22.04-1) jammy; urgency=medium
+
+  [ Richard S. Wright Jr ]
+  * Update known_good.json
+
+  [ Charles Giessen ]
+  * build: Use Vulkan-Loader on windows
+  * test: Make mock ICD tests work on windows
+
+  [ Mike Gorchak ]
+  * Add public support for QNX to vulkaninfo
+  * Add QNX support (VK_QNX_screen_surface) to C and C++ variants of vkcube.
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.262
+
+  [ spencer-lunarg ]
+  * icd: Add VkSurfacePresentModeCompatibilityEXT support
+
+  [ Juan Ramos ]
+  * Remove cmake-format
+  * git: Ignore CMakeUserPresets.json
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.263
+
+  [ spencer-lunarg ]
+  * icd: Add second VkCooperativeMatrixPropertiesKHR field
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.264
+
+  [ Charles Giessen ]
+  * vulkaninfo: Support VK_EXT_surface_maintenance1 properly
+  * cube: Check in SPIRV code
+  * build: Use Vulkan-Loader find_package support
+  * test: Turn windows tests on in github CI
+  * cube: Fix shader compilation destination
+
+  [ Juan Ramos ]
+  * cmake: Fix ICD json logic
+  * cmake: Remove generate_icd_files
+
+  [ Charles Giessen ]
+  * icd: Add VkPhysicalDeviceDriverProperties
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.265
+
+  [ Juan Ramos ]
+  * gn: Fix Chromium build
+  * cmake: General cleanup
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.266
+
+  [ Juan Ramos ]
+  * android: Various fixes to get closer to Android on CMake
+  * cmake: Fix vulkaninfo on Android
+  * cmake: Minor cube cleanup
+  * docs: New SDK branch convention
+
+  [ Charles Giessen ]
+  * vulkaninfo: Fix printing arrays of Enums
+  * vulkaninfo: Fix VkPhysicalDeviceHostImageCopyPropertiesEXT
+
+  [ Juan Ramos ]
+  * Remove unused scripts
+  * cmake: Use XCODE variable
+  * cmake: Simplify INSTALL_ICD logic
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.267
+
+  [ Juan Ramos ]
+  * cmake: Upgrade to C++17
+  * mock: Ensure VkICD_mock_icd.json uses up to date API version
+
+  [ spencer-lunarg ]
+  * icd: Add support to mock AHB commands
+
+  [ Juan Ramos ]
+  * tests: Update googletest to 1.14
+  * cube: Move android files to cube directory
+  * cmake: Use pkg-config for Wayland
+  * cmake: vkcube/vulkaninfo successfully compile for Android
+  * cmake: Remove ndk-build
+
+  [ spencer-lunarg ]
+  * icd: Add VkAndroidHardwareBufferFormatResolvePropertiesANDROID
+
+  [ Juan Ramos ]
+  * gn: Cleanup chromium build
+  * cmake: Remove pointless code
+  * docs: Cleanup BUILD.md and various other documents
+
+  [ Charles Giessen ]
+  * cubepp: Verify correct pipeline result
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.268
+
+  [ Juan Ramos ]
+  * vulkaninfo: Remove install for appbundle
+  * docs: Fix invalid/confusing documentation
+  * cmake: Cleanup VulkanInfo
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.269
+
+  [ Richard S. Wright Jr ]
+  * Update known_good.json
+
+  [ spencer-lunarg ]
+  * icd: Add vkGetMemoryFdKHR support
+
+  [ Juan Ramos ]
+  * build: Fix MinGW build
+  * cmake: Cleanup MinGW specific code
+  * scripts: update_deps.py updates
+  * scripts: Allow parallel build of MoltenVK
+
+  [ spencer-lunarg ]
+  * icd: Add vkGetMemoryHostPointerPropertiesEXT support
+
+  [ Charles Giessen ]
+  * vulkaninfo: Fix typo in VK_EXT_surface_maintance1
+
+  [ Juan Ramos ]
+  * ci: Add dependabot
+
+  [ dependabot[bot] ]
+  * build(deps): Bump actions/checkout from 3 to 4
+  * Cleanup ENABLE_ADDRESS_SANITIZER
+
+  [ Jeff Sullivan ]
+  * icd: Unmap mapped memory before freeing it
+
+  [ Juan Ramos ]
+  * Cleanup Android documentation
+  * Remove --tests from android.puy
+  * Don't grab googletest when building for Android
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.270
+
+  [ Charles Giessen ]
+  * vulkaninfo: Autogenerate Format list
+
+  [ Juan Ramos ]
+  * Remove *.cmake files and move MoltenVK logic into cube directory
+
+  [ Charles Giessen ]
+  * vulkaninfo: Make Apple load vulkan & functions
+  * cubepp: Use dynamic dispatcher
+  * cube: Use volk to load functions
+
+  [ Juan Ramos ]
+  * cube: Fix layers on Apple
+  * Remove -fno-builtin-memcmp
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.271
+  * build: Update to header 1.3.272
+
+  [ Charles Giessen ]
+  * vulkaninfo: Check requirements when adding to pNext chains
+  * Cleanup vulkaninfo_generator.py using pylint
+
+  [ ziga-lunarg ]
+  * vulkaninfo: Fix including promoted structures
+
+  [ Ho Cheung ]
+  * gn: Fix Python 3.12 compatibility
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.273
+
+  [ spencer-lunarg ]
+  * icd: Add basic VkDisplayKHR support
+  * icd: Add vkRegisterDisplayEventEXT
+
+  [ dependabot[bot] ]
+  * build(deps): Bump actions/setup-python from 4 to 5
+
+  [ John Zupin ]
+  * packaging: debian: update build deps - include volk
+
+ -- john <john@odin>  Wed, 13 Dec 2023 15:29:24 -0700
+
 vulkan-tools (1.3.261.0~rc2-1lunarg22.04-1) jammy; urgency=medium
 
   [ Charles Giessen ]
