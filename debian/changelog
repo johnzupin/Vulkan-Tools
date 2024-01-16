@@ -1,3 +1,12 @@
+vulkan-tools (1.3.275.0~rc2-1lunarg20.04-1) focal; urgency=medium
+
+  [ Charles Giessen ]
+  * build: Update volk to 1.3.275
+  * vulkaninfo: Use volk for function loading
+  * cube: Link to Threads directly
+
+ -- john <john@odin>  Tue, 16 Jan 2024 13:55:27 -0700
+
 vulkan-tools (1.3.275.0~rc1-1lunarg20.04-1) focal; urgency=medium
 
   [ Daniel Rakos ]
