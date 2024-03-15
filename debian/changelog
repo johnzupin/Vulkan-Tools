@@ -1,3 +1,14 @@
+vulkan-tools (1.3.280.0~rc3-1lunarg22.04-1) jammy; urgency=medium
+
+  [ Charles Giessen ]
+  * build: Update volk to vulkan-sdk-1.3.280
+
+  [ Richard S. Wright Jr. ]
+  * apple: Updated builds of cube and cubepp based on new MoltenVK known good
+  * apple: Updated copyright dates
+
+ -- john <john@odin>  Fri, 15 Mar 2024 11:31:25 -0600
+
 vulkan-tools (1.3.280.0~rc2-1lunarg22.04-1) jammy; urgency=medium
 
   [ Mike Schuchardt ]
