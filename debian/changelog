@@ -1,3 +1,11 @@
+vulkan-tools (1.3.280.0~rc4-1lunarg22.04-1) jammy; urgency=medium
+
+  [ Charles Giessen ]
+  * vulkaninfo: Add quotes around NULL
+  * ci: Disable Address Sanitizer in actions runs
+
+ -- john <john@odin>  Mon, 18 Mar 2024 10:36:31 -0600
+
 vulkan-tools (1.3.280.0~rc3-1lunarg22.04-1) jammy; urgency=medium
 
   [ Charles Giessen ]
