@@ -206,6 +206,10 @@ void DumpSurfaceCapabilities(Printer &p, AppInstance &inst, AppGpu &gpu, AppSurf
 
             if (err == VK_SUCCESS) {
                 ObjectWrapper present_mode_obj(p, VkPresentModeKHRString(mode));
+
+                p.PrintKeyValue("minImageCount", surface_caps2.surfaceCapabilities.minImageCount);
+                p.PrintKeyValue("maxImageCount", surface_caps2.surfaceCapabilities.maxImageCount);
+
                 DumpVkSurfacePresentScalingCapabilitiesEXT(p, "VkSurfacePresentScalingCapabilitiesEXT",
                                                            SurfacePresentScalingCapabilitiesEXT);
                 DumpVkSurfacePresentModeCompatibilityEXT(p, "VkSurfacePresentModeCompatibilityEXT",
@@ -696,7 +700,6 @@ void DumpGpuProfileCapabilities(Printer &p, AppGpu &gpu) {
             if (gpu.inst.CheckExtensionEnabled(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME)) {
                 void *place = gpu.props2.pNext;
                 chain_iterator_phys_device_props2(p, gpu.inst, gpu, place);
-                GetAndDumpHostImageCopyPropertiesEXT(p, gpu);
             }
         }
         {
