@@ -1,3 +1,22 @@
+vulkan-tools (1.3.283.0~rc1-1lunarg20.04-1) focal; urgency=medium
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.283
+
+  [ ziga-lunarg ]
+  * cube: Fix incremental present
+
+  [ Charles Giessen ]
+  * cube: Remove duplicate line
+  * ci: Update macOS python version to 3.8
+  * test: Simplify how MockICD binaries are provided
+  * Update volk to vulkan-sdk-1.3.283
+
+  [ ziga-lunarg ]
+  * cube: Fix incremental present on swapchain recreate
+
+ -- john <john@odin>  Tue, 07 May 2024 09:38:39 -0600
+
 vulkan-tools (1.3.282.0~rc1-1lunarg20.04-1) focal; urgency=medium
 
   [ Richard S. Wright Jr. ]
