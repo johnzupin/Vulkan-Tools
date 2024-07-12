@@ -4311,7 +4311,7 @@ static VKAPI_ATTR void VKAPI_CALL CmdSetRenderingAttachmentLocationsKHR(
 
 static VKAPI_ATTR void VKAPI_CALL CmdSetRenderingInputAttachmentIndicesKHR(
     VkCommandBuffer                             commandBuffer,
-    const VkRenderingInputAttachmentIndexInfoKHR* pLocationInfo)
+    const VkRenderingInputAttachmentIndexInfoKHR* pInputAttachmentIndexInfo)
 {
 //Not a CREATE or DESTROY function
 }
@@ -4781,6 +4781,8 @@ static VKAPI_ATTR void VKAPI_CALL CmdBindDescriptorBufferEmbeddedSamplers2EXT(
 {
 //Not a CREATE or DESTROY function
 }
+
+
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateDebugReportCallbackEXT(
@@ -7526,6 +7528,7 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetDynamicRenderingTilePropertiesQCOM(
 
 
 
+
 static VKAPI_ATTR VkResult VKAPI_CALL SetLatencySleepModeNV(
     VkDevice                                    device,
     VkSwapchainKHR                              swapchain,
@@ -7592,6 +7595,8 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetScreenBufferPropertiesQNX(
     return VK_SUCCESS;
 }
 #endif /* VK_USE_PLATFORM_SCREEN_QNX */
+
+
 
 
 

@@ -348,7 +348,7 @@ static const std::unordered_map<std::string, uint32_t> device_extension_map = {
     {"VK_EXT_depth_clamp_zero_one", 1},
     {"VK_EXT_non_seamless_cube_map", 1},
     {"VK_ARM_render_pass_striped", 1},
-    {"VK_QCOM_fragment_density_map_offset", 1},
+    {"VK_QCOM_fragment_density_map_offset", 2},
     {"VK_NV_copy_memory_indirect", 1},
     {"VK_NV_memory_decompression", 1},
     {"VK_NV_device_generated_commands_compute", 2},
@@ -375,6 +375,7 @@ static const std::unordered_map<std::string, uint32_t> device_extension_map = {
     {"VK_NV_ray_tracing_invocation_reorder", 1},
     {"VK_NV_extended_sparse_address_space", 1},
     {"VK_EXT_mutable_descriptor_type", 1},
+    {"VK_EXT_legacy_vertex_attributes", 1},
     {"VK_ARM_shader_core_builtins", 2},
     {"VK_EXT_pipeline_library_group_handles", 1},
     {"VK_EXT_dynamic_rendering_unused_attachments", 1},
@@ -401,8 +402,12 @@ static const std::unordered_map<std::string, uint32_t> device_extension_map = {
     {"VK_KHR_maintenance6", 1},
     {"VK_NV_descriptor_pool_overallocation", 1},
     {"VK_NV_raw_access_chains", 1},
+    {"VK_KHR_shader_relaxed_extended_instruction", 1},
+    {"VK_KHR_maintenance7", 1},
     {"VK_NV_shader_atomic_float16_vector", 1},
+    {"VK_EXT_shader_replicated_composites", 1},
     {"VK_NV_ray_tracing_validation", 1},
+    {"VK_MESA_image_alignment_control", 1},
 };
 
 
@@ -2276,7 +2281,7 @@ static VKAPI_ATTR void VKAPI_CALL CmdSetRenderingAttachmentLocationsKHR(
 
 static VKAPI_ATTR void VKAPI_CALL CmdSetRenderingInputAttachmentIndicesKHR(
     VkCommandBuffer                             commandBuffer,
-    const VkRenderingInputAttachmentIndexInfoKHR* pLocationInfo);
+    const VkRenderingInputAttachmentIndexInfoKHR* pInputAttachmentIndexInfo);
 
 
 
@@ -2557,6 +2562,8 @@ static VKAPI_ATTR void VKAPI_CALL CmdSetDescriptorBufferOffsets2EXT(
 static VKAPI_ATTR void VKAPI_CALL CmdBindDescriptorBufferEmbeddedSamplers2EXT(
     VkCommandBuffer                             commandBuffer,
     const VkBindDescriptorBufferEmbeddedSamplersInfoEXT* pBindDescriptorBufferEmbeddedSamplersInfo);
+
+
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateDebugReportCallbackEXT(
@@ -4305,6 +4312,7 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetDynamicRenderingTilePropertiesQCOM(
 
 
 
+
 static VKAPI_ATTR VkResult VKAPI_CALL SetLatencySleepModeNV(
     VkDevice                                    device,
     VkSwapchainKHR                              swapchain,
@@ -4347,6 +4355,8 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetScreenBufferPropertiesQNX(
     const struct _screen_buffer*                buffer,
     VkScreenBufferPropertiesQNX*                pProperties);
 #endif /* VK_USE_PLATFORM_SCREEN_QNX */
+
+
 
 
 
