@@ -1,3 +1,55 @@
+vulkan-tools (1.3.290.0~rc1-1lunarg22.04-1) jammy; urgency=medium
+
+  [ ziga-lunarg ]
+  * cube: Fix incremental present on swapchain recreate
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.284
+  * build: Update to header 1.3.285
+
+  [ Richard S. Wright Jr ]
+  * Update known_good.json
+
+  [ Bob Ellison ]
+  * cube: Make Volk requirement explicit
+
+  [ Pino Toscano ]
+  * vulkaninfo: Drop unused dlfcn.h include
+  * cube: use standard Unix main() on GNU/Hurd
+  * build: add support for GNU/Hurd
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.287
+  * build: Update to header 1.3.288
+  * build: Update to header 1.3.289
+
+  [ Charles Giessen ]
+  * build: Add .cache to gitignore
+
+  [ Michel Zou ]
+  * vulkaninfo: disable _set_abort_behavior for MinGW
+
+  [ Charles Giessen ]
+  * cmake: Add required to necessary dependencies
+
+  [ Michel Zou ]
+  * CMake: Mark dependencies mandatory
+
+  [ Charles Giessen ]
+  * cmake: Dont require Loader on ANDROID
+  * vulkaninfo: Support 2-call structs in codegen for pNext chains
+
+  [ xantares ]
+  * CMake: Fix duplicate REQUIRED
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.290
+
+  [ Charles Giessen ]
+  * deps: Update volk to vulkan-sdk-1.3.290
+
+ -- john <john@odin>  Tue, 16 Jul 2024 12:04:15 -0600
+
 vulkan-tools (1.3.283.0~rc1-1lunarg22.04-1) jammy; urgency=medium
 
   [ Mike Schuchardt ]
