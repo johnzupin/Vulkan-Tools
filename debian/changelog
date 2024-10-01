@@ -1,3 +1,43 @@
+vulkan-tools (1.3.296.0~rc1-1lunarg22.04-1) jammy; urgency=medium
+
+  [ Richard S. Wright Jr. ]
+  * Update known_good.json
+  * Update known_good.json
+
+  [ Mike Schuchardt ]
+  * ci: Hardcode NDK r25
+  * build: Update to header 1.3.292
+  * cube: Change ALooper_pollOnce to ALooper_pollAll
+
+  [ Charles Giessen ]
+  * vulkaninfo: Fix deprecation of MVK/IOS surface extensions
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.293
+
+  [ Kirill Primak ]
+  * cube: roundtrip to ensure all globals are processed
+
+  [ Charles Giessen ]
+  * vulkaninfo: Add --show-promoted-structs option
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.294
+  * build: Update to header 1.3.295
+
+  [ Máté Ferenc Nagy-Egri ]
+  * Fix twocall_chain_vectors mechanism
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.296
+
+  [ Charles Giessen ]
+  * vulkaninfo: Only iterate 2-call idiom when needed
+  * vulkaninfo: Correctly query per-surface queue support
+  * vulkaninfo: Move variable declaration closer to use
+
+ -- john <john@odin>  Tue, 01 Oct 2024 10:39:15 -0600
+
 vulkan-tools (1.3.290.0~rc1-1lunarg22.04-1) jammy; urgency=medium
 
   [ ziga-lunarg ]
