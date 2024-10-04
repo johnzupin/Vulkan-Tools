@@ -1,3 +1,10 @@
+vulkan-tools (1.3.296.0~rc2-1lunarg22.04-1) jammy; urgency=medium
+
+  [ ziga-lunarg ]
+  * build: Update volk tag
+
+ -- john <john@odin>  Fri, 04 Oct 2024 13:39:52 -0600
+
 vulkan-tools (1.3.296.0~rc1-1lunarg22.04-1) jammy; urgency=medium
 
   [ Richard S. Wright Jr. ]
