@@ -13,52 +13,95 @@ Copyright: 2012-2020, Apple Inc
            2017, The Glslang Authors
            2013-2022, The Khronos Group Inc
            2014-2022, Valve Corporation
-           after any existing copyrights
-           included
 License: Apache-2 or Apache-2.0
 
-Files: cmake/Copyright_cmake.txt
-       cmake/FindDirectFB.cmake
-       cmake/FindWayland.cmake
-       cmake/FindX11_XCB.cmake
-Copyright: 2011, Fredrik Höglund <fredrik@kde.org>
-           2008, Helio Chissini de Castro <helio@kde.org>
-           2000-2018, Kitware, Inc
-           2013, Martin Gräßlin <mgraesslin@kde.org>
-           2007, Matthias Kretz <kretz@kde.org>
-License: BSD-3-clause
-
-Files: windows-runtime-installer/VulkanRT-License.txt
-Copyright: 2009, Dave Gamble
-           2015-2021, LunarG, Inc
-           2015-2021, The Khronos Group Inc
-           2015-2021, Valve Corporation
-           2014, joseph werle <joseph.werle@gmail.com>
-License: Apache-2.0 or Expat
-
 Files: .github/*
-       build-gn/secondary/*
-       cube/android/cube-with-layers/res/*
-       cube/android/cube/res/*
-       cube/android/jni/*
-       vulkaninfo/macOS/vulkaninfo/*
+       BUILD.gn
+       CMakeLists.txt
+       LICENSE.txt
+       cube/CMakeLists.txt
+       cube/android/CMakeLists.txt
+       cube/android/android_util.cpp
+       cube/android/android_util.h
+       cube/cube.c
+       cube/cube.cpp
+       cube/cube.frag
+       cube/cube.vert
+       cube/gettime.h
+       cube/macOS/cube/AppDelegate.h
+       cube/macOS/cube/AppDelegate.m
+       cube/macOS/cube/CMakeLists.txt
+       cube/macOS/cube/DemoViewController.h
+       cube/macOS/cube/DemoViewController.m
+       cube/macOS/cube/main.m
+       cube/macOS/cubepp/AppDelegate.h
+       cube/macOS/cubepp/AppDelegate.mm
+       cube/macOS/cubepp/CMakeLists.txt
+       cube/macOS/cubepp/DemoViewController.h
+       cube/macOS/cubepp/DemoViewController.mm
+       cube/macOS/cubepp/main.mm
+       cube/object_type_string_helper.h
+       cube/wayland_loader.h
+       cube/xcb_loader.h
+       cube/xlib_loader.h
+       icd/CMakeLists.txt
+       icd/VkICD_mock_icd.def
+       icd/generated/function_declarations.h
+       icd/generated/function_definitions.h
+       icd/generated/vk_typemap_helper.h
+       icd/mock_icd.cpp
+       icd/mock_icd.h
+       scripts/CMakeLists.txt
+       scripts/android.py
+       scripts/common_codegen.py
+       scripts/generate_source.py
+       scripts/gn/generate_vulkan_icd_json.py
+       scripts/gn/gn.py
+       scripts/gn/secondary/*
+       scripts/gn/update_deps.sh
+       scripts/kvt_genvk.py
+       scripts/mock_icd_generator.py
+       scripts/update_deps.py
+       scripts/vulkan_tools_helper_file_generator.py
+       scripts/vulkaninfo_generator.py
+       tests/CMakeLists.txt
+       tests/icd/*
+       tests/main.cpp
+       tests/test_common.h
+       vulkaninfo/CMakeLists.txt
+       vulkaninfo/generated/vulkaninfo.hpp
+       vulkaninfo/iOS/vulkaninfo/AppDelegate.h
+       vulkaninfo/iOS/vulkaninfo/AppDelegate.m
+       vulkaninfo/iOS/vulkaninfo/SceneDelegate.h
+       vulkaninfo/iOS/vulkaninfo/SceneDelegate.m
+       vulkaninfo/iOS/vulkaninfo/ViewController.h
+       vulkaninfo/iOS/vulkaninfo/ViewController.m
+       vulkaninfo/iOS/vulkaninfo/main.mm
+       vulkaninfo/iOS/vulkaninfo/metal_iosview.h
+       vulkaninfo/iOS/vulkaninfo/metal_iosview.m
+       vulkaninfo/macOS/*
+       vulkaninfo/outputprinter.h
+       vulkaninfo/vulkaninfo.cpp
+       vulkaninfo/vulkaninfo.h
        vulkaninfo/vulkaninfo.rc.in
-Copyright: 2018-2021, LunarG, Inc
-           2013-2015, The Android Open Source Project
-           2018-2019, The Khronos Group Inc
-           2015-2021, Valve Corporation
+Copyright: 2015-2023, Google Inc
+           2016, Google, Inc
+           2014-2024, LunarG, Inc
+           2023-2024, RasterGrid Kft
+           2016-2019, The ANGLE Project Authors
+           2013-2017, The Android Open Source Project
+           2014-2018, The Brenwill Workshop Ltd. (http://www.brenwill.com)
+           2017, The Glslang Authors
+           2013-2024, The Khronos Group Inc
+           2014-2024, Valve Corporation
 License: Apache-2
 
 Files: vulkaninfo/vulkaninfo.md
-Copyright: 2015-2019, LunarG, Inc
+Copyright: 2015-2023, LunarG, Inc
 License: CC-BY-ND-4
 
-Files: scripts/generate_vulkan_wrapper.py
-Copyright: 2018, Google, Inc
-License: Expat
-
 Files: debian/*
-Copyright: 2023, LunarG Inc <johnz@lunarg.com>
+Copyright: 2024, LunarG Inc <johnz@lunarg.com>
            2016, Timo Aaltonen <tjaalton@debian.org>
 License: BSD-3-clause or GPL-3 or MIT
 
@@ -283,13 +326,6 @@ License: BSD-3-clause
 
 License: CC-BY-ND-4
 Comment: Add the corresponding license text here
-
-License: Expat
- Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- .
- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- .
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 
 License: GPL-3
  GNU GENERAL PUBLIC LICENSE
