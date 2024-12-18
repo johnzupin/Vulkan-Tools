@@ -71,6 +71,7 @@
 #endif  // _WIN32
 
 #if defined(VK_USE_PLATFORM_XLIB_KHR) || defined(VK_USE_PLATFORM_XCB_KHR)
+#include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #endif
 
@@ -231,14 +232,13 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL DbgCallback(VkDebugReportFlagsEXT msgFlags
 // Helper for robustly executing the two-call pattern
 template <typename T, typename F, typename... Ts>
 auto GetVectorInit(const char *func_name, F &&f, T init, Ts &&...ts) -> std::vector<T> {
-    uint32_t count = 0;
+    uint32_t count = 32;  // Preallocate enough so that most calls only happen once
     std::vector<T> results;
     VkResult err;
     uint32_t iteration_count = 0;
-    uint32_t max_iterations = 3;
+    uint32_t max_iterations = 5;
     do {
-        err = f(ts..., &count, nullptr);
-        if (err) THROW_VK_ERR(func_name, err);
+        count *= 2;
         results.resize(count, init);
         err = f(ts..., &count, results.data());
         results.resize(count);
@@ -772,7 +772,7 @@ static void AppDestroyXcbWindow(AppInstance &inst) {
 #ifdef VK_USE_PLATFORM_XLIB_KHR
 static void AppCreateXlibWindow(AppInstance &inst) {
     long visualMask = VisualScreenMask;
-    int numberOfVisuals;
+    int numberOfVisuals{};
 
     inst.xlib_display = XOpenDisplay(nullptr);
     if (inst.xlib_display == nullptr) {
@@ -781,12 +781,17 @@ static void AppCreateXlibWindow(AppInstance &inst) {
 
     XVisualInfo vInfoTemplate = {};
     vInfoTemplate.screen = DefaultScreen(inst.xlib_display);
-    XVisualInfo *visualInfo = XGetVisualInfo(inst.xlib_display, visualMask, &vInfoTemplate, &numberOfVisuals);
+    XVisualInfo *visualInfoBegin = XGetVisualInfo(inst.xlib_display, visualMask, &vInfoTemplate, &numberOfVisuals);
+    XVisualInfo *visualInfoEnd = visualInfoBegin + numberOfVisuals;
+    const Visual *rootVisual = DefaultVisual(inst.xlib_display, vInfoTemplate.screen);
+    const XVisualInfo *foundVisualInfo =
+        std::find_if(visualInfoBegin, visualInfoEnd, [rootVisual](const XVisualInfo &vi) { return vi.visual == rootVisual; });
+    const XVisualInfo *visualInfo = foundVisualInfo == visualInfoEnd ? visualInfoBegin : foundVisualInfo;
     inst.xlib_window = XCreateWindow(inst.xlib_display, RootWindow(inst.xlib_display, vInfoTemplate.screen), 0, 0, inst.width,
                                      inst.height, 0, visualInfo->depth, InputOutput, visualInfo->visual, 0, nullptr);
 
     XSync(inst.xlib_display, false);
-    XFree(visualInfo);
+    XFree(visualInfoBegin);
 }
 
 static VkSurfaceKHR AppCreateXlibSurface(AppInstance &inst) {
