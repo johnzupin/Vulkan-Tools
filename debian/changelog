@@ -1,3 +1,88 @@
+vulkan-tools (1.4.304.0~rc1-1lunarg22.04-1) jammy; urgency=medium
+
+  [ ziga-lunarg ]
+  * build: Update volk tag
+
+  [ Richard S. Wright Jr. ]
+  * Update known_good.json
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.297
+  * build: Update to header 1.3.298
+
+  [ Charles Giessen ]
+  * vkcube: Remove unused command line option
+  * Enable Address Sanitizer in Linux CI
+  * cube: Support runtime selection of WSI platform
+  * ci: Bump ubuntu versions used
+  * ci: Bump python version to 3.10
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.299
+
+  [ Rhys Parry ]
+  * vulkaninfo: On X11 use default visual
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.300
+
+  [ Máté Ferenc Nagy-Egri ]
+  * scripts: Handle remote URL change in update_deps.py
+  * scripts: Fix user self-hosting dependency in update_deps.py
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.301
+
+  [ Spencer Fricke ]
+  * ci: Build dependency for Github Actions
+
+  [ Jeremy Gebben ]
+  * scripts: Make generate_source.py look harder for vk.xml
+
+  [ Richard S. Wright Jr. ]
+  * NSIS installer is deprecated and no longer used
+  * Removed runtime dir
+
+  [ Charles Giessen ]
+  * vulkaninfo: Call enumerate functions with scratch buffer
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.3.302
+
+  [ Daniel Rakos ]
+  * icd: Add support for AV1 encode and QP maps
+
+  [ Charles Giessen ]
+  * cube: Link to Vulkan-Loader on macOS
+
+  [ Water Chika ]
+  * vkcube: Check if gpu support the surface
+  * vkcube: Check if gpu support the surface Fix bug on checking and refine logic of selection.
+  * vkcubepp: Check if gpu support the surface
+
+  [ Charles Giessen ]
+  * cube: Check return value of vkGetPhysicalDeviceSurfaceSupportKHR
+
+  [ Mike Schuchardt ]
+  * cube: Fix macOS
+  * build: Update to header 1.4.303
+
+  [ ziga-lunarg ]
+  * vulkaninfo: Fix initializing vectors of structs
+
+  [ John Zupin ]
+  * packaging: debian: update copyright
+
+  [ Mike Schuchardt ]
+  * cube: Don't use MoltenVK include dir on macOS
+  * cubepp: Remove deprecated constructor usage
+  * build: Update to header 1.4.304
+
+  [ Charles Giessen ]
+  * build: Update Volk to vulkan-sdk-1.4.304
+
+ -- john <john@odin>  Mon, 06 Jan 2025 15:51:38 -0700
+
 vulkan-tools (1.3.296.0~rc2-1lunarg22.04-1) jammy; urgency=medium
 
   [ ziga-lunarg ]
