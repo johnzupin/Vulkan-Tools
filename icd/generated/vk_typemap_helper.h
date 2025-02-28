@@ -4280,6 +4280,69 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_LAYERED_API_VUL
     typedef VkPhysicalDeviceLayeredApiVulkanPropertiesKHR Type;
 };
 
+// Map type VkPhysicalDeviceMaintenance8FeaturesKHR to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAINTENANCE_8_FEATURES_KHR
+template <> struct LvlTypeMap<VkPhysicalDeviceMaintenance8FeaturesKHR> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAINTENANCE_8_FEATURES_KHR;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAINTENANCE_8_FEATURES_KHR> {
+    typedef VkPhysicalDeviceMaintenance8FeaturesKHR Type;
+};
+
+// Map type VkMemoryBarrierAccessFlags3KHR to id VK_STRUCTURE_TYPE_MEMORY_BARRIER_ACCESS_FLAGS_3_KHR
+template <> struct LvlTypeMap<VkMemoryBarrierAccessFlags3KHR> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_MEMORY_BARRIER_ACCESS_FLAGS_3_KHR;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_MEMORY_BARRIER_ACCESS_FLAGS_3_KHR> {
+    typedef VkMemoryBarrierAccessFlags3KHR Type;
+};
+
+// Map type VkPhysicalDeviceVideoMaintenance2FeaturesKHR to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VIDEO_MAINTENANCE_2_FEATURES_KHR
+template <> struct LvlTypeMap<VkPhysicalDeviceVideoMaintenance2FeaturesKHR> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VIDEO_MAINTENANCE_2_FEATURES_KHR;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VIDEO_MAINTENANCE_2_FEATURES_KHR> {
+    typedef VkPhysicalDeviceVideoMaintenance2FeaturesKHR Type;
+};
+
+// Map type VkVideoDecodeH264InlineSessionParametersInfoKHR to id VK_STRUCTURE_TYPE_VIDEO_DECODE_H264_INLINE_SESSION_PARAMETERS_INFO_KHR
+template <> struct LvlTypeMap<VkVideoDecodeH264InlineSessionParametersInfoKHR> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_VIDEO_DECODE_H264_INLINE_SESSION_PARAMETERS_INFO_KHR;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_VIDEO_DECODE_H264_INLINE_SESSION_PARAMETERS_INFO_KHR> {
+    typedef VkVideoDecodeH264InlineSessionParametersInfoKHR Type;
+};
+
+// Map type VkVideoDecodeH265InlineSessionParametersInfoKHR to id VK_STRUCTURE_TYPE_VIDEO_DECODE_H265_INLINE_SESSION_PARAMETERS_INFO_KHR
+template <> struct LvlTypeMap<VkVideoDecodeH265InlineSessionParametersInfoKHR> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_VIDEO_DECODE_H265_INLINE_SESSION_PARAMETERS_INFO_KHR;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_VIDEO_DECODE_H265_INLINE_SESSION_PARAMETERS_INFO_KHR> {
+    typedef VkVideoDecodeH265InlineSessionParametersInfoKHR Type;
+};
+
+// Map type VkVideoDecodeAV1InlineSessionParametersInfoKHR to id VK_STRUCTURE_TYPE_VIDEO_DECODE_AV1_INLINE_SESSION_PARAMETERS_INFO_KHR
+template <> struct LvlTypeMap<VkVideoDecodeAV1InlineSessionParametersInfoKHR> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_VIDEO_DECODE_AV1_INLINE_SESSION_PARAMETERS_INFO_KHR;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_VIDEO_DECODE_AV1_INLINE_SESSION_PARAMETERS_INFO_KHR> {
+    typedef VkVideoDecodeAV1InlineSessionParametersInfoKHR Type;
+};
+
+// Map type VkPhysicalDeviceDepthClampZeroOneFeaturesKHR to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEPTH_CLAMP_ZERO_ONE_FEATURES_KHR
+template <> struct LvlTypeMap<VkPhysicalDeviceDepthClampZeroOneFeaturesKHR> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEPTH_CLAMP_ZERO_ONE_FEATURES_KHR;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEPTH_CLAMP_ZERO_ONE_FEATURES_KHR> {
+    typedef VkPhysicalDeviceDepthClampZeroOneFeaturesKHR Type;
+};
+
 // Map type VkDebugReportCallbackCreateInfoEXT to id VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT
 template <> struct LvlTypeMap<VkDebugReportCallbackCreateInfoEXT> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
@@ -6229,6 +6292,7 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_DEVICE_DIAGNOSTICS_CONFIG_CREAT
     typedef VkDeviceDiagnosticsConfigCreateInfoNV Type;
 };
 
+#ifdef VK_ENABLE_BETA_EXTENSIONS
 // Map type VkCudaModuleCreateInfoNV to id VK_STRUCTURE_TYPE_CUDA_MODULE_CREATE_INFO_NV
 template <> struct LvlTypeMap<VkCudaModuleCreateInfoNV> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_CUDA_MODULE_CREATE_INFO_NV;
@@ -6238,6 +6302,8 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_CUDA_MODULE_CREATE_INFO_NV> {
     typedef VkCudaModuleCreateInfoNV Type;
 };
 
+#endif // VK_ENABLE_BETA_EXTENSIONS
+#ifdef VK_ENABLE_BETA_EXTENSIONS
 // Map type VkCudaFunctionCreateInfoNV to id VK_STRUCTURE_TYPE_CUDA_FUNCTION_CREATE_INFO_NV
 template <> struct LvlTypeMap<VkCudaFunctionCreateInfoNV> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_CUDA_FUNCTION_CREATE_INFO_NV;
@@ -6247,6 +6313,8 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_CUDA_FUNCTION_CREATE_INFO_NV> {
     typedef VkCudaFunctionCreateInfoNV Type;
 };
 
+#endif // VK_ENABLE_BETA_EXTENSIONS
+#ifdef VK_ENABLE_BETA_EXTENSIONS
 // Map type VkCudaLaunchInfoNV to id VK_STRUCTURE_TYPE_CUDA_LAUNCH_INFO_NV
 template <> struct LvlTypeMap<VkCudaLaunchInfoNV> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_CUDA_LAUNCH_INFO_NV;
@@ -6256,6 +6324,8 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_CUDA_LAUNCH_INFO_NV> {
     typedef VkCudaLaunchInfoNV Type;
 };
 
+#endif // VK_ENABLE_BETA_EXTENSIONS
+#ifdef VK_ENABLE_BETA_EXTENSIONS
 // Map type VkPhysicalDeviceCudaKernelLaunchFeaturesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUDA_KERNEL_LAUNCH_FEATURES_NV
 template <> struct LvlTypeMap<VkPhysicalDeviceCudaKernelLaunchFeaturesNV> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUDA_KERNEL_LAUNCH_FEATURES_NV;
@@ -6265,6 +6335,8 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUDA_KERNEL_LAU
     typedef VkPhysicalDeviceCudaKernelLaunchFeaturesNV Type;
 };
 
+#endif // VK_ENABLE_BETA_EXTENSIONS
+#ifdef VK_ENABLE_BETA_EXTENSIONS
 // Map type VkPhysicalDeviceCudaKernelLaunchPropertiesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUDA_KERNEL_LAUNCH_PROPERTIES_NV
 template <> struct LvlTypeMap<VkPhysicalDeviceCudaKernelLaunchPropertiesNV> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUDA_KERNEL_LAUNCH_PROPERTIES_NV;
@@ -6274,6 +6346,7 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUDA_KERNEL_LAU
     typedef VkPhysicalDeviceCudaKernelLaunchPropertiesNV Type;
 };
 
+#endif // VK_ENABLE_BETA_EXTENSIONS
 // Map type VkQueryLowLatencySupportNV to id VK_STRUCTURE_TYPE_QUERY_LOW_LATENCY_SUPPORT_NV
 template <> struct LvlTypeMap<VkQueryLowLatencySupportNV> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_QUERY_LOW_LATENCY_SUPPORT_NV;
@@ -7517,15 +7590,6 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_HOST_MAPP
     typedef VkDescriptorSetLayoutHostMappingInfoVALVE Type;
 };
 
-// Map type VkPhysicalDeviceDepthClampZeroOneFeaturesEXT to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEPTH_CLAMP_ZERO_ONE_FEATURES_EXT
-template <> struct LvlTypeMap<VkPhysicalDeviceDepthClampZeroOneFeaturesEXT> {
-    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEPTH_CLAMP_ZERO_ONE_FEATURES_EXT;
-};
-
-template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEPTH_CLAMP_ZERO_ONE_FEATURES_EXT> {
-    typedef VkPhysicalDeviceDepthClampZeroOneFeaturesEXT Type;
-};
-
 // Map type VkPhysicalDeviceNonSeamlessCubeMapFeaturesEXT to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_NON_SEAMLESS_CUBE_MAP_FEATURES_EXT
 template <> struct LvlTypeMap<VkPhysicalDeviceNonSeamlessCubeMapFeaturesEXT> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_NON_SEAMLESS_CUBE_MAP_FEATURES_EXT;
@@ -7668,6 +7732,33 @@ template <> struct LvlTypeMap<VkPipelineIndirectDeviceAddressInfoNV> {
 
 template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PIPELINE_INDIRECT_DEVICE_ADDRESS_INFO_NV> {
     typedef VkPipelineIndirectDeviceAddressInfoNV Type;
+};
+
+// Map type VkPhysicalDeviceRayTracingLinearSweptSpheresFeaturesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_LINEAR_SWEPT_SPHERES_FEATURES_NV
+template <> struct LvlTypeMap<VkPhysicalDeviceRayTracingLinearSweptSpheresFeaturesNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_LINEAR_SWEPT_SPHERES_FEATURES_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_LINEAR_SWEPT_SPHERES_FEATURES_NV> {
+    typedef VkPhysicalDeviceRayTracingLinearSweptSpheresFeaturesNV Type;
+};
+
+// Map type VkAccelerationStructureGeometryLinearSweptSpheresDataNV to id VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_LINEAR_SWEPT_SPHERES_DATA_NV
+template <> struct LvlTypeMap<VkAccelerationStructureGeometryLinearSweptSpheresDataNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_LINEAR_SWEPT_SPHERES_DATA_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_LINEAR_SWEPT_SPHERES_DATA_NV> {
+    typedef VkAccelerationStructureGeometryLinearSweptSpheresDataNV Type;
+};
+
+// Map type VkAccelerationStructureGeometrySpheresDataNV to id VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_SPHERES_DATA_NV
+template <> struct LvlTypeMap<VkAccelerationStructureGeometrySpheresDataNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_SPHERES_DATA_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_SPHERES_DATA_NV> {
+    typedef VkAccelerationStructureGeometrySpheresDataNV Type;
 };
 
 // Map type VkPhysicalDeviceLinearColorAttachmentFeaturesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_LINEAR_COLOR_ATTACHMENT_FEATURES_NV
@@ -8070,6 +8161,42 @@ template <> struct LvlTypeMap<VkPhysicalDeviceRayTracingInvocationReorderFeature
 
 template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_INVOCATION_REORDER_FEATURES_NV> {
     typedef VkPhysicalDeviceRayTracingInvocationReorderFeaturesNV Type;
+};
+
+// Map type VkPhysicalDeviceCooperativeVectorPropertiesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_VECTOR_PROPERTIES_NV
+template <> struct LvlTypeMap<VkPhysicalDeviceCooperativeVectorPropertiesNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_VECTOR_PROPERTIES_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_VECTOR_PROPERTIES_NV> {
+    typedef VkPhysicalDeviceCooperativeVectorPropertiesNV Type;
+};
+
+// Map type VkPhysicalDeviceCooperativeVectorFeaturesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_VECTOR_FEATURES_NV
+template <> struct LvlTypeMap<VkPhysicalDeviceCooperativeVectorFeaturesNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_VECTOR_FEATURES_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_VECTOR_FEATURES_NV> {
+    typedef VkPhysicalDeviceCooperativeVectorFeaturesNV Type;
+};
+
+// Map type VkCooperativeVectorPropertiesNV to id VK_STRUCTURE_TYPE_COOPERATIVE_VECTOR_PROPERTIES_NV
+template <> struct LvlTypeMap<VkCooperativeVectorPropertiesNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_COOPERATIVE_VECTOR_PROPERTIES_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_COOPERATIVE_VECTOR_PROPERTIES_NV> {
+    typedef VkCooperativeVectorPropertiesNV Type;
+};
+
+// Map type VkConvertCooperativeVectorMatrixInfoNV to id VK_STRUCTURE_TYPE_CONVERT_COOPERATIVE_VECTOR_MATRIX_INFO_NV
+template <> struct LvlTypeMap<VkConvertCooperativeVectorMatrixInfoNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_CONVERT_COOPERATIVE_VECTOR_MATRIX_INFO_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_CONVERT_COOPERATIVE_VECTOR_MATRIX_INFO_NV> {
+    typedef VkConvertCooperativeVectorMatrixInfoNV Type;
 };
 
 // Map type VkPhysicalDeviceExtendedSparseAddressSpaceFeaturesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTENDED_SPARSE_ADDRESS_SPACE_FEATURES_NV
@@ -8487,6 +8614,141 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_VAL
     typedef VkPhysicalDeviceRayTracingValidationFeaturesNV Type;
 };
 
+// Map type VkPhysicalDeviceClusterAccelerationStructureFeaturesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CLUSTER_ACCELERATION_STRUCTURE_FEATURES_NV
+template <> struct LvlTypeMap<VkPhysicalDeviceClusterAccelerationStructureFeaturesNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CLUSTER_ACCELERATION_STRUCTURE_FEATURES_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CLUSTER_ACCELERATION_STRUCTURE_FEATURES_NV> {
+    typedef VkPhysicalDeviceClusterAccelerationStructureFeaturesNV Type;
+};
+
+// Map type VkPhysicalDeviceClusterAccelerationStructurePropertiesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CLUSTER_ACCELERATION_STRUCTURE_PROPERTIES_NV
+template <> struct LvlTypeMap<VkPhysicalDeviceClusterAccelerationStructurePropertiesNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CLUSTER_ACCELERATION_STRUCTURE_PROPERTIES_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CLUSTER_ACCELERATION_STRUCTURE_PROPERTIES_NV> {
+    typedef VkPhysicalDeviceClusterAccelerationStructurePropertiesNV Type;
+};
+
+// Map type VkClusterAccelerationStructureClustersBottomLevelInputNV to id VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_CLUSTERS_BOTTOM_LEVEL_INPUT_NV
+template <> struct LvlTypeMap<VkClusterAccelerationStructureClustersBottomLevelInputNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_CLUSTERS_BOTTOM_LEVEL_INPUT_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_CLUSTERS_BOTTOM_LEVEL_INPUT_NV> {
+    typedef VkClusterAccelerationStructureClustersBottomLevelInputNV Type;
+};
+
+// Map type VkClusterAccelerationStructureTriangleClusterInputNV to id VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_TRIANGLE_CLUSTER_INPUT_NV
+template <> struct LvlTypeMap<VkClusterAccelerationStructureTriangleClusterInputNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_TRIANGLE_CLUSTER_INPUT_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_TRIANGLE_CLUSTER_INPUT_NV> {
+    typedef VkClusterAccelerationStructureTriangleClusterInputNV Type;
+};
+
+// Map type VkClusterAccelerationStructureMoveObjectsInputNV to id VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_MOVE_OBJECTS_INPUT_NV
+template <> struct LvlTypeMap<VkClusterAccelerationStructureMoveObjectsInputNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_MOVE_OBJECTS_INPUT_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_MOVE_OBJECTS_INPUT_NV> {
+    typedef VkClusterAccelerationStructureMoveObjectsInputNV Type;
+};
+
+// Map type VkClusterAccelerationStructureInputInfoNV to id VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_INPUT_INFO_NV
+template <> struct LvlTypeMap<VkClusterAccelerationStructureInputInfoNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_INPUT_INFO_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_INPUT_INFO_NV> {
+    typedef VkClusterAccelerationStructureInputInfoNV Type;
+};
+
+// Map type VkClusterAccelerationStructureCommandsInfoNV to id VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_COMMANDS_INFO_NV
+template <> struct LvlTypeMap<VkClusterAccelerationStructureCommandsInfoNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_COMMANDS_INFO_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_CLUSTER_ACCELERATION_STRUCTURE_COMMANDS_INFO_NV> {
+    typedef VkClusterAccelerationStructureCommandsInfoNV Type;
+};
+
+// Map type VkAccelerationStructureBuildSizesInfoKHR to id VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_SIZES_INFO_KHR
+template <> struct LvlTypeMap<VkAccelerationStructureBuildSizesInfoKHR> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_SIZES_INFO_KHR;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_SIZES_INFO_KHR> {
+    typedef VkAccelerationStructureBuildSizesInfoKHR Type;
+};
+
+// Map type VkRayTracingPipelineClusterAccelerationStructureCreateInfoNV to id VK_STRUCTURE_TYPE_RAY_TRACING_PIPELINE_CLUSTER_ACCELERATION_STRUCTURE_CREATE_INFO_NV
+template <> struct LvlTypeMap<VkRayTracingPipelineClusterAccelerationStructureCreateInfoNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_RAY_TRACING_PIPELINE_CLUSTER_ACCELERATION_STRUCTURE_CREATE_INFO_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_RAY_TRACING_PIPELINE_CLUSTER_ACCELERATION_STRUCTURE_CREATE_INFO_NV> {
+    typedef VkRayTracingPipelineClusterAccelerationStructureCreateInfoNV Type;
+};
+
+// Map type VkPhysicalDevicePartitionedAccelerationStructureFeaturesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PARTITIONED_ACCELERATION_STRUCTURE_FEATURES_NV
+template <> struct LvlTypeMap<VkPhysicalDevicePartitionedAccelerationStructureFeaturesNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PARTITIONED_ACCELERATION_STRUCTURE_FEATURES_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PARTITIONED_ACCELERATION_STRUCTURE_FEATURES_NV> {
+    typedef VkPhysicalDevicePartitionedAccelerationStructureFeaturesNV Type;
+};
+
+// Map type VkPhysicalDevicePartitionedAccelerationStructurePropertiesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PARTITIONED_ACCELERATION_STRUCTURE_PROPERTIES_NV
+template <> struct LvlTypeMap<VkPhysicalDevicePartitionedAccelerationStructurePropertiesNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PARTITIONED_ACCELERATION_STRUCTURE_PROPERTIES_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PARTITIONED_ACCELERATION_STRUCTURE_PROPERTIES_NV> {
+    typedef VkPhysicalDevicePartitionedAccelerationStructurePropertiesNV Type;
+};
+
+// Map type VkPartitionedAccelerationStructureFlagsNV to id VK_STRUCTURE_TYPE_PARTITIONED_ACCELERATION_STRUCTURE_FLAGS_NV
+template <> struct LvlTypeMap<VkPartitionedAccelerationStructureFlagsNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PARTITIONED_ACCELERATION_STRUCTURE_FLAGS_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PARTITIONED_ACCELERATION_STRUCTURE_FLAGS_NV> {
+    typedef VkPartitionedAccelerationStructureFlagsNV Type;
+};
+
+// Map type VkWriteDescriptorSetPartitionedAccelerationStructureNV to id VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_PARTITIONED_ACCELERATION_STRUCTURE_NV
+template <> struct LvlTypeMap<VkWriteDescriptorSetPartitionedAccelerationStructureNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_PARTITIONED_ACCELERATION_STRUCTURE_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_PARTITIONED_ACCELERATION_STRUCTURE_NV> {
+    typedef VkWriteDescriptorSetPartitionedAccelerationStructureNV Type;
+};
+
+// Map type VkPartitionedAccelerationStructureInstancesInputNV to id VK_STRUCTURE_TYPE_PARTITIONED_ACCELERATION_STRUCTURE_INSTANCES_INPUT_NV
+template <> struct LvlTypeMap<VkPartitionedAccelerationStructureInstancesInputNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PARTITIONED_ACCELERATION_STRUCTURE_INSTANCES_INPUT_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PARTITIONED_ACCELERATION_STRUCTURE_INSTANCES_INPUT_NV> {
+    typedef VkPartitionedAccelerationStructureInstancesInputNV Type;
+};
+
+// Map type VkBuildPartitionedAccelerationStructureInfoNV to id VK_STRUCTURE_TYPE_BUILD_PARTITIONED_ACCELERATION_STRUCTURE_INFO_NV
+template <> struct LvlTypeMap<VkBuildPartitionedAccelerationStructureInfoNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_BUILD_PARTITIONED_ACCELERATION_STRUCTURE_INFO_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_BUILD_PARTITIONED_ACCELERATION_STRUCTURE_INFO_NV> {
+    typedef VkBuildPartitionedAccelerationStructureInfoNV Type;
+};
+
 // Map type VkPhysicalDeviceDeviceGeneratedCommandsFeaturesEXT to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEVICE_GENERATED_COMMANDS_FEATURES_EXT
 template <> struct LvlTypeMap<VkPhysicalDeviceDeviceGeneratedCommandsFeaturesEXT> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DEVICE_GENERATED_COMMANDS_FEATURES_EXT;
@@ -8703,6 +8965,48 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_MAT
     typedef VkPhysicalDeviceCooperativeMatrix2PropertiesNV Type;
 };
 
+// Map type VkPhysicalDevicePipelineOpacityMicromapFeaturesARM to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_OPACITY_MICROMAP_FEATURES_ARM
+template <> struct LvlTypeMap<VkPhysicalDevicePipelineOpacityMicromapFeaturesARM> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_OPACITY_MICROMAP_FEATURES_ARM;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_OPACITY_MICROMAP_FEATURES_ARM> {
+    typedef VkPhysicalDevicePipelineOpacityMicromapFeaturesARM Type;
+};
+
+#ifdef VK_USE_PLATFORM_METAL_EXT
+// Map type VkImportMemoryMetalHandleInfoEXT to id VK_STRUCTURE_TYPE_IMPORT_MEMORY_METAL_HANDLE_INFO_EXT
+template <> struct LvlTypeMap<VkImportMemoryMetalHandleInfoEXT> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_IMPORT_MEMORY_METAL_HANDLE_INFO_EXT;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_IMPORT_MEMORY_METAL_HANDLE_INFO_EXT> {
+    typedef VkImportMemoryMetalHandleInfoEXT Type;
+};
+
+#endif // VK_USE_PLATFORM_METAL_EXT
+#ifdef VK_USE_PLATFORM_METAL_EXT
+// Map type VkMemoryMetalHandlePropertiesEXT to id VK_STRUCTURE_TYPE_MEMORY_METAL_HANDLE_PROPERTIES_EXT
+template <> struct LvlTypeMap<VkMemoryMetalHandlePropertiesEXT> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_MEMORY_METAL_HANDLE_PROPERTIES_EXT;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_MEMORY_METAL_HANDLE_PROPERTIES_EXT> {
+    typedef VkMemoryMetalHandlePropertiesEXT Type;
+};
+
+#endif // VK_USE_PLATFORM_METAL_EXT
+#ifdef VK_USE_PLATFORM_METAL_EXT
+// Map type VkMemoryGetMetalHandleInfoEXT to id VK_STRUCTURE_TYPE_MEMORY_GET_METAL_HANDLE_INFO_EXT
+template <> struct LvlTypeMap<VkMemoryGetMetalHandleInfoEXT> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_MEMORY_GET_METAL_HANDLE_INFO_EXT;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_MEMORY_GET_METAL_HANDLE_INFO_EXT> {
+    typedef VkMemoryGetMetalHandleInfoEXT Type;
+};
+
+#endif // VK_USE_PLATFORM_METAL_EXT
 // Map type VkPhysicalDeviceVertexAttributeRobustnessFeaturesEXT to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_ATTRIBUTE_ROBUSTNESS_FEATURES_EXT
 template <> struct LvlTypeMap<VkPhysicalDeviceVertexAttributeRobustnessFeaturesEXT> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_ATTRIBUTE_ROBUSTNESS_FEATURES_EXT;
@@ -8712,6 +9016,28 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_ATTRIBUT
     typedef VkPhysicalDeviceVertexAttributeRobustnessFeaturesEXT Type;
 };
 
+#ifdef VK_ENABLE_BETA_EXTENSIONS
+// Map type VkSetPresentConfigNV to id VK_STRUCTURE_TYPE_SET_PRESENT_CONFIG_NV
+template <> struct LvlTypeMap<VkSetPresentConfigNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_SET_PRESENT_CONFIG_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_SET_PRESENT_CONFIG_NV> {
+    typedef VkSetPresentConfigNV Type;
+};
+
+#endif // VK_ENABLE_BETA_EXTENSIONS
+#ifdef VK_ENABLE_BETA_EXTENSIONS
+// Map type VkPhysicalDevicePresentMeteringFeaturesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PRESENT_METERING_FEATURES_NV
+template <> struct LvlTypeMap<VkPhysicalDevicePresentMeteringFeaturesNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PRESENT_METERING_FEATURES_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PRESENT_METERING_FEATURES_NV> {
+    typedef VkPhysicalDevicePresentMeteringFeaturesNV Type;
+};
+
+#endif // VK_ENABLE_BETA_EXTENSIONS
 // Map type VkAccelerationStructureGeometryTrianglesDataKHR to id VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_TRIANGLES_DATA_KHR
 template <> struct LvlTypeMap<VkAccelerationStructureGeometryTrianglesDataKHR> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_TRIANGLES_DATA_KHR;
@@ -8836,15 +9162,6 @@ template <> struct LvlTypeMap<VkCopyAccelerationStructureInfoKHR> {
 
 template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_COPY_ACCELERATION_STRUCTURE_INFO_KHR> {
     typedef VkCopyAccelerationStructureInfoKHR Type;
-};
-
-// Map type VkAccelerationStructureBuildSizesInfoKHR to id VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_SIZES_INFO_KHR
-template <> struct LvlTypeMap<VkAccelerationStructureBuildSizesInfoKHR> {
-    static const VkStructureType kSType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_SIZES_INFO_KHR;
-};
-
-template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_SIZES_INFO_KHR> {
-    typedef VkAccelerationStructureBuildSizesInfoKHR Type;
 };
 
 // Map type VkRayTracingShaderGroupCreateInfoKHR to id VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR

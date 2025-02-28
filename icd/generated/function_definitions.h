@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2015-2024 The Khronos Group Inc.
+** Copyright (c) 2015-2025 The Khronos Group Inc.
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -4030,6 +4030,12 @@ static VKAPI_ATTR void VKAPI_CALL GetPhysicalDeviceProperties2KHR(
         fragment_density_map2_props->maxDescriptorSetSubsampledSamplers = 1;
     }
 
+    auto *maintenance3_props = lvl_find_mod_in_chain<VkPhysicalDeviceMaintenance3Properties>(pProperties->pNext);
+    if (maintenance3_props) {
+        maintenance3_props->maxMemoryAllocationSize = 1073741824;
+        maintenance3_props->maxPerSetDescriptors = 1024;
+    }
+
     const uint32_t num_copy_layouts = 5;
     const VkImageLayout HostCopyLayouts[]{
        VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
@@ -5321,6 +5327,9 @@ static VKAPI_ATTR void VKAPI_CALL CmdBindDescriptorBufferEmbeddedSamplers2EXT(
 {
 //Not a CREATE or DESTROY function
 }
+
+
+
 
 
 
@@ -6972,6 +6981,7 @@ static VKAPI_ATTR void VKAPI_CALL GetPrivateDataEXT(
 
 
 
+#ifdef VK_ENABLE_BETA_EXTENSIONS
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateCudaModuleNV(
     VkDevice                                    device,
@@ -7027,6 +7037,7 @@ static VKAPI_ATTR void VKAPI_CALL CmdCudaLaunchKernelNV(
 {
 //Not a CREATE or DESTROY function
 }
+#endif /* VK_ENABLE_BETA_EXTENSIONS */
 
 
 #ifdef VK_USE_PLATFORM_METAL_EXT
@@ -7722,6 +7733,7 @@ static VKAPI_ATTR VkDeviceAddress VKAPI_CALL GetPipelineIndirectDeviceAddressNV(
 
 
 
+
 static VKAPI_ATTR void VKAPI_CALL CmdSetDepthClampEnableEXT(
     VkCommandBuffer                             commandBuffer,
     VkBool32                                    depthClampEnable)
@@ -8111,6 +8123,32 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetDynamicRenderingTilePropertiesQCOM(
 
 
 
+static VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceCooperativeVectorPropertiesNV(
+    VkPhysicalDevice                            physicalDevice,
+    uint32_t*                                   pPropertyCount,
+    VkCooperativeVectorPropertiesNV*            pProperties)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR VkResult VKAPI_CALL ConvertCooperativeVectorMatrixNV(
+    VkDevice                                    device,
+    const VkConvertCooperativeVectorMatrixInfoNV* pInfo)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR void VKAPI_CALL CmdConvertCooperativeVectorMatrixNV(
+    VkCommandBuffer                             commandBuffer,
+    uint32_t                                    infoCount,
+    const VkConvertCooperativeVectorMatrixInfoNV* pInfos)
+{
+//Not a CREATE or DESTROY function
+}
+
+
 
 
 
@@ -8192,6 +8230,38 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetScreenBufferPropertiesQNX(
 
 
 
+
+
+static VKAPI_ATTR void VKAPI_CALL GetClusterAccelerationStructureBuildSizesNV(
+    VkDevice                                    device,
+    const VkClusterAccelerationStructureInputInfoNV* pInfo,
+    VkAccelerationStructureBuildSizesInfoKHR*   pSizeInfo)
+{
+//Not a CREATE or DESTROY function
+}
+
+static VKAPI_ATTR void VKAPI_CALL CmdBuildClusterAccelerationStructureIndirectNV(
+    VkCommandBuffer                             commandBuffer,
+    const VkClusterAccelerationStructureCommandsInfoNV* pCommandInfos)
+{
+//Not a CREATE or DESTROY function
+}
+
+
+static VKAPI_ATTR void VKAPI_CALL GetPartitionedAccelerationStructuresBuildSizesNV(
+    VkDevice                                    device,
+    const VkPartitionedAccelerationStructureInstancesInputNV* pInfo,
+    VkAccelerationStructureBuildSizesInfoKHR*   pSizeInfo)
+{
+//Not a CREATE or DESTROY function
+}
+
+static VKAPI_ATTR void VKAPI_CALL CmdBuildPartitionedAccelerationStructuresNV(
+    VkCommandBuffer                             commandBuffer,
+    const VkBuildPartitionedAccelerationStructureInfoNV* pBuildInfo)
+{
+//Not a CREATE or DESTROY function
+}
 
 
 static VKAPI_ATTR void VKAPI_CALL GetGeneratedCommandsMemoryRequirementsEXT(
@@ -8287,6 +8357,32 @@ static VKAPI_ATTR VkResult VKAPI_CALL GetPhysicalDeviceCooperativeMatrixFlexible
     return VK_SUCCESS;
 }
 
+
+#ifdef VK_USE_PLATFORM_METAL_EXT
+
+static VKAPI_ATTR VkResult VKAPI_CALL GetMemoryMetalHandleEXT(
+    VkDevice                                    device,
+    const VkMemoryGetMetalHandleInfoEXT*        pGetMetalHandleInfo,
+    void**                                      pHandle)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+
+static VKAPI_ATTR VkResult VKAPI_CALL GetMemoryMetalHandlePropertiesEXT(
+    VkDevice                                    device,
+    VkExternalMemoryHandleTypeFlagBits          handleType,
+    const void*                                 pHandle,
+    VkMemoryMetalHandlePropertiesEXT*           pMemoryMetalHandleProperties)
+{
+//Not a CREATE or DESTROY function
+    return VK_SUCCESS;
+}
+#endif /* VK_USE_PLATFORM_METAL_EXT */
+
+
+#ifdef VK_ENABLE_BETA_EXTENSIONS
+#endif /* VK_ENABLE_BETA_EXTENSIONS */
 
 
 static VKAPI_ATTR VkResult VKAPI_CALL CreateAccelerationStructureKHR(
