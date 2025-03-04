@@ -1,3 +1,41 @@
+vulkan-tools (1.4.309.0~rc1-1lunarg24.04-1) noble; urgency=medium
+
+  [ Daniel Rakos ]
+  * vulkaninfo: Add video profiles support
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.4.305
+
+  [ Karen Webb ]
+  * cube: Correctly apply sRGB OETF/EOTF
+
+  [ Peter0x44 ]
+  * vulkaninfo: Correct typo targetted -> targeted
+
+  [ spencer-lunarg ]
+  * icd: Add VkPhysicalDeviceMaintenance3Properties
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.4.306
+  * build: Update to header 1.4.307
+
+  [ Juan Ramos ]
+  * cmake: Update minimum to 3.22.1
+
+  [ Yilong Li ]
+  * vulkaninfo: Support Fuchsia
+  * vkcubepp: Remove implicit casts
+  * vkcubepp: Support Fuchsia
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.4.309
+
+  [ Charles Giessen ]
+  * build: Update Volk to vulkan-tmp-1.4.309 branch
+  * ci: Prevent double-running ci in main repo
+
+ -- john <john@odin>  Tue, 04 Mar 2025 10:03:59 -0700
+
 vulkan-tools (1.4.304.0~rc1-1lunarg24.04-1) noble; urgency=medium
 
   [ ziga-lunarg ]
