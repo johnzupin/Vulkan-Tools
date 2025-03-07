@@ -1,3 +1,13 @@
+vulkan-tools (1.4.309.0~rc2-1lunarg22.04-1) jammy; urgency=medium
+
+  [ John Zupin ]
+  * build: update volk branch to vulkan-sdk-1.4.309
+
+  [ Charles Giessen ]
+  * vulkaninfo: Use Object for "Vulkan Profiles" array
+
+ -- john <john@odin>  Fri, 07 Mar 2025 09:21:02 -0700
+
 vulkan-tools (1.4.309.0~rc1-1lunarg22.04-1) jammy; urgency=medium
 
   [ Daniel Rakos ]
