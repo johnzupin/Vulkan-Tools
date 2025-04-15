@@ -3403,6 +3403,15 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_DISPLAY_PLANE_CAPABILITIES_2_KH
     typedef VkDisplayPlaneCapabilities2KHR Type;
 };
 
+// Map type VkPhysicalDeviceShaderBfloat16FeaturesKHR to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_BFLOAT16_FEATURES_KHR
+template <> struct LvlTypeMap<VkPhysicalDeviceShaderBfloat16FeaturesKHR> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_BFLOAT16_FEATURES_KHR;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_BFLOAT16_FEATURES_KHR> {
+    typedef VkPhysicalDeviceShaderBfloat16FeaturesKHR Type;
+};
+
 #ifdef VK_ENABLE_BETA_EXTENSIONS
 // Map type VkPhysicalDevicePortabilitySubsetFeaturesKHR to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PORTABILITY_SUBSET_FEATURES_KHR
 template <> struct LvlTypeMap<VkPhysicalDevicePortabilitySubsetFeaturesKHR> {
@@ -6347,6 +6356,60 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_CUDA_KERNEL_LAU
 };
 
 #endif // VK_ENABLE_BETA_EXTENSIONS
+// Map type VkPhysicalDeviceTileShadingFeaturesQCOM to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TILE_SHADING_FEATURES_QCOM
+template <> struct LvlTypeMap<VkPhysicalDeviceTileShadingFeaturesQCOM> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TILE_SHADING_FEATURES_QCOM;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TILE_SHADING_FEATURES_QCOM> {
+    typedef VkPhysicalDeviceTileShadingFeaturesQCOM Type;
+};
+
+// Map type VkPhysicalDeviceTileShadingPropertiesQCOM to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TILE_SHADING_PROPERTIES_QCOM
+template <> struct LvlTypeMap<VkPhysicalDeviceTileShadingPropertiesQCOM> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TILE_SHADING_PROPERTIES_QCOM;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TILE_SHADING_PROPERTIES_QCOM> {
+    typedef VkPhysicalDeviceTileShadingPropertiesQCOM Type;
+};
+
+// Map type VkRenderPassTileShadingCreateInfoQCOM to id VK_STRUCTURE_TYPE_RENDER_PASS_TILE_SHADING_CREATE_INFO_QCOM
+template <> struct LvlTypeMap<VkRenderPassTileShadingCreateInfoQCOM> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_RENDER_PASS_TILE_SHADING_CREATE_INFO_QCOM;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_RENDER_PASS_TILE_SHADING_CREATE_INFO_QCOM> {
+    typedef VkRenderPassTileShadingCreateInfoQCOM Type;
+};
+
+// Map type VkPerTileBeginInfoQCOM to id VK_STRUCTURE_TYPE_PER_TILE_BEGIN_INFO_QCOM
+template <> struct LvlTypeMap<VkPerTileBeginInfoQCOM> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PER_TILE_BEGIN_INFO_QCOM;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PER_TILE_BEGIN_INFO_QCOM> {
+    typedef VkPerTileBeginInfoQCOM Type;
+};
+
+// Map type VkPerTileEndInfoQCOM to id VK_STRUCTURE_TYPE_PER_TILE_END_INFO_QCOM
+template <> struct LvlTypeMap<VkPerTileEndInfoQCOM> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PER_TILE_END_INFO_QCOM;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PER_TILE_END_INFO_QCOM> {
+    typedef VkPerTileEndInfoQCOM Type;
+};
+
+// Map type VkDispatchTileInfoQCOM to id VK_STRUCTURE_TYPE_DISPATCH_TILE_INFO_QCOM
+template <> struct LvlTypeMap<VkDispatchTileInfoQCOM> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_DISPATCH_TILE_INFO_QCOM;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_DISPATCH_TILE_INFO_QCOM> {
+    typedef VkDispatchTileInfoQCOM Type;
+};
+
 // Map type VkQueryLowLatencySupportNV to id VK_STRUCTURE_TYPE_QUERY_LOW_LATENCY_SUPPORT_NV
 template <> struct LvlTypeMap<VkQueryLowLatencySupportNV> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_QUERY_LOW_LATENCY_SUPPORT_NV;
@@ -7644,31 +7707,31 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_RENDER_PASS_STRIPE_SUBMIT_INFO_
     typedef VkRenderPassStripeSubmitInfoARM Type;
 };
 
-// Map type VkPhysicalDeviceFragmentDensityMapOffsetFeaturesQCOM to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_FEATURES_QCOM
-template <> struct LvlTypeMap<VkPhysicalDeviceFragmentDensityMapOffsetFeaturesQCOM> {
-    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_FEATURES_QCOM;
+// Map type VkPhysicalDeviceFragmentDensityMapOffsetFeaturesEXT to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_FEATURES_EXT
+template <> struct LvlTypeMap<VkPhysicalDeviceFragmentDensityMapOffsetFeaturesEXT> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_FEATURES_EXT;
 };
 
-template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_FEATURES_QCOM> {
-    typedef VkPhysicalDeviceFragmentDensityMapOffsetFeaturesQCOM Type;
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_FEATURES_EXT> {
+    typedef VkPhysicalDeviceFragmentDensityMapOffsetFeaturesEXT Type;
 };
 
-// Map type VkPhysicalDeviceFragmentDensityMapOffsetPropertiesQCOM to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_PROPERTIES_QCOM
-template <> struct LvlTypeMap<VkPhysicalDeviceFragmentDensityMapOffsetPropertiesQCOM> {
-    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_PROPERTIES_QCOM;
+// Map type VkPhysicalDeviceFragmentDensityMapOffsetPropertiesEXT to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_PROPERTIES_EXT
+template <> struct LvlTypeMap<VkPhysicalDeviceFragmentDensityMapOffsetPropertiesEXT> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_PROPERTIES_EXT;
 };
 
-template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_PROPERTIES_QCOM> {
-    typedef VkPhysicalDeviceFragmentDensityMapOffsetPropertiesQCOM Type;
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAGMENT_DENSITY_MAP_OFFSET_PROPERTIES_EXT> {
+    typedef VkPhysicalDeviceFragmentDensityMapOffsetPropertiesEXT Type;
 };
 
-// Map type VkSubpassFragmentDensityMapOffsetEndInfoQCOM to id VK_STRUCTURE_TYPE_SUBPASS_FRAGMENT_DENSITY_MAP_OFFSET_END_INFO_QCOM
-template <> struct LvlTypeMap<VkSubpassFragmentDensityMapOffsetEndInfoQCOM> {
-    static const VkStructureType kSType = VK_STRUCTURE_TYPE_SUBPASS_FRAGMENT_DENSITY_MAP_OFFSET_END_INFO_QCOM;
+// Map type VkRenderPassFragmentDensityMapOffsetEndInfoEXT to id VK_STRUCTURE_TYPE_RENDER_PASS_FRAGMENT_DENSITY_MAP_OFFSET_END_INFO_EXT
+template <> struct LvlTypeMap<VkRenderPassFragmentDensityMapOffsetEndInfoEXT> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_RENDER_PASS_FRAGMENT_DENSITY_MAP_OFFSET_END_INFO_EXT;
 };
 
-template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_SUBPASS_FRAGMENT_DENSITY_MAP_OFFSET_END_INFO_QCOM> {
-    typedef VkSubpassFragmentDensityMapOffsetEndInfoQCOM Type;
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_RENDER_PASS_FRAGMENT_DENSITY_MAP_OFFSET_END_INFO_EXT> {
+    typedef VkRenderPassFragmentDensityMapOffsetEndInfoEXT Type;
 };
 
 // Map type VkPhysicalDeviceCopyMemoryIndirectFeaturesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COPY_MEMORY_INDIRECT_FEATURES_NV
@@ -8578,6 +8641,42 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAW_ACCESS_CHAI
     typedef VkPhysicalDeviceRawAccessChainsFeaturesNV Type;
 };
 
+// Map type VkExternalComputeQueueDeviceCreateInfoNV to id VK_STRUCTURE_TYPE_EXTERNAL_COMPUTE_QUEUE_DEVICE_CREATE_INFO_NV
+template <> struct LvlTypeMap<VkExternalComputeQueueDeviceCreateInfoNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_EXTERNAL_COMPUTE_QUEUE_DEVICE_CREATE_INFO_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_EXTERNAL_COMPUTE_QUEUE_DEVICE_CREATE_INFO_NV> {
+    typedef VkExternalComputeQueueDeviceCreateInfoNV Type;
+};
+
+// Map type VkExternalComputeQueueCreateInfoNV to id VK_STRUCTURE_TYPE_EXTERNAL_COMPUTE_QUEUE_CREATE_INFO_NV
+template <> struct LvlTypeMap<VkExternalComputeQueueCreateInfoNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_EXTERNAL_COMPUTE_QUEUE_CREATE_INFO_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_EXTERNAL_COMPUTE_QUEUE_CREATE_INFO_NV> {
+    typedef VkExternalComputeQueueCreateInfoNV Type;
+};
+
+// Map type VkExternalComputeQueueDataParamsNV to id VK_STRUCTURE_TYPE_EXTERNAL_COMPUTE_QUEUE_DATA_PARAMS_NV
+template <> struct LvlTypeMap<VkExternalComputeQueueDataParamsNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_EXTERNAL_COMPUTE_QUEUE_DATA_PARAMS_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_EXTERNAL_COMPUTE_QUEUE_DATA_PARAMS_NV> {
+    typedef VkExternalComputeQueueDataParamsNV Type;
+};
+
+// Map type VkPhysicalDeviceExternalComputeQueuePropertiesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTERNAL_COMPUTE_QUEUE_PROPERTIES_NV
+template <> struct LvlTypeMap<VkPhysicalDeviceExternalComputeQueuePropertiesNV> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTERNAL_COMPUTE_QUEUE_PROPERTIES_NV;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTERNAL_COMPUTE_QUEUE_PROPERTIES_NV> {
+    typedef VkPhysicalDeviceExternalComputeQueuePropertiesNV Type;
+};
+
 // Map type VkPhysicalDeviceCommandBufferInheritanceFeaturesNV to id VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COMMAND_BUFFER_INHERITANCE_FEATURES_NV
 template <> struct LvlTypeMap<VkPhysicalDeviceCommandBufferInheritanceFeaturesNV> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COMMAND_BUFFER_INHERITANCE_FEATURES_NV;
@@ -9038,6 +9137,15 @@ template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PRESENT_METERIN
 };
 
 #endif // VK_ENABLE_BETA_EXTENSIONS
+// Map type VkRenderingEndInfoEXT to id VK_STRUCTURE_TYPE_RENDERING_END_INFO_EXT
+template <> struct LvlTypeMap<VkRenderingEndInfoEXT> {
+    static const VkStructureType kSType = VK_STRUCTURE_TYPE_RENDERING_END_INFO_EXT;
+};
+
+template <> struct LvlSTypeMap<VK_STRUCTURE_TYPE_RENDERING_END_INFO_EXT> {
+    typedef VkRenderingEndInfoEXT Type;
+};
+
 // Map type VkAccelerationStructureGeometryTrianglesDataKHR to id VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_TRIANGLES_DATA_KHR
 template <> struct LvlTypeMap<VkAccelerationStructureGeometryTrianglesDataKHR> {
     static const VkStructureType kSType = VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_GEOMETRY_TRIANGLES_DATA_KHR;
