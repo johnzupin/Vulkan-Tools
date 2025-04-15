@@ -1,3 +1,45 @@
+vulkan-tools (1.4.312.0~rc1-1lunarg24.04-1) noble; urgency=medium
+
+  [ Yilong Li ]
+  * vkcubepp: Support protected output
+
+  [ Charles Giessen ]
+  * vulkaninfo: Use Object for "Vulkan Profiles" array
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.4.310
+
+  [ Charles Giessen ]
+  * icd: Add build support for iOS and Metal surfaces
+  * vulkaninfo: Use Object in video props vkconfig output
+  * cube: Fix protected memory pNext chains
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.4.311
+
+  [ Luis Jose-Romero ]
+  * vulkaninfo: Fix unreported extension formats
+
+  [ Charles Giessen ]
+  * cmake: Check wayland pkgconfig deps for cube
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.4.312
+
+  [ Water Chika ]
+  * Select physical device before create surface is platform is WSI Display
+  * Update cube/cube.c
+  * Update cube/cube.cpp
+  * vkcubepp: Refactor create_window and run functions
+  * vkcubepp: refactor: Add MacOS fix.
+
+  [ Charles Giessen ]
+  * cube: Only count non-minimized frames
+  * cubepp: Fix incremental present on swapchain recreate
+  * cube: Re-record command buffers each frame
+
+ -- john <john@odin>  Tue, 15 Apr 2025 15:08:37 -0600
+
 vulkan-tools (1.4.309.0~rc3-1lunarg24.04-1) noble; urgency=medium
 
   [ Charles Giessen ]
