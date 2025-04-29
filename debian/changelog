@@ -1,3 +1,21 @@
+vulkan-tools (1.4.313.0~rc1-1lunarg24.04-1) noble; urgency=medium
+
+  [ Charles Giessen ]
+  * cube: Fix broken framecount
+
+  [ Mike Schuchardt ]
+  * build: Update to header 1.4.313
+
+  [ Charles Giessen ]
+  * cube: Update formatting to clang-format-18
+  * cube: Update missing WSI extension messages
+  * build: Update volk dependency to 1.4.313
+  * vulkaninfo: Make Presentable Surfaces array unique
+  * build: Remove Volk dependency
+  * cube: Link to CMAKE_DL_LIBS
+
+ -- john <john@odin>  Tue, 29 Apr 2025 10:21:37 -0600
+
 vulkan-tools (1.4.312.0~rc1-1lunarg24.04-1) noble; urgency=medium
 
   [ Yilong Li ]
