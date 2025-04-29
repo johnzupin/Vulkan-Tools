@@ -55,11 +55,9 @@
 #define APP_NAME_STR_LEN 80
 #endif  // _WIN32
 
-// Volk requires VK_NO_PROTOTYPES before including vulkan.h
-#define VK_NO_PROTOTYPES
+#include "cube_functions.h"
+
 #include <vulkan/vulkan.h>
-#define VOLK_IMPLEMENTATION
-#include "volk.h"
 
 #include "linmath.h"
 #include "object_type_string_helper.h"
@@ -1704,19 +1702,16 @@ bool loadTexture(const char *filename, uint8_t *rgba_data, VkSubresourceLayout *
     if ((unsigned char *)cPtr >= (lunarg_ppm + lunarg_ppm_len) || strncmp(cPtr, "P6\n", 3)) {
         return false;
     }
-    while (strncmp(cPtr++, "\n", 1))
-        ;
+    while (strncmp(cPtr++, "\n", 1));
     sscanf(cPtr, "%u %u", width, height);
     if (rgba_data == NULL) {
         return true;
     }
-    while (strncmp(cPtr++, "\n", 1))
-        ;
+    while (strncmp(cPtr++, "\n", 1));
     if ((unsigned char *)cPtr >= (lunarg_ppm + lunarg_ppm_len) || strncmp(cPtr, "255\n", 4)) {
         return false;
     }
-    while (strncmp(cPtr++, "\n", 1))
-        ;
+    while (strncmp(cPtr++, "\n", 1));
     for (int y = 0; y < *height; y++) {
         uint8_t *rowPtr = rgba_data;
         for (int x = 0; x < *width; x++) {
@@ -2662,6 +2657,7 @@ static void demo_cleanup(struct demo *demo) {
 #endif
 
     vkDestroyInstance(demo->inst, NULL);
+    unload_vulkan_library();
 }
 
 static void demo_resize(struct demo *demo) {
@@ -2718,7 +2714,7 @@ static void demo_run(struct demo *demo) {
     if (!demo->initialized || !demo->swapchain_ready) return;
 
     demo_draw(demo);
-    if (demo->is_minimized) {
+    if (!demo->is_minimized) {
         demo->curFrame++;
     }
     if (demo->frameCount != INT32_MAX && demo->curFrame == demo->frameCount) {
@@ -2908,7 +2904,7 @@ static void demo_run_xlib(struct demo *demo) {
         }
         if (demo->initialized && demo->swapchain_ready) {
             demo_draw(demo);
-            if (demo->is_minimized) {
+            if (!demo->is_minimized) {
                 demo->curFrame++;
             }
             if (demo->frameCount != INT32_MAX && demo->curFrame == demo->frameCount) demo->quit = true;
@@ -2977,7 +2973,7 @@ static void demo_run_xcb(struct demo *demo) {
         }
         if (demo->initialized && demo->swapchain_ready) {
             demo_draw(demo);
-            if (demo->is_minimized) {
+            if (!demo->is_minimized) {
                 demo->curFrame++;
             }
             if (demo->frameCount != INT32_MAX && demo->curFrame == demo->frameCount) demo->quit = true;
@@ -3039,7 +3035,7 @@ static void demo_run(struct demo *demo) {
             wl_display_dispatch_pending(demo->wayland_display);
             if (demo->initialized && demo->swapchain_ready) {
                 demo_draw(demo);
-                if (demo->is_minimized) {
+                if (!demo->is_minimized) {
                     demo->curFrame++;
                 }
                 if (demo->frameCount != INT32_MAX && demo->curFrame == demo->frameCount) demo->quit = true;
@@ -3188,7 +3184,7 @@ static void demo_run_directfb(struct demo *demo) {
             if (!demo->event_buffer->GetEvent(demo->event_buffer, DFB_EVENT(&event))) demo_handle_directfb_event(demo, &event);
             if (demo->initialized && demo->swapchain_ready) {
                 demo_draw(demo);
-                if (demo->is_minimized) {
+                if (!demo->is_minimized) {
                     demo->curFrame++;
                 }
                 if (demo->frameCount != INT32_MAX && demo->curFrame == demo->frameCount) demo->quit = true;
@@ -3202,7 +3198,7 @@ static void demo_run(struct demo *demo) {
     if (!demo->initialized || !demo->swapchain_ready) return;
 
     demo_draw(demo);
-    if (demo->is_minimized) {
+    if (!demo->is_minimized) {
         demo->curFrame++;
     }
 }
@@ -3212,7 +3208,7 @@ static void demo_run(struct demo *demo) {
     if (!demo->initialized || !demo->swapchain_ready) return;
 
     demo_draw(demo);
-    if (demo->is_minimized) {
+    if (!demo->is_minimized) {
         demo->curFrame++;
     }
     if (demo->frameCount != INT32_MAX && demo->curFrame == demo->frameCount) {
@@ -3459,7 +3455,7 @@ static void demo_run(struct demo *demo) {
         if (demo->pause || !demo->initialized || !demo->swapchain_ready) {
         } else {
             demo_draw(demo);
-            if (demo->is_minimized) {
+            if (!demo->is_minimized) {
                 demo->curFrame++;
             }
             if (demo->frameCount != INT32_MAX && demo->curFrame == demo->frameCount) {
@@ -3925,7 +3921,7 @@ static void demo_init_vk(struct demo *demo) {
     demo->is_minimized = false;
     demo->cmd_pool = VK_NULL_HANDLE;
 
-    err = volkInitialize();
+    err = load_vulkan_library();
     if (err != VK_SUCCESS) {
         ERR_EXIT(
             "Unable to find the Vulkan runtime on the system.\n\n"
@@ -4063,98 +4059,95 @@ static void demo_init_vk(struct demo *demo) {
 
     if (!surfaceExtFound) {
         ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_SURFACE_EXTENSION_NAME
-                 " extension.\n\n"
-                 "Do you have a compatible Vulkan installable client driver (ICD) installed?\n"
-                 "Please look at the Getting Started guide for additional information.\n",
+                 " instance extension.\n\n"
+                 "This indicates that no compatible Vulkan installable client driver (ICD) is present or that the system is not "
+                 "configured to present to the screen. \n",
                  "vkCreateInstance Failure");
     }
     if (!platformSurfaceExtFound) {
+        switch (demo->wsi_platform) {
 #if defined(VK_USE_PLATFORM_WIN32_KHR)
-        if (demo->wsi_platform == WSI_PLATFORM_WIN32) {
-            ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_WIN32_SURFACE_EXTENSION_NAME
-                     " extension.\n\n"
-                     "Do you have a compatible Vulkan installable client driver (ICD) installed?\n"
-                     "Please look at the Getting Started guide for additional information.\n",
-                     "vkCreateInstance Failure");
-        }
+            case (WSI_PLATFORM_WIN32):
+                ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_WIN32_SURFACE_EXTENSION_NAME
+                         " instance extension.\n\n"
+                         "The selected WSI platform win32 is not available, please choose a different WSI platform\n",
+                         "vkCreateInstance Failure");
+                break;
 #endif
 #if defined(VK_USE_PLATFORM_METAL_EXT)
-        if (demo->wsi_platform == WSI_PLATFORM_METAL) {
-            ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_EXT_METAL_SURFACE_EXTENSION_NAME
-                     " extension.\n\n"
-                     "Do you have a compatible Vulkan installable client driver (ICD) installed?\n"
-                     "Please look at the Getting Started guide for additional information.\n",
-                     "vkCreateInstance Failure");
-        }
+            case (WSI_PLATFORM_METAL):
+                ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_EXT_METAL_SURFACE_EXTENSION_NAME
+                         " instance extension.\n\n"
+                         "The selected WSI platform metal is not available, please choose a different WSI platform\n",
+                         "vkCreateInstance Failure");
+                break;
 #endif
 #if defined(VK_USE_PLATFORM_XCB_KHR)
-        if (demo->wsi_platform == WSI_PLATFORM_XCB) {
-            ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_XCB_SURFACE_EXTENSION_NAME
-                     " extension.\n\n"
-                     "Do you have a compatible Vulkan installable client driver (ICD) installed?\n"
-                     "Please look at the Getting Started guide for additional information.\n",
-                     "vkCreateInstance Failure");
-        }
+            case (WSI_PLATFORM_XCB):
+                ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_XCB_SURFACE_EXTENSION_NAME
+                         " instance extension.\n\n"
+                         "The selected WSI platform xcb is not available, please choose a different WSI platform\n",
+                         "vkCreateInstance Failure");
+                break;
 #endif
 #if defined(VK_USE_PLATFORM_WAYLAND_KHR)
-        if (demo->wsi_platform == WSI_PLATFORM_WAYLAND) {
-            ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME
-                     " extension.\n\n"
-                     "Do you have a compatible Vulkan installable client driver (ICD) installed?\n"
-                     "Please look at the Getting Started guide for additional information.\n",
-                     "vkCreateInstance Failure");
-        }
+            case (WSI_PLATFORM_WAYLAND):
+                ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_WAYLAND_SURFACE_EXTENSION_NAME
+                         " instance extension.\n\n"
+                         "The selected WSI platform wayland is not available, please choose a different WSI platform\n",
+                         "vkCreateInstance Failure");
+                break;
 #endif
 #if defined(VK_USE_PLATFORM_DISPLAY_KHR)
-        if (demo->wsi_platform == WSI_PLATFORM_DISPLAY) {
-            ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_DISPLAY_EXTENSION_NAME
-                     " extension.\n\n"
-                     "Do you have a compatible Vulkan installable client driver (ICD) installed?\n"
-                     "Please look at the Getting Started guide for additional information.\n",
-                     "vkCreateInstance Failure");
-        }
+            case (WSI_PLATFORM_DISPLAY):
+                ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_DISPLAY_EXTENSION_NAME
+                         " instance extension.\n\n"
+                         "The selected WSI platform display is not available, please choose a different WSI platform\n",
+                         "vkCreateInstance Failure");
+                break;
 #endif
 #if defined(VK_USE_PLATFORM_ANDROID_KHR)
-        if (demo->wsi_platform == WSI_PLATFORM_ANDROID) {
-            ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_ANDROID_SURFACE_EXTENSION_NAME
-                     " extension.\n\n"
-                     "Do you have a compatible Vulkan installable client driver (ICD) installed?\n"
-                     "Please look at the Getting Started guide for additional information.\n",
-                     "vkCreateInstance Failure");
-        }
+            case (WSI_PLATFORM_ANDROID):
+                ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_ANDROID_SURFACE_EXTENSION_NAME
+                         " instance extension.\n\n"
+                         "The selected WSI platform android is not available, please choose a different WSI platform\n",
+                         "vkCreateInstance Failure");
+                break;
 #endif
 #if defined(VK_USE_PLATFORM_XLIB_KHR)
-        if (demo->wsi_platform == WSI_PLATFORM_XLIB) {
-            ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_XLIB_SURFACE_EXTENSION_NAME
-                     " extension.\n\n"
-                     "Do you have a compatible Vulkan installable client driver (ICD) installed?\n"
-                     "Please look at the Getting Started guide for additional information.\n",
-                     "vkCreateInstance Failure");
-        }
+            case (WSI_PLATFORM_XLIB):
+                ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_KHR_XLIB_SURFACE_EXTENSION_NAME
+                         " instance extension.\n\n"
+                         "The selected WSI platform xlib is not available, please choose a different WSI platform\n",
+                         "vkCreateInstance Failure");
+                break;
 #endif
 #if defined(VK_USE_PLATFORM_DIRECTFB_EXT)
-        if (demo->wsi_platform == WSI_PLATFORM_DIRECTFB) {
-            ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_EXT_DIRECTFB_SURFACE_EXTENSION_NAME
-                     " extension.\n\n"
-                     "Do you have a compatible Vulkan installable client driver (ICD) installed?\n"
-                     "Please look at the Getting Started guide for additional information.\n",
-                     "vkCreateInstance Failure");
-        }
+            case (WSI_PLATFORM_DIRECTFB):
+                ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_EXT_DIRECTFB_SURFACE_EXTENSION_NAME
+                         " instance extension.\n\n"
+                         "The selected WSI platform directfb is not available, please choose a different WSI platform\n",
+                         "vkCreateInstance Failure");
+                break;
 #endif
 #if defined(VK_USE_PLATFORM_SCREEN_QNX)
-        if (demo->wsi_platform == WSI_PLATFORM_WIN32) {
-            ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_QNX_SCREEN_SURFACE_EXTENSION_NAME
-                     " extension.\n\n"
-                     "Do you have a compatible Vulkan installable client driver (ICD) installed?\n"
-                     "Please look at the Getting Started guide for additional information.\n",
-                     "vkCreateInstance Failure");
-        }
+            case (WSI_PLATFORM_QNX):
+                ERR_EXIT("vkEnumerateInstanceExtensionProperties failed to find the " VK_QNX_SCREEN_SURFACE_EXTENSION_NAME
+                         " instance extension.\n\n"
+                         "The selected WSI platform qnx is not available, please choose a different WSI platform\n",
+                         "vkCreateInstance Failure");
+                break;
 #endif
-        ERR_EXIT(
-            "vkEnumerateInstanceExtensionProperties failed to find any supported WSI surface extension.\n\n"
-            "Do you have a compatible Vulkan installable client driver (ICD) installed?\n"
-            "Please look at the Getting Started guide for additional information.\n",
-            "vkCreateInstance Failure");
+            default:
+            case (WSI_PLATFORM_AUTO):
+                // Getting here indicates we are using the WSI extension that is default on this platform
+                ERR_EXIT(
+                    "vkEnumerateInstanceExtensionProperties failed to find any supported WSI surface instance extensions.\n\n"
+                    "This indicates that no compatible Vulkan installable client driver (ICD) is present or that the system is not "
+                    "configured to present to the screen. \n",
+                    "vkCreateInstance Failure");
+                break;
+        }
     }
 
     bool auto_wsi_platform = demo->wsi_platform == WSI_PLATFORM_AUTO;
@@ -4226,7 +4219,7 @@ static void demo_init_vk(struct demo *demo) {
             "vkCreateInstance Failure");
     }
 
-    volkLoadInstance(demo->inst);
+    load_vulkan_instance_functions(demo->inst);
 }
 
 static void demo_select_physical_device(struct demo *demo) {
@@ -4473,7 +4466,7 @@ static void demo_create_device(struct demo *demo) {
     err = vkCreateDevice(demo->gpu, &device, NULL, &demo->device);
     assert(!err);
 
-    volkLoadDevice(demo->device);
+    load_vulkan_device_functions(demo->device);
 }
 
 static void demo_create_surface(struct demo *demo) {
